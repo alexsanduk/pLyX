@@ -1,0 +1,989 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\date{}
+\end_preamble
+\use_default_options true
+\begin_modules
+pLyX
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans lmss
+\font_typewriter lmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mathdots 1
+\use_mhchem 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\bulletLaTeX 0 "|"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+The pLyX system: 
+\end_layout
+
+\begin_layout Title
+word use frequency
+\end_layout
+
+\begin_layout Author
+Andrew Parsloe
+\begin_inset Newline newline
+\end_inset
+
+aparsloe@clear.net.nz
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+This addition to the pLyX system includes the python scripts, 
+\family typewriter
+wordfreq.py
+\family default
+ and 
+\family typewriter
+wordfreq_help.py
+\family default
+, a custom inset, 
+\family sans
+.count word frequency
+\family default
+ in the LyX module, 
+\family typewriter
+pLyX.module
+\family default
+ and this explanatory document.
+ Between them they effect a count of individual words in a document and
+ present the count in a table of decreasing frequency of occurrence at the
+ end of the document.
+ 
+\end_layout
+
+\begin_layout Standard
+I suggest making a 
+\emph on
+copy
+\emph default
+ of this document and using that for your 
+\begin_inset Quotes els
+\end_inset
+
+experiments
+\begin_inset Quotes ers
+\end_inset
+
+, which can be activated, as ever for the pLyX scripts, by means of the
+ three pLyX activating buttons on the 
+\family sans
+View/Update
+\family default
+ toolbar -- and the changes reversed by means of the 
+\family sans
+undo pLyX
+\family default
+ button followed by the 
+\family sans
+reload
+\family default
+ button.
+ 
+\end_layout
+
+\begin_layout Section
+Counting word frequency
+\end_layout
+
+\begin_layout Standard
+The function of the 
+\family sans
+.count word frequency
+\family default
+ inset and scripts is to count the number of occurrences of each word that
+ appears in the current LyX document and present the results in a list at
+ the end of the document.
+ On modern computers, the process is quick, even for quite substantial documents.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+At time of writing (early 2013), it takes only a second or two on a four-year-ol
+d, mid-range laptop to create a table of word frequency for a document of
+ 70,000 words.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+What constitutes a word is determined by the python regular expression
+\end_layout
+
+\begin_layout LyX-Code
+r'(?<!
+\backslash
+
+\backslash
+)
+\backslash
+b([A-Za-z]+('[A-Za-z]+)*)'
+\end_layout
+
+\begin_layout Standard
+The complication, compared with the simple regular expression 
+\family typewriter
+
+\backslash
+b
+\backslash
+w+
+\family default
+, arises from the need to take account of apostrophes in words like 
+\begin_inset Quotes eld
+\end_inset
+
+don't
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+wouldn't
+\begin_inset Quotes erd
+\end_inset
+
+, etc., indeed multiple occurrences of apostrophes, and to avoid counting
+ LyX/LaTeX commands that may be embedded in the text -- like 
+\family typewriter
+
+\backslash
+SpecialChar 
+\backslash
+ldots
+\family default
+ which inserts an ellipsis.
+ 
+\end_layout
+
+\begin_layout Standard
+As with all pLyX scripts, the current document must have the 
+\family typewriter
+pLyX.module
+\family default
+ added to it, for the necessary custom insets to be available for insertion
+ from the list at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+.
+ At the start of the document insert the 
+\family sans
+.Run script(s)
+\family default
+ custom inset.
+ Into that insert the 
+\family sans
+.count word frequency
+\family default
+ inset.
+ Clicking the three pLyX activating buttons on the 
+\family sans
+View/Update
+\family default
+ toolbar will now produce a list of results at the end of the document,
+ something like the following which displays the counts of word usage for
+ a couple of paragraphs:
+\end_layout
+
+\begin_layout Standard
+========================
+\end_layout
+
+\begin_layout Standard
+10 occ.
+ (1 inst.): the
+\end_layout
+
+\begin_layout Standard
+8 occ.
+ (1 inst.): in
+\end_layout
+
+\begin_layout Standard
+7 occ.
+ (1 inst.): of
+\end_layout
+
+\begin_layout Standard
+5 occ.
+ (2 inst.): my, is
+\end_layout
+
+\begin_layout Standard
+4 occ.
+ (2 inst.): but, and
+\end_layout
+
+\begin_layout Standard
+3 occ.
+ (3 inst.): to, start, apprehension
+\end_layout
+
+\begin_layout Standard
+2 occ.
+ (11 inst.): at, not, they, gear, that, this, pack, mind, every, check, plans
+\end_layout
+
+\begin_layout Standard
+1 occ.
+ (110 inst.): dr, by, on, or, it, an, as, its, day, are, out, i'm, can, way,
+ pit, any, over, cold, guts, real, good, food, item, some, back, home, tent,
+ come, from, with, work, near, thin, year, seen, trip, maps, lump, such,
+ grow, salt, sleep, deeds, going, worth, march, boots, wears, stage, thing,
+ comes, first, there, aware, parka, begin, trace, summer, should, undone,
+ become, waking, packed, flower, little, routes, passes, needed, places,
+ single, phrase, detail, clammy, action, tremors, sitting, morning, because,
+ measure, packing, nowhere, imagine, intrude, sighted, stomach, crossed,
+ visited, certain, evening, perhaps, typical, tramping, armchair, involved,
+ clothing, glimpsed, thoughts, required, johnson's, germinate, tightness,
+ something, ambitious, provisions, everything, collecting, reassuring, untravell
+ed, wonderfully, concentrates
+\end_layout
+
+\begin_layout Standard
+============
+\end_layout
+
+\begin_layout Standard
+Number of different words of 2 or more chars.: 131
+\end_layout
+
+\begin_layout Standard
+Total number of words of 2 or more chars.: 184
+\end_layout
+
+\begin_layout Standard
+Total number of all words: 196
+\end_layout
+
+\begin_layout Section
+Display options
+\end_layout
+
+\begin_layout Standard
+The diplay is in decreasing order of word occurrence, the most common at
+ the head of the list, the least common (those that occur only once) at
+ the tail.
+ Against each level of occurrence, the display includes the number of instances
+ of words that occur that number of times in the document, and lists the
+ actual words in increasing order of word length.
+ 
+\end_layout
+
+\begin_layout Standard
+The list is concluded by three summary statements which alert one to the
+ fact that only words 2 or more characters long have been listed.
+\end_layout
+
+\begin_layout Standard
+Note that all words are lower-cased.
+ This means that a word at the start of a sentence (upper case) is treated
+ identically to a word in the middle of a sentence (lower case).
+ 
+\end_layout
+
+\begin_layout Standard
+Options are available to change elements of the display and (next section)
+ which words are counted.
+\end_layout
+
+\begin_layout Subsection
+The --style option
+\end_layout
+
+\begin_layout Standard
+In the example, the results are displayed as part of the text.
+ This is placed at the end of the document and is the default format.
+ Alternatively, it can be placed in one of LyX's unmissable yellow notes,
+ again at the end of the document, by inserting the 
+\family typewriter
+--style note
+\family default
+ option in the 
+\family sans
+.count word frequency
+\family default
+ inset (inserted in the 
+\family sans
+.Run script(s)
+\family default
+ inset at the start of the document).
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The default display format corresponds to 
+\family typewriter
+--style text
+\family default
+ but, because it is the default, does not need to be explicitly given.
+\end_layout
+
+\end_inset
+
+ Using this option provides a convenient means of copying the results to
+ elsewhere in the document or to another LyX document: simply collapse the
+ note inset, copy it, then paste elsewhere.
+ 
+\end_layout
+
+\begin_layout Standard
+Alternatively, one might want only the occurrence, instance number pairs
+ without the 
+\begin_inset Quotes els
+\end_inset
+
+occ.
+\begin_inset Quotes ers
+\end_inset
+
+, 
+\begin_inset Quotes els
+\end_inset
+
+inst.
+\begin_inset Quotes ers
+\end_inset
+
+ descriptors, the word lists, or the summary statements, perhaps as data
+ 
+\begin_inset Quotes els
+\end_inset
+
+feedstock
+\begin_inset Quotes ers
+\end_inset
+
+ to a graphing program.
+ In that case use the 
+\family typewriter
+--style ert
+\family default
+ option.
+ This presents the occurrence, instance pairs in a list in an ERT inset
+ at the end of the document, only numbers, no words.
+ The contents of the ERT inset can be copied and pasted into a text editor
+ (for instance) then saved as a text file.
+ (The particular virtue of an ERT inset for this purpose is that no blank
+ lines are introduced between the number pairs, whereas pasting into a text
+ editor from a note inset 
+\emph on
+does
+\emph default
+ introduce blank lines.)
+\end_layout
+
+\begin_layout Subsection
+Word list order; the --alpha option
+\end_layout
+
+\begin_layout Standard
+As noted, the word list at each occurrence level is in order of word length.
+ This is a convenient way of picking out 
+\begin_inset Quotes els
+\end_inset
+
+debris
+\begin_inset Quotes ers
+\end_inset
+
+ -- abbreviations, the use of numerals, and so on -- but because all words
+ are lower-cased it is not always obvious what is debris and what is not.
+ In the example, for words occurring only once, 
+\begin_inset Quotes els
+\end_inset
+
+dr
+\begin_inset Quotes ers
+\end_inset
+
+ heads the list.
+ In the document scanned, this was in fact 
+\begin_inset Quotes els
+\end_inset
+
+Dr
+\begin_inset Quotes ers
+\end_inset
+
+, the abbreviation for 
+\begin_inset Quotes els
+\end_inset
+
+Doctor
+\begin_inset Quotes ers
+\end_inset
+
+.
+ That was fairly obvious, but in a larger document there are likely to be
+ less obvious abbreviations.
+ Even something like 
+\begin_inset Quotes els
+\end_inset
+
+ck
+\begin_inset Quotes ers
+\end_inset
+
+ may take a little thought to work out whether it is a genuine word or a
+ typo.
+ (In fact it is the abbreviation 
+\begin_inset Quotes els
+\end_inset
+
+Ck
+\begin_inset Quotes ers
+\end_inset
+
+ for 
+\begin_inset Quotes els
+\end_inset
+
+Creek, as in 
+\begin_inset Quotes els
+\end_inset
+
+Burns Ck
+\begin_inset Quotes ers
+\end_inset
+
+.)
+\end_layout
+
+\begin_layout Standard
+But word length is not always the most convenient order.
+ If the words counted are restricted to be greater than a certain length,
+ say 8 or more characters (see the next section), then it is much easier
+ to scan the resulting word lists if they are in alphabetical order rather
+ than word length order.
+ To achieve this insert the 
+\family typewriter
+--alpha
+\family default
+ option in the 
+\family sans
+.count word frequency
+\family default
+ inset.
+ Using the same two paragraphs that produced our previous example with this
+ option gives
+\end_layout
+
+\begin_layout Standard
+========================
+\end_layout
+
+\begin_layout Standard
+3 occ.
+ (1 inst.): apprehension
+\end_layout
+
+\begin_layout Standard
+1 occ.
+ (19 inst.): ambitious, armchair, clothing, collecting, concentrates, everything,
+ germinate, glimpsed, involved, johnson's, provisions, reassuring, required,
+ something, thoughts, tightness, tramping, untravelled, wonderfully
+\end_layout
+
+\begin_layout Standard
+============
+\end_layout
+
+\begin_layout Standard
+Number of different words of 8 or more chars.: 20
+\end_layout
+
+\begin_layout Standard
+Total number of words of 8 or more chars.: 22
+\end_layout
+
+\begin_layout Standard
+Total number of all words: 196
+\end_layout
+
+\begin_layout Section
+Changing which words are counted
+\end_layout
+
+\begin_layout Standard
+Note first that words in 
+\emph on
+insets
+\emph default
+ are 
+\emph on
+not
+\emph default
+ counted.
+ That means that words in footnotes or endnotes or LyX's yellow notes or
+ ERT insets are 
+\emph on
+not
+\emph default
+ counted, nor are words in branches or boxes.
+ 
+\end_layout
+
+\begin_layout Subsection
+Paragraph environments; the --env option
+\end_layout
+
+\begin_layout Standard
+Words which are candidates for being counted are those in environments appearing
+ in the drop-down box of layouts at the left on the standard toolbar, although
+ the default setting is to count only those words in 
+\family sans
+Standard
+\family default
+ paragraphs.
+ This is to avoid counting words in, for example, 
+\family sans
+Quotation
+\family default
+, 
+\family sans
+LyX-Code
+\family default
+ or section-heading environments, which may be by other authors (
+\family sans
+Quotation
+\family default
+) or of a different, perhaps special technical character (
+\family sans
+LyX-Code
+\family default
+), or not part of the text body proper (headings).
+ However, it is easy to change this setting with the 
+\family typewriter
+--env
+\family default
+ option.
+ If one wants to include text from, say, the 
+\family sans
+Quotation
+\family default
+ and 
+\family sans
+Quote
+\family default
+ environments, then insert
+\end_layout
+
+\begin_layout LyX-Code
+--env Standard Quotation Quote
+\end_layout
+
+\begin_layout Standard
+into the 
+\family sans
+.count word frequency
+\family default
+ inset at the start of the document.
+ Note that it is necessary to explicitly include the 
+\family sans
+Standard
+\family default
+ environment in this case.
+ The 
+\family typewriter
+--env
+\family default
+ expects a 
+\emph on
+space
+\emph default
+-separated list (no commas).
+ The order is immaterial, except that counting will in principle be faster
+ (although not necessarily noticeably so) if the most heavily populated
+ environment is placed first in the list.
+ 
+\end_layout
+
+\begin_layout Standard
+As noted, layouts appearing in the drop-down box at the left on the standard
+ toolbar can be used with the 
+\family typewriter
+--env
+\family default
+ option.
+ Anything inserted with a button on one of the toolbars is an inset, and
+ words within it will not be counted.
+ Hence by including certain parts of the text in a branch (for instance)
+ it can be made invisible to the counting process.
+\end_layout
+
+\begin_layout Subsubsection
+The All option
+\end_layout
+
+\begin_layout Standard
+Entering 
+\end_layout
+
+\begin_layout LyX-Code
+--env All
+\end_layout
+
+\begin_layout Standard
+into the 
+\family sans
+.count word frequency
+\family default
+ inset means 
+\emph on
+all
+\emph default
+ layouts used will be searched for words.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+In terms of LyX's native format, any words lying between a 
+\family typewriter
+
+\backslash
+begin_layout
+\family default
+, 
+\family typewriter
+
+\backslash
+end_layout
+\family default
+ pair of statements, will be a candidate for counting, whatever the actual
+ layout (provided, that is, they don't lie between a 
+\family typewriter
+
+\backslash
+begin_inset
+\family default
+, 
+\family typewriter
+
+\backslash
+end_inset
+\family default
+ pair of statements within the layout).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Word length; the --min option
+\end_layout
+
+\begin_layout Standard
+One way of avoiding counting abbreviations and other 
+\begin_inset Quotes els
+\end_inset
+
+debris
+\begin_inset Quotes ers
+\end_inset
+
+ is to restrict the count to words of more than a certain minimum length.
+ The way to do that is with the 
+\family typewriter
+-m
+\family default
+ or 
+\family typewriter
+--min
+\family default
+ option.
+ Entering 
+\family typewriter
+--min 4
+\family default
+ into the 
+\family sans
+.count word frequency
+\family default
+ inset at the start of the document will restrict the count to words of
+ at least 4 characters, and similarly for any other integer.
+ The default setting is 1 -- all words of whatever length are counted.
+\end_layout
+
+\begin_layout Subsection
+Numerals and hyphens: the --incl option
+\end_layout
+
+\begin_layout Standard
+How should numbers be treated, both cardinal (6, 3.1416, 2013, \SpecialChar \ldots{}
+) and ordinal
+ (1st, 27th, \SpecialChar \ldots{}
+)? How should hyphens be treated, and the parts of a word they
+ separate? The default setting, in both cases, is to ignore them.
+ That means numerals do not contribute to the word count.
+ A date like 
+\begin_inset Quotes els
+\end_inset
+
+2013
+\begin_inset Quotes ers
+\end_inset
+
+ is ignored; both the 
+\begin_inset Quotes els
+\end_inset
+
+27
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+th
+\begin_inset Quotes ers
+\end_inset
+
+ of 
+\begin_inset Quotes els
+\end_inset
+
+27th
+\begin_inset Quotes ers
+\end_inset
+
+ and, indeed, the whole ordinal, are ignored.
+ For hyphens, 
+\begin_inset Quotes els
+\end_inset
+
+four-letter word
+\begin_inset Quotes ers
+\end_inset
+
+ will be treated as three separate words, 
+\begin_inset Quotes els
+\end_inset
+
+four
+\begin_inset Quotes ers
+\end_inset
+
+, 
+\begin_inset Quotes els
+\end_inset
+
+letter
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+word
+\begin_inset Quotes ers
+\end_inset
+
+ (and 
+\begin_inset Quotes els
+\end_inset
+
+4-letter word
+\begin_inset Quotes ers
+\end_inset
+
+ will be treated as two separate words, 
+\begin_inset Quotes els
+\end_inset
+
+letter
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+word
+\begin_inset Quotes ers
+\end_inset
+
+).
+ 
+\end_layout
+
+\begin_layout Standard
+To change this default behaviour, use the 
+\family typewriter
+--incl
+\family default
+ (for 
+\begin_inset Quotes els
+\end_inset
+
+include
+\begin_inset Quotes ers
+\end_inset
+
+) option:
+\end_layout
+
+\begin_layout LyX-Code
+--incl hyphens numerals
+\end_layout
+
+\begin_layout Standard
+will ensure that both numerals and hyphens are included among the letters
+ that make up words.
+ (In fact, it suffices to enter 
+\family typewriter
+--incl h n
+\family default
+.) If you want only numerals and not hyphens to be treated as letters, then
+ enter 
+\family typewriter
+--incl numerals
+\family default
+ (or 
+\family typewriter
+--incl n
+\family default
+); if you want only hyphens and not numerals to be treated as letters, enter
+ 
+\family typewriter
+--incl hyphens
+\family default
+ (or 
+\family typewriter
+--incl h
+\family default
+).
+\end_layout
+
+\begin_layout Subsubsection
+The underscore character
+\end_layout
+
+\begin_layout Standard
+The regular expression defining a word becomes
+\end_layout
+
+\begin_layout LyX-Code
+r"(?<!
+\backslash
+
+\backslash
+)
+\backslash
+b(
+\backslash
+w+('
+\backslash
+w+)*)"
+\end_layout
+
+\begin_layout Standard
+with the setting 
+\family typewriter
+--incl numerals
+\family default
+.
+ A side-effect is that the underscore character 
+\begin_inset Quotes els
+\end_inset
+
+_
+\begin_inset Quotes ers
+\end_inset
+
+ is also treated as a letter.
+ This should have at most a minimal effect in ordinary writing since the
+ character is barely used there, but if computer code is included in a document,
+ there may well be an effect on the count.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Andrew Parsloe
+\end_layout
+
+\begin_layout Standard
+19 February 2013
+\end_layout
+
+\begin_layout Standard
+Revised 19 November 2013
+\end_layout
+
+\end_body
+\end_document

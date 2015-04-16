@@ -1,0 +1,6747 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\date{}
+\end_preamble
+\use_default_options true
+\begin_modules
+pLyX
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans lmss
+\font_typewriter lmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 1
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mathdots 1
+\use_mhchem 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Flex .Run script(s)
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Title
+The pLyX system:
+\begin_inset Newline newline
+\end_inset
+
+sorting tables and lists (and text)
+\begin_inset Newline newline
+\end_inset
+
+in LyX
+\end_layout
+
+\begin_layout Author
+Andrew Parsloe
+\begin_inset Newline newline
+\end_inset
+
+
+\size small
+aparsloe@clear.net.nz
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+As of LyX 2.0.6, there is no built-in method of sorting tables in the program,
+ nor of sorting lists.
+ But it 
+\emph on
+is 
+\emph default
+possible to do both.
+ The pLyX system contains custom insets, 
+\family sans
+.sort table
+\family default
+ and 
+\family sans
+.sort list
+\family default
+, and associated python scripts for that purpose.
+ The insets are designed to receive a 
+\emph on
+sort specification
+\emph default
+ detailing how to sort, in the one case, the rows of a table -- which columns
+ to use in which order and whether the sort is alphabetical or numerical,
+ ascending or descending, case sensitive or insensitive, and, in the other,
+ how to sort the items of a list, at or to what depth, and whether the sort
+ is alphabetical or numerical, asending or descending, case sensitive or
+ insensitive.
+ Even standard text paragraphs can be sorted by converting them to a list,
+ sorting, then converting them back.
+\end_layout
+
+\begin_layout Standard
+I suggest making a 
+\emph on
+copy
+\emph default
+ of this document and using that for your 
+\begin_inset Quotes els
+\end_inset
+
+experiments
+\begin_inset Quotes ers
+\end_inset
+
+, which can be activated, as ever for the pLyX scripts, by means of the
+ three pLyX activating buttons on the 
+\family sans
+View/Update
+\family default
+ toolbar -- and the changes reversed by means of the 
+\family sans
+undo pLyX
+\family default
+ button followed by the 
+\family sans
+reload
+\family default
+ button.
+ 
+\end_layout
+
+\begin_layout Section
+Sorting tables
+\end_layout
+
+\begin_layout Subsection
+Dual purpose of the inset
+\end_layout
+
+\begin_layout Standard
+Open a new document that has the 
+\family typewriter
+pLyX
+\family default
+ module added to it (perhaps from the template created when setting up the
+ pLyX system) or, open the 
+\emph on
+copy
+\emph default
+ of 
+\emph on
+The pLyX system: sorting tables and lists (and text) in LyX
+\emph default
+.
+ From the list at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+, insert the 
+\family sans
+.Run script(s)
+\family default
+ inset at the start of your document, and into that insert the 
+\family sans
+.sort table
+\family default
+ inset.
+ Now is a good time to try the 
+\family typewriter
+-h
+\family default
+ option in the 
+\family typewriter
+.sort table
+\family default
+ inset and see the help message that results on clicking the three pLyX
+ activating buttons in sequence.
+ Having read the help note, or at least noted what is there, delete the
+ 
+\family typewriter
+-h
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The 
+\family sans
+.sort table
+\family default
+ inset has a dual purpose, one when placed in the 
+\family sans
+.Run script(s)
+\family default
+ inset to indicate to 
+\family typewriter
+pLyX.py
+\family default
+ which child script to run -- in this case 
+\family typewriter
+sortable.py
+\family default
+ -- and the other when placed in or before a table as a container for a
+ sort specification.
+ To ease how to talk of them, I shall refer to the 
+\family sans
+.sort table
+\family default
+ inset inside the 
+\family sans
+.Run script(s)
+\family default
+ inset as the 
+\emph on
+global
+\emph default
+ instance or use, and its use in tables as a container for a sort specification
+ as a 
+\emph on
+local
+\emph default
+ instance or use.
+\end_layout
+
+\begin_layout Subsection
+Sort specification
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap table
+lines 0
+placement o
+overhang 0in
+width "60col%"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Surname
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1st name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2nd name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+age
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Percival
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Algernon
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+31
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bill
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Eric
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+56
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black--White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Richard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anthony
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paul
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+35
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Richard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+James
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+43
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anthony
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Peter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Alec
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+67
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Names-and-ages"
+
+\end_inset
+
+Shades of gray
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+You are now ready to sort a table, perhaps something like Table
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Names-and-ages"
+
+\end_inset
+
+ where various male members of the Black, White and Gray families are listed
+ with their ages.
+ (Indeed, why not copy it to your new document.) Given that there are two
+ John Richard Blacks, we will need to use all four columns to obtain a complete
+ sort.
+ The primary sort is alphabetical on the surname in column 1, the secondary
+ sort on the first name in column 2, the tertiary sort on the middle name
+ in column 3 and, to split the two John Richard Blacks, we need a fourth
+ numerical sort on the ages in column 4.
+ 
+\end_layout
+
+\begin_layout Standard
+Position the cursor in the header row, say the first cell, and insert the
+ 
+\family sans
+.sort table
+\family default
+ custom inset there (
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+).
+ Into that type 
+\family typewriter
+1A2A3A4+
+\family default
+.
+ Note that this could equally have been entered as 
+\family typewriter
+1A 2A 3A 4+
+\family default
+ or 
+\family typewriter
+1A,2A,3A,4+
+\family default
+ or \SpecialChar \ldots{}
+ They all give the same result.
+ The sort specification is not fussy about punctuation.
+ The digits indicate the column, the following letter or sign indicates
+ the kind of sort.
+ Using `|' to indicate `or': 
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+A indicates an ascending alphabetical sort, distinguishing case (A--Za--z)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+a indicates an ascending alphabetical sort, ignoring case (A|a--z|Z)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+Z indicates a descending alphabetical sort, distinguishing case (z--aZ--A)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+z indicates a descending alphabetical sort, ignoring case (z|Z--A|a)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
++ indicates an ascending numerical sort (
+\begin_inset Formula $-\infty$
+\end_inset
+
+ -- 
+\begin_inset Formula $+\infty$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+- indicates a descending numerical sort (
+\begin_inset Formula $+\infty$
+\end_inset
+
+ -- 
+\begin_inset Formula $-\infty$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Subsection
+Positioning the inset
+\end_layout
+
+\begin_layout Standard
+In the example the 
+\family sans
+.sort table
+\family default
+ custom inset was placed in the top left cell, the first cell of the header
+ row.
+ More generally, the python script assumes that after it has found the inset,
+ the
+\emph on
+ next table row
+\emph default
+ it meets is the first row to be sorted.
+ Thus the custom inset could have been placed in any cell of the header
+ row in our example.
+ If there had been 
+\emph on
+two
+\emph default
+ header rows, it would need to have been placed in the 
+\emph on
+second
+\emph default
+ of them.
+ 
+\end_layout
+
+\begin_layout Standard
+If a table has 
+\emph on
+no
+\emph default
+ header rows, either create a dummy header row, to be deleted after sorting,
+ and place the 
+\family sans
+.sort table
+\family default
+ inset there, or place the inset immediately before the table.
+ (If there is only one table in the document, then the custom inset could,
+ in theory, be placed anywhere before the table in the document, but that
+ is silly.) If the table is in a float and has no header row, then because
+ floats float, the custom inset needs to be placed before the table 
+\emph on
+inside the float
+\emph default
+, so that they float together and keep their relative positions.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+In the tables that follow, I have put the unsorted tables with their sort
+ specifications in yellow notes beside the sorted tables.
+ Certainly the unsorted tables will sort inside the notes and you can compare
+ your results with the sorted tables in the text proper, but I suggest copying
+ the unsorted tables from the notes and pasting into your own document.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Viewing the result
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap table
+lines 0
+placement o
+overhang 0in
+width "60col%"
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Flex .sort table|sortable
+status open
+
+\begin_layout Plain Layout
+1A2A3A4+
+\end_layout
+
+\end_inset
+
+Surname
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1st name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2nd name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+age
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anthony
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Peter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+James
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+43
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Richard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bill
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Eric
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+56
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Alec
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+67
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Percival
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Algernon
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+31
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anthony
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paul
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+35
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Richard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Surname
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1st name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2nd name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+age
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Alec
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+67
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Richard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Black
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Richard
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+34
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Bill
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Eric
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+56
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+John
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+James
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+43
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Gray
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Percival
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Algernon
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+31
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anthony
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Paul
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+35
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+White
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Anthony
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Peter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Sorted-Names-and-ages"
+
+\end_inset
+
+From Black to White
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+And that's it, really.
+ You can click on the three pLyX activating buttons, and the various tables
+ will be sorted 
+\begin_inset Quotes els
+\end_inset
+
+before your eyes
+\begin_inset Quotes ers
+\end_inset
+
+.
+ Or, you can click on LyX's 
+\family sans
+View other formats
+\family default
+ button and select 
+\family sans
+View pLyX
+\family default
+, and in due course a second copy of LyX will be launched in which the tables
+ will be sorted.
+ This is not so much fun, but it is safer since the pLyX system works by
+ overwriting the original document.
+ Or you can have the best of both worlds by inserting a 
+\family sans
+.stop
+\family default
+ inset at the start of the 
+\family sans
+.Run script(s)
+\family default
+ inset, inserting the 
+\family typewriter
+-x
+\family default
+ option in it, and 
+\emph on
+then
+\emph default
+ using the 
+\family sans
+View other formats \SpecialChar \menuseparator
+ View pLyX
+\family default
+ button.
+ A viewer LyX will be launched ready for you to click the three activating
+ buttons on it.
+ Your original document will remain out of harm's way.
+\end_layout
+
+\begin_layout Standard
+Having seen the effect of the sort, you may want to change the specification
+ -- in our example, for instance, we might want to change the order of the
+ two John Richard Blacks from increasing to decreasing order of age, which
+ would mean changing the 
+\family typewriter
+4+
+\family default
+ part of the specification to 
+\family typewriter
+4-
+\family default
+.
+ Doing so, you can either, again, click the three activating buttons and
+ look closely to see the small adjustment to the sort order, or you can
+ click on the 
+\family sans
+Update other formats
+\family default
+ button and select 
+\family sans
+Update pLyX
+\family default
+.
+ Now, clicking on the main window (work area) of the viewer LyX \SpecialChar \ldots{}
+ nothing
+ will seem happen -- except that the 
+\family sans
+reload
+\family default
+ button (the third of the three activating buttons) will be enabled.
+ Click on that in the viewer LyX, and the adjustment to the sort order in
+ the table will be shown.
+\end_layout
+
+\begin_layout Subsection
+Alphabetical sorting
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+The table
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Flex .sort table|sortable
+status collapsed
+
+\begin_layout Plain Layout
+1A
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family sans
+1A
+\family default
+ sort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Flex .sort table|sortable
+status collapsed
+
+\begin_layout Plain Layout
+1a
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family sans
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:a-option"
+
+\end_inset
+
+1a sort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Flex .sort table|sortable
+status open
+
+\begin_layout Plain Layout
+1a1A
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:1a1A-sort"
+
+\end_inset
+
+1a1A sort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Flex .sort table|sortable
+status open
+
+\begin_layout Plain Layout
+1a1Z
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Apple
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+china
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+China
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Turkey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+
+\family sans
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:1a1Z-sort"
+
+\end_inset
+
+1a1Z
+\family default
+ sort
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:A-and-a-options"
+
+\end_inset
+
+Alphabetical sorting
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+In our table it didn't matter whether we specified 
+\family typewriter
+A
+\family default
+ or 
+\family typewriter
+a
+\family default
+ for the alphabetical sorting, since all names began with a capital letter,
+ but if there is a mixed list of words, some beginning with upper-case,
+ some lower-case, the options produce very different effects, as evidenced
+ in Table
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:A-and-a-options"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Perhaps you want an intermediate option, one
+\family sans
+ 
+\family default
+where upper- and lower-case are mixed in one sequence as with the 
+\family typewriter
+a
+\family sans
+ 
+\family default
+option but where upper-case synonyms 
+\emph on
+always
+\emph default
+ precede their lower-case instances, rather than haphazardly as happens
+ with the 
+\family typewriter
+a
+\family sans
+ 
+\family default
+option.
+ (In Table
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:a-option"
+
+\end_inset
+
+, the upper-case synonym sometimes precedes, sometimes follows the lower-case
+ synonym.) To obtain this effect, sort the column twice: a primary sort with
+ an 
+\family typewriter
+a
+\family default
+ specification, and a secondary sort with an 
+\family typewriter
+A
+\family default
+ spec.
+ The result, as shown in Table
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:1a1A-sort"
+
+\end_inset
+
+, always puts the upper-case synonym 
+\emph on
+before
+\emph default
+ the lower-case.
+ If you want upper-case synonyms to 
+\emph on
+follow
+\emph default
+ their lower-case instances, use a 
+\family typewriter
+Z
+\family default
+ sort for the secondary sort, as in Table
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:1a1Z-sort"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Multiple tables
+\end_layout
+
+\begin_layout Standard
+As is evident from this document, sorting is not limited to one table at
+ a time.
+ Provided each table has its own sort specification, it will be sorted at
+ the same time as the others.
+\end_layout
+
+\begin_layout Subsection
+Character styling, ERT & yellow notes in table cells
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+sortable.py
+\family default
+ python script has been designed so that if a table entry contains a TeX-code
+ inset (Evil Red Text, ERT), the inset will be invisible to the sort.
+ It has no effect on the order of rows.
+\end_layout
+
+\begin_layout Standard
+Character formatting is also invisible to the sort, so that words in boldface,
+ or emphasised or in smallcaps, are all treated equally.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Notes
+\end_layout
+
+\begin_layout Standard
+Words in LyX's yellow notes, may or may not be visible to the sort, depending
+ on whether the 
+\family typewriter
+-n
+\family default
+ option is used in the global 
+\family sans
+.sort table
+\family default
+ inset.
+ With no 
+\family typewriter
+-n
+\family default
+ option, the (yellow) note inset and its content is invisible to the sort
+ and does not affect the order.
+ This is in line with the invisibility of yellow notes when exporting to
+ LaTeX or compiling to 
+\family typewriter
+pdf
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+However, it may be convenient on occasion if the content 
+\emph on
+is 
+\emph default
+visible to the sort.
+ To achieve this, insert 
+\family typewriter
+-n
+\family default
+ into the global 
+\family sans
+.sort table
+\family default
+ inset.
+ Now, if you want to distinguish (say) emphasised words from normal upright
+ text -- perhaps the table contains both common and biological names, or
+ it may contain the titles of books or films among other entries -- then
+ a way to do it is to add a yellow note after the emphasised word and put
+ a 
+\family typewriter
+!
+\family default
+ (for instance) in the note, so that it sorts after the un-noted word but
+ before any other words.
+ The content of the yellow note is invisible to LaTeX and does not appear
+ in the 
+\family typewriter
+pdf
+\family default
+, but influences how the word sorts.
+\end_layout
+
+\begin_layout Section
+Sorting lists
+\end_layout
+
+\begin_layout Standard
+As of 22 November 2013, lists can be sorted to all six potential levels,
+ alphabetically or numerically, ascending or descending, case sensitively
+ or insensitively, or be shuffled randomly.
+ The last is new and may find application in the design of multi-choice
+ questionnaires for instance.
+\end_layout
+
+\begin_layout Subsection
+Dual purpose of the inset
+\end_layout
+
+\begin_layout Standard
+First, open a new document that has the 
+\family typewriter
+pLyX
+\family default
+ module added to it (perhaps from the template created when setting up the
+ pLyX system).
+ From the list at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+, insert the 
+\family sans
+.Run script(s)
+\family default
+ inset at the start of your document, and into that insert the 
+\family sans
+.sort list
+\family default
+ inset (the 
+\emph on
+global
+\emph default
+ use of the inset).
+ Now is a good time to try the 
+\family typewriter
+-h
+\family default
+ option in the 
+\family typewriter
+.sort list
+\family default
+ inset and see the help message that results on clicking the three pLyX
+ activating buttons in sequence.
+ Delete the 
+\family typewriter
+-h
+\family default
+.
+ Like the 
+\family sans
+.sort table
+\family default
+ inset, the 
+\family sans
+.sort list
+\family default
+ inset has a dual function, the global use just instanced, and a 
+\emph on
+local 
+\emph default
+use before a list as a container for a sort specification.
+ 
+\end_layout
+
+\begin_layout Subsection
+Sort specification & viewing the result
+\end_layout
+
+\begin_layout Standard
+You are now ready to sort a list.
+ As an appendix to this document I've included a list of entries -- deliberately
+ disordered -- from an index of scrapbook articles .
+ I suggest copying it to your own document.
+ It's sufficiently long that sorting it by hand has no appeal.
+ I'll use selections (which also should be copied to your own test document)
+ from this list to illustrate various points.
+\end_layout
+
+\begin_layout Standard
+To sort the list, both top level and sub-lists, we need once again a sort
+ specification.
+ It is of the same form as for tables, only this time the digits stand for
+ the list
+\emph on
+ level
+\emph default
+, numbered from 1 to (potentially) 6.
+ They do 
+\emph on
+not 
+\emph default
+represent primary, secondary \SpecialChar \ldots{}
+ sorts.
+ In the example, only levels 1 and 2 are involved.
+ We want a case-insensitive alphabetical sort for both levels.
+ To do that we insert a 
+\family sans
+.sort list
+\family default
+ custom inset either 
+\emph on
+before
+\emph default
+ the list, or into a 
+\emph on
+top-level
+\emph default
+ item in the list, and enter 
+\family typewriter
+1a2a
+\family default
+ into the inset.
+ (Again, punctuation is not important in the specification.) Note that it
+ is the 
+\emph on
+next 
+\emph default
+and subsequent items that are sorted, not the item the inset is placed in
+ or those preceding it.
+ In the present case it makes sense to place the specification 
+\emph on
+before
+\emph default
+ the list so that all items are sorted.
+ 
+\end_layout
+
+\begin_layout Standard
+Clicking now on the three pLyX activating buttons results in both levels
+ of the list being sorted.
+ Alternatively, as with the discussion on table sorting, you can use the
+ 
+\family sans
+View other formats \SpecialChar \menuseparator
+ View pLyX
+\family default
+ button to launch a second copy of LyX in which to view the result.
+ 
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+1a2a
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\align block
+Darwin, Charles
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+on shingle terraces
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+72
+\end_layout
+
+\begin_layout Itemize
+\align block
+on frogs `in harmony'
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+72
+\end_layout
+
+\begin_layout Itemize
+\align block
+on religion
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30, 72
+\end_layout
+
+\begin_layout Itemize
+\align block
+notes cricket in NZ
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30
+\end_layout
+
+\begin_layout Itemize
+\align block
+on clouds, peaks & height illusion
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+72
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Bohr, Niels
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+& Einstein on tram
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+60
+\end_layout
+
+\begin_layout Itemize
+\align block
+philosopher defined
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+method of working
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+& Rutherford
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+54
+\end_layout
+
+\begin_layout Itemize
+\align block
+calligraphy
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+60
+\end_layout
+
+\begin_layout Itemize
+\align block
+craziness of ideas
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+origin for the coord.
+ system
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+
+\emph on
+aujourd'hui
+\emph default
+ anecdote
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30
+\end_layout
+
+\begin_layout Itemize
+\align block
+public speaking
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59, 60
+\end_layout
+
+\begin_layout Itemize
+\align block
+& Einstein tobacco stealing
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Try changing the sort specification, say to 
+\family typewriter
+1a2z
+\family default
+, and also the placement of the specification within the list (but always
+ at the top level), and either click on the three activating buttons or
+ use the 
+\family sans
+Update other formats \SpecialChar \menuseparator
+ Update pLyX
+\family default
+ button, remembering to then click in the main work area of the viewer LyX
+ so as to enable the 
+\family sans
+reload
+\family default
+ button, and then clicking on that.
+\end_layout
+
+\begin_layout Subsubsection
+The 
+\family typewriter
+-n
+\family default
+ or 
+\family typewriter
+--notes
+\family default
+ option: yellow notes
+\end_layout
+
+\begin_layout Standard
+As for sorting tables, words in LyX's yellow notes, may or may not be visible
+ to the sort, depending on whether the 
+\family typewriter
+-n
+\family default
+, or 
+\family typewriter
+--notes
+\family default
+, option is used in the global 
+\family sans
+.sort list
+\family default
+ inset.
+ With no 
+\family typewriter
+-n
+\family default
+ option, the (yellow) note inset and its content is invisible to the sort
+ and does not affect the order.
+ This is in line with the invisibility of yellow notes when exporting to
+ LaTeX or compiling to 
+\family typewriter
+pdf
+\family default
+.
+ But as for tables, it may be convenient on occasion if the content 
+\emph on
+is 
+\emph default
+visible to the sort, perhaps to refine sort order.
+ To achieve this, insert 
+\family typewriter
+-n
+\family default
+ into the global 
+\family sans
+.sort list
+\family default
+ inset.
+ The content of a yellow note remains invisible to LaTeX of course and does
+ not appear in the 
+\family typewriter
+pdf
+\family default
+, but does now influence the result of a sort.
+\end_layout
+
+\begin_layout Subsubsection
+The 
+\family typewriter
+-c
+\family default
+ option: length of the sort-key string
+\end_layout
+
+\begin_layout Standard
+By default, the 
+\family typewriter
+sortlist.py
+\family default
+ script sorts according to the first 20 characters of an item (or sub-item
+ etc.).
+ If you want to change that number, say to 40 characters, enter 
+\family typewriter
+-c 40
+\family default
+ into the 
+\emph on
+global
+\emph default
+ 
+\family sans
+.sort list
+\family default
+ inset.
+ Sorts will then be conducted on the first 40 characters of items (should
+ they possess that many).
+ Alternatively, entering 
+\family typewriter
+-c 1
+\family default
+ will give a first-letter-only sort.
+\end_layout
+
+\begin_layout Subsection
+Random sorting (shuffles)
+\end_layout
+
+\begin_layout Standard
+Sometimes random sorting is appropriate -- perhaps in the design of multi-choice
+ questionnaires where one wants the potential answers to be presented in
+ random order, or in the design of voting forms where one wants the list
+ of candidates names to be in random order.
+ This is easily achieved with sort specifications using 
+\family typewriter
+r
+\family default
+ or 
+\family typewriter
+R
+\family default
+ to indicate randomness.
+ Thus an alphabetically ordered list of names can be randomised like this:
+ 
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+1r
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Abbott, Tony
+\end_layout
+
+\begin_layout Itemize
+Cameron, David
+\end_layout
+
+\begin_layout Itemize
+Key, John
+\end_layout
+
+\begin_layout Itemize
+Merkel, Angela
+\end_layout
+
+\begin_layout Itemize
+Obama, Barack
+\end_layout
+
+\begin_layout Itemize
+Putin, Vladimir
+\end_layout
+
+\begin_layout Standard
+For a questionnaire, a sort specification like 
+\family typewriter
+2r
+\family default
+ will leave the questions in their given order but shuffle the answers:
+ 
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+2r
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Question 1
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+answer 1
+\end_layout
+
+\begin_layout Enumerate
+answer 2
+\end_layout
+
+\begin_layout Enumerate
+answer 3
+\end_layout
+
+\begin_layout Enumerate
+answer 4
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Question 2
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+answer 1
+\end_layout
+
+\begin_layout Enumerate
+answer 2
+\end_layout
+
+\begin_layout Enumerate
+answer 3
+\end_layout
+
+\begin_layout Enumerate
+answer 4
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Question 3
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+answer 1
+\end_layout
+
+\begin_layout Enumerate
+answer 2
+\end_layout
+
+\begin_layout Enumerate
+answer 3
+\end_layout
+
+\begin_layout Enumerate
+answer 4
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Use r or R?
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+R
+\family default
+ specification is a little more random than the 
+\family typewriter
+r
+\family default
+ specification in the sense that it uses a different seed for the random
+ number generator with each sort.
+ In practice, it is hard to see that ever being relevant.
+ Since an 
+\family typewriter
+r
+\family default
+ sort involves one fewer python operation than an 
+\family typewriter
+R
+\family default
+ sort, it will in theory be microscopically faster -- that too will be quite
+ unnoticeable.
+ In practical terms, 
+\family typewriter
+r
+\family default
+ and 
+\family typewriter
+R
+\family default
+ are interchangeable.
+\end_layout
+
+\begin_layout Subsection
+Mixing list types
+\end_layout
+
+\begin_layout Standard
+The sorting script assumes that the list and each sub-list is uniformly
+ of one kind, that, for instance, the top level does not change partway
+ through from (say) 
+\family sans
+Itemize
+\family default
+ to 
+\family sans
+Enumerate
+\family default
+.
+ Similarly, each sub-list is assumed to be consistently of one kind, although
+ the kinds may differ from sub-list to sub-list.
+ To take an extreme case (
+\emph on
+not to be taken seriously
+\emph default
+) of multiple list types, I've picked some items from the list in the appendix
+ and have given each sub-list a different type.
+ As you will see when you try it, it still sorts (but the result is a mess).
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+1a2a
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\align block
+drunks & drunkenness
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+lying down without holding on
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+17
+\end_layout
+
+\begin_layout Itemize
+\align block
+talking to parking meter
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+ASCII
+\end_layout
+
+\begin_deeper
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+\align block
+cows
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+64
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+\align block
+faces
+\begin_inset space ~
+\end_inset
+
+(smileys) 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+58
+\end_layout
+
+\begin_layout Labeling
+\labelwidthstring 00.00.0000
+\align block
+art
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+64
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Darwin awards
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+8, 9
+\end_layout
+
+\begin_deeper
+\begin_layout Description
+\align block
+suicide jumps but lands on another
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+4
+\end_layout
+
+\begin_layout Description
+\align block
+death at Arthur's Pass 
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+8
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+battle of sexes
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\align block
+bumper sticker
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+34
+\end_layout
+
+\begin_layout Enumerate
+\align block
+worse than divorce
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+33
+\end_layout
+
+\begin_layout Enumerate
+\align block
+lost half net worth but still have wife
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+33
+\end_layout
+
+\begin_layout Enumerate
+\align block
+
+\emph on
+Women are from Venus, Men are Wrong
+\emph default
+
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+32
+\end_layout
+
+\begin_layout Enumerate
+\align block
+Afghanistan
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+41
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Changes of type 
+\emph on
+within
+\emph default
+ a list or sub-list
+\end_layout
+
+\begin_layout Standard
+If the list type changes 
+\emph on
+within
+\emph default
+ a list or a sub-list, the default behaviour depends on whether the change
+ in list-type occurs at the top level or in a sub-list.
+ At the top level, the sort simply stops at the list-type boundary: items
+ above it, including sub-lists, are sorted; items below it are not.
+ In the example below, the top-level entry for Harald Bohr is in a 
+\family sans
+Description
+\family default
+ list environment, inconsistent with the 
+\family sans
+Itemize
+\family default
+ environments of the preceding top-level items.
+ Clicking the activating buttons, the first part of the list -- 
+\emph on
+above 
+\emph default
+the Harald Bohr item -- will be sorted, the remainder will remain unsorted.
+ 
+\begin_inset Flex .sort list|sortlist
+status collapsed
+
+\begin_layout Plain Layout
+1a2a
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\align block
+dogs
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+cats better fed
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+0
+\end_layout
+
+\begin_layout Itemize
+\align block
+squashed chihuahua
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+67
+\end_layout
+
+\begin_layout Itemize
+\align block
+`come up for a bite'
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+67
+\end_layout
+
+\begin_layout Itemize
+\align block
+care with words for `full evacuation' command
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+38
+\end_layout
+
+\begin_layout Itemize
+\align block
+HMV logo
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+0
+\end_layout
+
+\begin_layout Itemize
+\align block
+
+\emph on
+One Man and His Dog
+\emph default
+
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+37
+\end_layout
+
+\begin_layout Itemize
+\align block
+home alone & meals
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+71
+\end_layout
+
+\begin_layout Itemize
+\align block
+hats (
+\emph on
+Far Side
+\emph default
+ cartoon)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+40
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+BSE
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+known to Romans
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+4
+\end_layout
+
+\end_deeper
+\begin_layout Description
+\align block
+Bohr, Harald
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+public speaking compared with Niels
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+battle of sexes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+bumper sticker
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+34
+\end_layout
+
+\begin_layout Itemize
+\align block
+worse than divorce
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+33
+\end_layout
+
+\begin_layout Itemize
+\align block
+lost half net worth but still have wife
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+33
+\end_layout
+
+\begin_layout Itemize
+\align block
+
+\emph on
+Women are from Venus, Men are Wrong
+\emph default
+
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+32
+\end_layout
+
+\begin_layout Itemize
+\align block
+Afghanistan
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+41
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+That is a benign situation.
+ 
+\end_layout
+
+\begin_layout Standard
+But, if the list type changes 
+\emph on
+within a sub-list
+\emph default
+, potentially we have a mess.
+ To avoid this, for sub-lists the sort does not stop but carries on across
+ the list-type boundary.
+ The result will still be a mess, but at least it will be a 
+\emph on
+sorted 
+\emph default
+mess.
+ (Try the following example, in which the sub-list transforms from 
+\family sans
+Itemize
+\family default
+ to 
+\family sans
+Enumerate
+\family default
+ halfway down (and note here a specification starting at the 
+\emph on
+sub-
+\emph default
+level).
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+2a
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\align block
+birds
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+first aeroplane accident
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+70
+\end_layout
+
+\begin_layout Itemize
+\align block
+albatross flight speeds
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+14
+\end_layout
+
+\begin_layout Itemize
+\align block
+tuis kill hawk (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+unusual Australian migrants
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+41
+\end_layout
+
+\begin_layout Itemize
+\align block
+sparrows operate supermarket doors
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+10
+\end_layout
+
+\begin_layout Itemize
+\align block
+gannets (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+7
+\end_layout
+
+\begin_layout Itemize
+\align block
+hawk killed by tuis (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+life span
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+20
+\end_layout
+
+\begin_layout Enumerate
+\align block
+origin of nest parasitism
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+15
+\end_layout
+
+\begin_layout Enumerate
+\align block
+redpolls
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+27
+\end_layout
+
+\begin_layout Enumerate
+\align block
+streamlining in traffic
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Enumerate
+\align block
+cockatoos taking fairground rides
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Enumerate
+\align block
+seagulls disturbed by dredge
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+10
+\end_layout
+
+\begin_layout Enumerate
+\align block
+sexual arms race in ducks
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+19
+\end_layout
+
+\begin_layout Enumerate
+\align block
+hawk & hare
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+16
+\end_layout
+
+\begin_layout Enumerate
+\align block
+South Island kokako
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+11
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+If you want to retain the distinct parts of the sub-list, then introduce
+ a dummy higher level item which can be deleted afterwards -- 
+\begin_inset Quotes els
+\end_inset
+
+birds!
+\begin_inset Quotes ers
+\end_inset
+
+ accompanied by a yellow note in the example (alternatively insert 
+\begin_inset Quotes els
+\end_inset
+
+birds
+\begin_inset Quotes ers
+\end_inset
+
+ in a yellow note and use the global 
+\family typewriter
+-n
+\family default
+ option so that it sorts):
+\begin_inset Flex .sort list|sortlist
+status collapsed
+
+\begin_layout Plain Layout
+1a2a
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+\align block
+birds
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+first aeroplane accident
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+70
+\end_layout
+
+\begin_layout Itemize
+\align block
+albatross flight speeds
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+14
+\end_layout
+
+\begin_layout Itemize
+\align block
+tuis kill hawk (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+unusual Australian migrants
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+41
+\end_layout
+
+\begin_layout Itemize
+\align block
+sparrows operate supermarket doors
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+10
+\end_layout
+
+\begin_layout Itemize
+\align block
+gannets (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+7
+\end_layout
+
+\begin_layout Itemize
+\align block
+hawk killed by tuis (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+life span
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+20
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+birds!
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Delete after sorting!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\align block
+origin of nest parasitism
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+15
+\end_layout
+
+\begin_layout Enumerate
+\align block
+redpolls
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+27
+\end_layout
+
+\begin_layout Enumerate
+\align block
+streamlining in traffic
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Enumerate
+\align block
+cockatoos taking fairground rides
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Enumerate
+\align block
+seagulls disturbed by dredge
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+10
+\end_layout
+
+\begin_layout Enumerate
+\align block
+sexual arms race in ducks
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+19
+\end_layout
+
+\begin_layout Enumerate
+\align block
+hawk & hare
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+16
+\end_layout
+
+\begin_layout Enumerate
+\align block
+South Island kokako
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+11
+\end_layout
+
+\end_deeper
+\begin_layout Paragraph
+The 
+\family typewriter
+-a
+\family default
+ option
+\end_layout
+
+\begin_layout Standard
+Given the multitudinous uses to which people put lists, it is possible that
+ a situation may arise in which it is wanted to sort across a top-level
+ list-type boundary.
+ To break out of the default behaviour and achieve this, it is necessary
+ to insert the 
+\family typewriter
+-a
+\family default
+ option (for 
+\emph on
+a
+\emph default
+cross perhaps) in the global 
+\family sans
+.sort list
+\family default
+ inset.
+ Inserting it there and clicking the activating buttons will ensure, in
+ our earlier example, that the sort includes and continues past the Harald
+ Bohr item.
+\end_layout
+
+\begin_layout Subsection
+Alphabetical sorting
+\end_layout
+
+\begin_layout Standard
+As with tables, a sort specification like 
+\family typewriter
+1a
+\family default
+ will not, of itself, give a completely satisfactory result in a list with
+ mixed upper- and lower-case items.
+ For two synonyms, say 
+\begin_inset Quotes els
+\end_inset
+
+china
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+China
+\begin_inset Quotes ers
+\end_inset
+
+, the order in which they sort will depend on their initial positions in
+ the list, rather than a rule like the upper-case synonym always preceding
+ the lower-case one.
+ To achieve consistency, one needs to do a primary 
+\family typewriter
+a
+\family default
+ sort and a secondary 
+\family typewriter
+A
+\family default
+ sort, but for a list this involves a complication over providing a similar
+ specification for a table.
+ 
+\end_layout
+
+\begin_layout Standard
+Since lists can be nested, the form of the sort specification for them differs
+ from that for tables.
+ A list specification like 
+\family typewriter
+1a2a
+\family default
+ is not about primary and secondary sorts as it is for tables but about
+ different list levels.
+ We need an additional notation.
+ To distinguish primary and secondary sorts for lists a forward slash or
+ solidus is inserted between the primary/secondary/\SpecialChar \ldots{}
+ sort specifications.
+ Thus to sort the top-level of a list so that upper-case synonyms always
+ precede lower-case synonyms, the specification is 
+\family typewriter
+1a/1A
+\family default
+.
+ If you want the opposite, upper-case to always 
+\emph on
+follow
+\emph default
+ lower-case, use 
+\family typewriter
+1a/1Z
+\family default
+.
+ If there are sub-lists and you want the latter behaviour for them too,
+ use, for instance, 
+\family typewriter
+1a2a3a/1Z2Z3Z
+\family default
+ for a three-level list in which synonyms for lower-case always precede
+ upper-case.
+ In the example, just to make things interesting, I have included a numerical
+ sort at the third level and have 
+\begin_inset Quotes els
+\end_inset
+
+garnished
+\begin_inset Quotes ers
+\end_inset
+
+ the sort specification with a random splatter of utterly irrelevant and
+ distracting punctuation (the specification is really 
+\family typewriter
+1a2a3+/1Z2Z
+\family default
+): 
+\begin_inset Flex .sort list|sortlist
+status open
+
+\begin_layout Plain Layout
+1,a 2@a, 3+ / 1, Z!2 Z
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+z
+\end_layout
+
+\begin_layout Itemize
+Z
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+d
+\end_layout
+
+\begin_layout Itemize
+D
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+7
+\end_layout
+
+\begin_layout Itemize
+2
+\end_layout
+
+\begin_layout Itemize
+5
+\end_layout
+
+\begin_layout Itemize
+1
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+E
+\end_layout
+
+\begin_layout Itemize
+e
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+X
+\end_layout
+
+\begin_layout Itemize
+x
+\end_layout
+
+\begin_layout Itemize
+a
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+M
+\end_layout
+
+\begin_layout Itemize
+m
+\end_layout
+
+\begin_layout Itemize
+n
+\end_layout
+
+\begin_layout Itemize
+N
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A
+\end_layout
+
+\begin_layout Itemize
+B
+\end_layout
+
+\begin_layout Itemize
+b
+\end_layout
+
+\begin_layout Section
+Sorting text
+\end_layout
+
+\begin_layout Standard
+As noted in the introduction, it is very easy to sort paragraphs of ordinary
+ text with the list-sorting script:
+\end_layout
+
+\begin_layout Enumerate
+select the block of paragraphs you want to sort; 
+\end_layout
+
+\begin_layout Enumerate
+convert them to a list format (e.g.
+ type 
+\family sans
+Alt+P, I
+\family default
+ to convert them to an itemized list);
+\end_layout
+
+\begin_layout Enumerate
+sort the list, as described above, using a sort specification like 
+\family typewriter
+1A
+\family default
+ (for example);
+\end_layout
+
+\begin_layout Enumerate
+select the sorted list and convert it back to standard paragraphs (i.e.
+ type 
+\family sans
+Alt+P, S
+\family default
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+It is worth noting that since first writing these scripts and this accompanying
+ document, a row swapping (and column swapping) function has been added
+ to LyX's table handling, which is a step on the way to sorting and may
+ be all that is needed by a user.
+ However, this will be introduced with LyX 2.1.0 which is currently at the
+ beta2 stage of testing.
+ It is not available for LyX 2.0.6.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+The list sorting script was harder to write than the table sorting one,
+ largely because of the recursive calls to the sorting routine required
+ by the (possible) existence of sub-lists.
+ My motivation for writing it was not because of some desperate need revealed
+ among LyX users, but because, first, the function is not at present provided
+ by LyX and, second, the logic is the same as that needed for sorting indexes
+ with their headings, subheadings,  etc., and it is to that end that I was
+ really looking.
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset VSpace defskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Andrew Parsloe
+\end_layout
+
+\begin_layout Plain Layout
+1 January 2013
+\end_layout
+
+\begin_layout Plain Layout
+Revised 19 November 2013
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\start_of_appendix
+Appendix
+\end_layout
+
+\begin_layout Standard
+Here is a list with which to experiment.
+ The entries are drawn from the earlier part of an index to a number of
+ scrapbooks (hence the idiosyncratic nature of the subject matter).
+\end_layout
+
+\begin_layout Itemize
+\align block
+Darwin
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+on shingle terraces
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+72
+\end_layout
+
+\begin_layout Itemize
+\align block
+on frogs `in harmony'
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+72
+\end_layout
+
+\begin_layout Itemize
+\align block
+on religion
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30, 72
+\end_layout
+
+\begin_layout Itemize
+\align block
+notes cricket in NZ
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30
+\end_layout
+
+\begin_layout Itemize
+\align block
+on clouds, peaks & height illusion
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+72
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Bohr, Niels
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+& Einstein on tram
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+60
+\end_layout
+
+\begin_layout Itemize
+\align block
+philosopher defined
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+method of working
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+& Rutherford
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+54
+\end_layout
+
+\begin_layout Itemize
+\align block
+calligraphy
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+60
+\end_layout
+
+\begin_layout Itemize
+\align block
+craziness of ideas
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+origin for the coord.
+ system
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\begin_layout Itemize
+\align block
+
+\emph on
+aujourd'hui
+\emph default
+ anecdote
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30
+\end_layout
+
+\begin_layout Itemize
+\align block
+public speaking
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59, 60
+\end_layout
+
+\begin_layout Itemize
+\align block
+& Einstein tobacco stealing
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+drunks & drunkenness
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+lying down without holding on
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+17
+\end_layout
+
+\begin_layout Itemize
+\align block
+talking to parking meter
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+double helix
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+Odile Crick's best-known work
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+54C
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+ASCII
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+cows
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+64
+\end_layout
+
+\begin_layout Itemize
+\align block
+faces (smileys)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+58
+\end_layout
+
+\begin_layout Itemize
+\align block
+art
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+64
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Darwin awards
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+8, 9
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+suicide jumps but lands on another
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+4
+\end_layout
+
+\begin_layout Itemize
+\align block
+death at Arthur's Pass 
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+8
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+birds
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+first aeroplane accident
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+70
+\end_layout
+
+\begin_layout Itemize
+\align block
+albatross flight speeds
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+14
+\end_layout
+
+\begin_layout Itemize
+\align block
+tuis kill hawk (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+unusual Australian migrants
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+41
+\end_layout
+
+\begin_layout Itemize
+\align block
+sparrows operate supermarket doors
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+10
+\end_layout
+
+\begin_layout Itemize
+\align block
+gannets (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+7
+\end_layout
+
+\begin_layout Itemize
+\align block
+hawk killed by tuis (poem)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+life span
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+20
+\end_layout
+
+\begin_layout Itemize
+\align block
+origin of nest parasitism
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+15
+\end_layout
+
+\begin_layout Itemize
+\align block
+redpolls
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+27
+\end_layout
+
+\begin_layout Itemize
+\align block
+streamlining in traffic
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Itemize
+\align block
+cockatoos taking fairground rides
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Itemize
+\align block
+seagulls disturbed by dredge
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+10
+\end_layout
+
+\begin_layout Itemize
+\align block
+sexual arms race in ducks
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+19
+\end_layout
+
+\begin_layout Itemize
+\align block
+hawk & hare
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+16
+\end_layout
+
+\begin_layout Itemize
+\align block
+South Island kokako
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+11
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+aphorisms
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+don't value past until it's gone
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+11
+\end_layout
+
+\begin_layout Itemize
+\align block
+men/women, richness/badness
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+18
+\end_layout
+
+\begin_layout Itemize
+\align block
+downsizing
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Itemize
+\align block
+Goldwyn on messages in art
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+32
+\end_layout
+
+\begin_layout Itemize
+\align block
+mathematical proofs
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+35
+\end_layout
+
+\begin_layout Itemize
+\align block
+eccentricity/originality
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+53
+\end_layout
+
+\begin_layout Itemize
+\align block
+err & um
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+2
+\end_layout
+
+\begin_layout Itemize
+\align block
+stumbling on truth
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+55
+\end_layout
+
+\begin_layout Itemize
+\align block
+do nothing & nothing is not done
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+13
+\end_layout
+
+\begin_layout Itemize
+\align block
+equal treatment of unequals
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+52
+\end_layout
+
+\begin_layout Itemize
+\align block
+gentlemen & rudeness
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+38
+\end_layout
+
+\begin_layout Itemize
+\align block
+being `clapped to death'
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+13
+\end_layout
+
+\begin_layout Itemize
+\align block
+absolutes as cowardice
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+53, 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+69
+\end_layout
+
+\begin_layout Itemize
+\align block
+better not to know how laws & sausages made
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+6
+\end_layout
+
+\begin_layout Itemize
+\align block
+hard to predict the past
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\begin_layout Itemize
+\align block
+death
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+1
+\series default
+
+\begin_inset space ~
+\end_inset
+
+53
+\end_layout
+
+\begin_layout Itemize
+\align block
+principles & folly
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+1
+\series default
+
+\begin_inset space ~
+\end_inset
+
+18
+\end_layout
+
+\begin_layout Itemize
+\align block
+marriage
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+1
+\series default
+
+\begin_inset space ~
+\end_inset
+
+51
+\end_layout
+
+\begin_layout Itemize
+\align block
+sport/earnest
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+30
+\end_layout
+
+\begin_layout Itemize
+\align block
+how time flies (hours, days, years)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+1
+\series default
+
+\begin_inset space ~
+\end_inset
+
+25
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+don'ts
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+laxative/sleeping pill combination
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+21
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+critics
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+no statues to (Sibelius)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+1
+\series default
+
+\begin_inset space ~
+\end_inset
+
+12
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+conservation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+`Wash.
+ Biol.
+ Surv.'
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+56
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+dogs
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+cats better fed
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+0
+\end_layout
+
+\begin_layout Itemize
+\align block
+squashed chihuahua
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+67
+\end_layout
+
+\begin_layout Itemize
+\align block
+`come up for a bite'
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+67
+\end_layout
+
+\begin_layout Itemize
+\align block
+care with words for `full evacuation' command
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+38
+\end_layout
+
+\begin_layout Itemize
+\align block
+HMV logo
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+0
+\end_layout
+
+\begin_layout Itemize
+\align block
+
+\emph on
+One Man and His Dog
+\emph default
+
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+37
+\end_layout
+
+\begin_layout Itemize
+\align block
+home alone & meals
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+2
+\series default
+
+\begin_inset space ~
+\end_inset
+
+71
+\end_layout
+
+\begin_layout Itemize
+\align block
+hats (
+\emph on
+Far Side
+\emph default
+ cartoon)
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+40
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+BSE
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+known to Romans
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+4
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Bohr, Harald
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+public speaking compared with Niels
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+battle of sexes
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+bumper sticker
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+34
+\end_layout
+
+\begin_layout Itemize
+\align block
+worse than divorce
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+33
+\end_layout
+
+\begin_layout Itemize
+\align block
+lost half net worth but still have wife
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+6
+\series default
+
+\begin_inset space ~
+\end_inset
+
+33
+\end_layout
+
+\begin_layout Itemize
+\align block
+
+\emph on
+Women are from Venus, Men are Wrong
+\emph default
+
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+32
+\end_layout
+
+\begin_layout Itemize
+\align block
+Afghanistan
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+41
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+draws
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+better team drew
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+5
+\series default
+
+\begin_inset space ~
+\end_inset
+
+5
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Crick, Odile
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\align block
+double helix best-known work
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+54
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+\align block
+Bell's Inequality
+\begin_inset space ~
+\end_inset
+
+ 
+\series bold
+3
+\series default
+
+\begin_inset space ~
+\end_inset
+
+59
+\end_layout
+
+\end_body
+\end_document

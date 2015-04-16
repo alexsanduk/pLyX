@@ -1,0 +1,93 @@
+#\DeclareLyXModule{pLyX}
+#DescriptionBegin
+# Provides custom insets for specifying python scripts
+# to run. To be used with the converter pLyX.py which
+# exports from LyX to pLyX format. 
+#DescriptionEnd
+#
+#v.1.1 2013-11-15
+#Author: Andrew Parsloe <aparsloe@clear.net.nz>
+#
+Preamble
+	\newcommand{\pLyXgobble}[1]{}
+EndPreamble
+
+# All inset names begin with a full
+# stop to aid alphabetical grouping
+
+######## MultiPar	1	########
+
+#(upper-case initial letter for this inset only)
+InsetLayout "Flex:.Run script(s)"
+  LyXType			custom
+  LatexType     	command
+  LatexName     	pLyXgobble
+  Decoration		classic
+  ContentAsLabel	0
+  LabelFont
+		Color			blue
+  EndFont
+  LabelString		"Run script(s)"
+  MultiPar			1
+  ResetsFont		0
+  Spellcheck		0
+End
+
+InsetLayout Flex:.[argument]
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelFont
+		Color			none
+  EndFont
+  LabelString		.
+  FreeSpacing		0
+End
+
+InsetLayout "Flex:.find-&-replace (LyX format)|findrepl"
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelString		"F & R"
+End
+
+######## MultiPar	0	########
+
+InsetLayout Flex:.stop|break
+  CopyStyle			"Flex:.Run script(s)"
+  LabelString		Stop
+  MultiPar			0
+End
+
+InsetLayout "Flex:.calculate formula|calcul8"
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelString		Calculate
+  MultiPar			0
+End
+
+InsetLayout "Flex:.sort table|sortable"
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelString		"Sort table"
+  MultiPar			0
+End
+
+InsetLayout "Flex:.sort list|sortlist"
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelString		"Sort list"
+  MultiPar			0
+End
+
+InsetLayout "Flex:.count word frequency|wordfreq"
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelString		Frequency
+  MultiPar			0
+End
+
+InsetLayout "Flex:.update citations|updatecitations"
+  CopyStyle			"Flex:.Run script(s)"
+  ContentAsLabel	1
+  LabelString		"Update citations"
+  MultiPar			0
+End

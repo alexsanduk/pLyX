@@ -1,0 +1,5399 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+\date{}
+\end_preamble
+\use_default_options true
+\begin_modules
+pLyX
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans lmss
+\font_typewriter lmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mathdots 1
+\use_mhchem 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\bulletLaTeX 0 "|"
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Flex .Run script(s)
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+The pLyX system: replacing
+\begin_inset Newline newline
+\end_inset
+
+LyX format code
+\end_layout
+
+\begin_layout Author
+Andrew Parsloe
+\begin_inset Newline newline
+\end_inset
+
+aparsloe@clear.net.nz
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+This addition to the pLyX system includes the python scripts, 
+\family typewriter
+findrepl.py
+\family default
+ and 
+\family typewriter
+findrepl_help.py
+\family default
+, a custom inset 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ in the LyX module, 
+\family typewriter
+pLyX.module
+\family default
+, and this explanatory document.
+
+\family typewriter
+ 
+\family default
+Between them they provide a fast alternative to LyX's advanced find-&-replace
+ facility, and an extension to its capabilities, enabling one to make changes
+ from within the LyX GUI to the native LyX format code of the current document.
+ As with all pLyX scripts, activating the script involves no more than the
+ insertion (then filling) of custom insets from the 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+ menu and clicking on buttons on the 
+\family sans
+View/Update
+\family default
+ toolbar.
+\end_layout
+
+\begin_layout Standard
+Version 1.1 of the 
+\family typewriter
+findrepl.py
+\family default
+ script supported not only the default search-everything mode of v.
+ 1.0, but added text-only, math-only and inset-only search modes; also the
+ counting function of the original script was dropped.
+ In version 1.2, the ability to loop through a list of search terms has been
+ added, enabling (for instance) semi-automatic indexing, and the coding
+ of and distinctions among the different search modes sharpened.
+ Also added is the ability to insert LyX constructs, rather than just the
+ code for such constructs, directly into the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ custom insets.
+\end_layout
+
+\begin_layout Subsubsection
+Shortcut keys
+\end_layout
+
+\begin_layout Standard
+A shortcut key might well be useful for the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset.
+ Python's IDLE graphical user interface uses 
+\family sans
+Ctrl+H
+\family default
+ for its find-&-replace function.
+ At least for users of the 
+\family sans
+cua
+\family default
+ key bindings, this is one of the few free control-key-only shortcuts remaining.
+ Hence under 
+\family sans
+Tools \SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences \SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Editing \SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Shortcuts
+\family default
+ I have assigned 
+\family sans
+Ctrl+H
+\family default
+ to
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+flex-insert ".find-&-replace (LyX format)|findrepl"
+\end_layout
+
+\begin_layout Standard
+I have also found it convenient to assign the shortcut 
+\family sans
+Ctrl+;
+\family default
+ (the control key plus semicolon) to
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+flex-insert .[argument]
+\end_layout
+
+\begin_layout Standard
+which inserts an argument inset into the text.
+\end_layout
+
+\begin_layout Subsection
+Using the 
+\family sans
+View \SpecialChar \menuseparator
+ View Source window
+\end_layout
+
+\begin_layout Standard
+The script, 
+\family typewriter
+findrepl.py
+\family default
+, was intended initially to search for and replace elements of the LyX format
+ code, not ordinary document text, but it has now been updated to also include
+ text-only, math-only and inset-only modes.
+ LyX format code (LyX's 
+\begin_inset Quotes els
+\end_inset
+
+native
+\begin_inset Quotes ers
+\end_inset
+
+ format) is the code that is displayed in a window at the bottom of the
+ screen when one chooses 
+\family sans
+View \SpecialChar \menuseparator
+ View Source
+\family default
+ and in the 
+\family sans
+Format
+\family default
+ box selects 
+\family sans
+LyX
+\family default
+ (rather than 
+\family sans
+Default
+\family default
+ which will display LaTeX code).
+ Alternatively, it is what one sees if a LyX file (uncompressed) is viewed
+ in a text editor.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+And the easiest way to do that is to go to 
+\family sans
+Tools \SpecialChar \menuseparator
+ Preferences \SpecialChar \menuseparator
+ File Handling \SpecialChar \menuseparator
+ File Formats
+\family default
+, scroll down to 
+\family sans
+LyX
+\family default
+, choose 
+\family sans
+Custom
+\family default
+ in the 
+\family sans
+Viewer
+\family default
+ slot and beside it put the name of your favoured text editor, then 
+\family sans
+Save
+\family default
+.
+ For instance I've put 
+\family typewriter
+notepad++
+\family default
+.
+ (You may also need to add the path to the text editor under 
+\family sans
+Tools \SpecialChar \menuseparator
+ Preferences \SpecialChar \menuseparator
+ Paths
+\family default
+ in the 
+\family sans
+PATH prefix
+\family default
+ slot.
+ I've added 
+\family typewriter
+C:
+\backslash
+Program Files (x86)
+\backslash
+Notepad++
+\family default
+ on my Windows 7 system.)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+
+\family sans
+Paste Special
+\end_layout
+
+\begin_layout Standard
+Although what appears in the 
+\family sans
+Source Pane
+\family default
+ window cannot be directly edited, it can be selected and copied, and inserted
+ into an 
+\family sans
+.[argument]
+\family default
+ inset by pasting.
+ Pasting should always be by 
+\family sans
+Paste Special
+\family default
+;
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+With the 
+\family sans
+cua
+\family default
+ key bindings, the shortcut is 
+\family sans
+Ctrl+Shift+V
+\family default
+.
+\end_layout
+
+\end_inset
+
+ this retains line breaks and allows the replacing of multiple lines of
+ LyX code.
+ Note that empty lines in the LyX code are ignored and do not affect the
+ outcome (and in any case do not survive pasting).
+\end_layout
+
+\begin_layout Standard
+Also note that LyX format lines pasted into an 
+\family sans
+.[argument]
+\family default
+ inset will generally look very different in the 
+\family sans
+View Source
+\family default
+ window from how they looked in that window originally.
+ Don't worry: 
+\family typewriter
+findrepl.py
+\family default
+ strips away the extra 
+\family typewriter
+
+\backslash
+begin_layout
+\family default
+, 
+\family typewriter
+
+\backslash
+end_layout
+\family default
+ lines when determining the contents of the inset and knows how to handle
+ the backslashes.
+\end_layout
+
+\begin_layout Subsubsection
+Always visible
+\end_layout
+
+\begin_layout Standard
+When using the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset and the two 
+\family sans
+.[argument]
+\family default
+ insets needed for the find and replace items, it is a good idea to 
+\emph on
+always
+\emph default
+ have the 
+\family sans
+View Source
+\family default
+ window visible to check that what one is entering is indeed what is intended.
+ It is very easy for unwanted character styling to be introduced into either
+ the find or replacement material and for the result of the find-&-replace
+ to be significantly affected accordingly (if it works at all).
+\end_layout
+
+\begin_layout Section
+(Finding &) Replacing
+\end_layout
+
+\begin_layout Standard
+To replace an element of LyX format code, or text, or maths, the element
+ has (obviously) to be found first, but 
+\family typewriter
+findrepl.py
+\family default
+ is really a 
+\emph on
+replacing
+\emph default
+ script.
+ It does not 
+\emph on
+find
+\emph default
+ --
+\emph on
+ 
+\emph default
+advance the cursor to -- the next occurrence of the sought-for element.
+ Generally, replacements are made document-wide (although they can easily
+ be restricted to a part of a document) and the cursor generally remains
+ where it is.
+ 
+\end_layout
+
+\begin_layout Standard
+The LyX users' mailing list is a good source of potential tasks for the
+ script.
+ These include: ensuring graphics are centred in their floats; converting
+ a chemical symbol like 
+\begin_inset Formula $Ca^{2+}$
+\end_inset
+
+ from math-italic to math-roman; changing the width of pictures document-wide
+ from one percentage of column width to another; converting file paths;
+ clearing LaTeX 
+\begin_inset Quotes els
+\end_inset
+
+debris
+\begin_inset Quotes ers
+\end_inset
+
+ after exporting as LaTeX from, say, OpenOffice and importing into LyX;
+ anonymizing text but preserving structure by converting all text letters
+ to (say) 
+\begin_inset Quotes els
+\end_inset
+
+o
+\begin_inset Quotes ers
+\end_inset
+
+; semi-automatic indexing; changing a symbol in equations throughout a document.
+ Many of these tasks can be accomplished item-by-item in LyX; some lend
+ themselves to the ministrations of LyX's advanced find & replace (but it's
+ slow, perhaps unusably so on large documents), others to inserting suitable
+ LaTeX code in the preamble.
+ What the present script enables is a quick, straightforward way of making
+ such changes.
+\end_layout
+
+\begin_layout Subsection
+Running the 
+\family typewriter
+findrepl.py
+\family default
+ script
+\end_layout
+
+\begin_layout Standard
+As with all the pLyX scripts, the signal which alerts the system to which
+ pLyX script to run is provided by inserting a 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ custom inset into a 
+\family sans
+.Run script(s)
+\family default
+ inset inserted near the start of the document.
+ (The exact placement of the latter is not critial, but it is sensible to
+ put it at the start of the document, and preferably in a standard paragraph
+ environment rather caught in a title environment.) This 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset, inserted in the 
+\family sans
+.Run script(s)
+\family default
+ inset, is called the 
+\emph on
+global
+\emph default
+ instance of the inset.
+ 
+\emph on
+Local
+\emph default
+ uses (outside the 
+\family sans
+.Run script(s)
+\family default
+ inset; see below) are required to effect replacements.
+\end_layout
+
+\begin_layout Subsubsection
+Help/version messages
+\end_layout
+
+\begin_layout Standard
+If you enter 
+\family typewriter
+-h
+\family default
+\series bold
+ 
+\series default
+into the global 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset and click the three pLyX activating buttons, one of LyX's unmissable
+ yellow notes should display with a substantial help message.
+ Click the 
+\family sans
+undo pLyX
+\family default
+ and 
+\family sans
+reload
+\family default
+ buttons to return the document to its original state.
+ Now enter 
+\family typewriter
+-v
+\family default
+ into the global find-&-replace inset and get a different yellow-note message
+ with version information.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Local uses of the inset
+\end_layout
+
+\begin_layout Standard
+Okay, so much for that.
+ To do some actual replacing of text or LyX formatting or maths, insert
+ a 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset outside the 
+\family sans
+.Run script(s)
+\family default
+ inset and before the occurrence of whatever element it is you wish to change.
+ The inset will affect the document from this point on, either to the end
+ of the document or until it is turned off (see the next section).
+ It needs to be followed immediately by two 
+\family sans
+.[argument]
+\family default
+ insets (the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ arguments), the first containing the material to search for , the second
+ containing the replacement material.
+\end_layout
+
+\begin_layout Subsubsection
+Limiting the scope of a replacement
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Limiting-a-find"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+If you want to replace items only in a certain part of your document, insert
+ the
+\family sans
+ 
+\family default
+find-&-replace
+\family sans
+ 
+\family default
+inset with its two argument insets at the start of the relevant part of
+ the document.
+ Insert another find-&-replace inset at the end of the relevant part of
+ the document.
+ This second inset may or may not have two argument insets following it.
+ If it does, then the first search is turned off and a new search is initiated
+ from this point, with new items to be found and replaced as specified in
+ the two new argument insets.
+ If it does not, then the original search is turned off at this point.
+ 
+\end_layout
+
+\begin_layout Standard
+In both cases a yellow note containing a count of how many replacements
+ were made will be inserted in the document just before the second 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset.
+ (For text-mode searches -- see below -- this number is usually an 
+\emph on
+under
+\emph default
+-estimate.)
+\emph on
+ 
+\emph default
+Should the replacing apply to the whole document (i.e., no second find-&-replace
+ inset is inserted anywhere), then the yellow note with the count is inserted
+ at the end of the document.
+\end_layout
+
+\begin_layout Standard
+Similarly, a 
+\emph on
+third
+\emph default
+ find-&-replace inset will delimit the scope of the second inset, and so
+ on.
+
+\emph on
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Suppressing the occurrence/replacement messages
+\end_layout
+
+\begin_layout Standard
+When making replacements the result will generally be visibly evident and
+ the yellow-note messages may seem unnecessary or become an irritant --
+ something more to delete.
+ It's easy to suppress these messages.
+ In the global 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset (in the 
+\family sans
+.Run script(s)
+\family default
+ inset), enter the option 
+\family typewriter
+-s
+\family default
+ or 
+\family typewriter
+--suppress
+\family default
+, and the messages will be suppressed.
+\end_layout
+
+\begin_layout Section
+The different search modes
+\end_layout
+
+\begin_layout Standard
+The script 
+\family typewriter
+findrepl.py
+\family default
+ can function in a number of different search modes (note that the order
+ of the options is immaterial, 
+\family typewriter
+-t -x
+\family default
+ and 
+\family typewriter
+-x -t
+\family default
+ are equivalent):
+\end_layout
+
+\begin_layout Itemize
+default mode: search 
+\emph on
+everything
+\emph default
+, LyX format code, insets, text, maths, and replace the found element with
+ any of these;
+\end_layout
+
+\begin_layout Itemize
+text mode (
+\family typewriter
+-t
+\family default
+): search only text (in or out of insets), and replace with anything;
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+text mode but excluding text in insets (
+\family typewriter
+-t -x
+\family default
+): search only text but not that in insets and replace with anything;
+\end_layout
+
+\begin_layout Itemize
+text in insets mode (
+\family typewriter
+-t -i
+\family default
+): search only text in insets, and replace with anything;
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+inset (settings) mode (
+\family typewriter
+-i
+\family default
+ or 
+\family typewriter
+-i -x
+\family default
+):
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+As currently implemented, 
+\family typewriter
+-i
+\family default
+ and 
+\family typewriter
+-i -x
+\family default
+ are equivalent.
+\end_layout
+
+\end_inset
+
+ search within all except math insets but exclude inset text, and replace
+ with anything;
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+inset text mode (
+\family typewriter
+-i -t
+\family default
+): as for text in insets mode (
+\family typewriter
+-t -i
+\family default
+);
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+math mode (
+\family typewriter
+-m
+\family default
+): search within math insets only and replace with maths;
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+math 
+\begin_inset Quotes els
+\end_inset
+
+variable
+\begin_inset Quotes ers
+\end_inset
+
+ mode (
+\family typewriter
+-m -x
+\family default
+): searching within math insets but exclude LaTeX commands and labels, and
+ replace with maths (possibly including LaTeX commands and labels).
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+To restrict the search to 
+\emph on
+text only
+\emph default
+, insert the option 
+\family typewriter
+-t
+\family default
+ or 
+\family typewriter
+--text
+\family default
+ into the local 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset.
+ This will search for text between 
+\family typewriter
+
+\backslash
+begin_layout
+\family default
+ and 
+\family typewriter
+
+\backslash
+end_layout
+\family default
+ statements, or 
+\family typewriter
+
+\backslash
+begin_layout
+\family default
+ and 
+\family typewriter
+
+\backslash
+begin_inset
+\family default
+, or 
+\family typewriter
+
+\backslash
+end_inset
+\family default
+ and 
+\family typewriter
+
+\backslash
+end_layout
+\family default
+ statements.
+ The default text mode thus searches not only within the text proper, but
+ also text within insets (like the cells of tables, figure captions, and
+ so on).
+ To restrict the search to the text proper (i.e.
+ exclude inset text) add the 
+\family typewriter
+-x
+\family default
+ option; alternatively, to restrict the search only to inset text, add the
+ 
+\family typewriter
+-i
+\family default
+ option.
+\end_layout
+
+\begin_layout Standard
+To restrict the search to 
+\emph on
+maths only
+\emph default
+, insert the option 
+\family typewriter
+-m
+\family default
+ or 
+\family typewriter
+--math
+\family default
+ into the local 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset.
+ There are two modes of searching.
+ The default mode searches everything.
+ If you wish to change a control sequence this is the mode to use, but for
+ something other than a control sequence the alternative 
+\begin_inset Quotes els
+\end_inset
+
+variable
+\begin_inset Quotes ers
+\end_inset
+
+ mode is preferable.
+ Python does not read LaTeX control sequences as single tokens; rather they
+ are read as strings of characters, and in default mode such strings are
+ searched as strings, just like any other.
+ Variable mode searches everything except control sequences and the labels
+ used in equation numbering; hence in particular it searches the symbols
+ used as variables.
+\end_layout
+
+\begin_layout Standard
+To restrict the search to 
+\emph on
+inset settings only
+\emph default
+, excepting math insets, insert the option 
+\family typewriter
+-i
+\family default
+ or 
+\family typewriter
+-i -x
+\family default
+ into the local 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset.
+ This will search between 
+\family typewriter
+
+\backslash
+begin_inset
+\family default
+ and 
+\family typewriter
+
+\backslash
+begin_layout
+\family default
+, or 
+\family typewriter
+
+\backslash
+end_layout
+\family default
+ and 
+\family typewriter
+
+\backslash
+end_inset
+\family default
+ statements, or 
+\family typewriter
+
+\backslash
+begin_inset
+\family default
+ and 
+\family typewriter
+
+\backslash
+end_inset
+\family default
+ statements if there's no layout statement inbetween.
+ The 
+\family typewriter
+-i
+\family default
+ or 
+\family typewriter
+-i -x
+\family default
+ option allows one to change inset settings without having to worry about
+ inadvertently changing words or phrases in the text.
+\end_layout
+
+\begin_layout Standard
+By adding the option 
+\family typewriter
+-r
+\family default
+ these different modes of operation all allow the use of regular expressions
+ (using the syntax of python's 
+\family typewriter
+re
+\family default
+ module) to condense multiple searches into one, or add other capabilities
+ or subtleties to the search.
+ Regular expressions are discussed and illustrated with examples in Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Regular-expressions"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Using LyX constructs and formatting
+\end_layout
+
+\begin_layout Standard
+Since version 1.2 of the find-&-replace script it has been possible to use
+ LyX constructs and formatting in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument insets -- 
+\emph on
+in some cases
+\emph default
+:
+\end_layout
+
+\begin_layout Itemize
+in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument inset for 
+\emph on
+default
+\emph default
+ mode searches;
+\end_layout
+
+\begin_layout Itemize
+in the 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument inset for 
+\emph on
+default
+\emph default
+ mode and 
+\emph on
+text
+\emph default
+ mode searches.
+\end_layout
+
+\begin_layout Standard
+This means that rather than entering, say,
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+begin_inset Note Note
+\end_layout
+
+\begin_layout LyX-Code
+status open
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout LyX-Code
+Check this!
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+end_inset
+\end_layout
+
+\begin_layout Standard
+in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ inset to search for a yellow note containing 
+\begin_inset Quotes els
+\end_inset
+
+Check this!
+\begin_inset Quotes ers
+\end_inset
+
+, one can simply enter 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Check this!
+\end_layout
+
+\end_inset
+
+.
+ Much nicer.
+ 
+\end_layout
+
+\begin_layout Subsection
+Examples
+\end_layout
+
+\begin_layout Standard
+There are various ways of exploring these examples: one could use the three
+ pLyX activating buttons to effect the various find-&-replace recipes, and
+ then the two undo buttons to get back the original document (not recommended),
+ or make a copy of this document and use the activating and undo buttons
+ on the copy (better) or -- and
+\family sans
+ 
+\family default
+I recommend this way of proceeding -- use the 
+\family sans
+View other formats
+\family default
+ button and select 
+\family sans
+View pLyX
+\family default
+.
+ This leaves the original document unchanged but displays, in a second instance
+ of LyX, a copy of the document with the changes made by the various find-&-repl
+ace recipes.
+ Placed side-by-side, original and copy can be compared, example by example.
+\end_layout
+
+\begin_layout Subsubsection
+Default mode: centering figures in floats
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The next three examples use the LyX banner image (
+\family typewriter
+banner.png
+\family default
+)
+\family typewriter
+ 
+\family default
+found in the 
+\family sans
+Resources/images
+\family default
+ folder of your LyX distribution.
+ The path to the image may well need changing for your set up.
+ (If so, click on the 
+\family sans
+No file found!
+\family default
+ message and browse to the file.)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+begin_inset Graphics
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+align center
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+begin_inset Graphics
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename C:/Program Files (x86)/LyX 2.0.6/Resources/images/banner.png
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Centering-a-picture."
+
+\end_inset
+
+Centering a picture.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+An issue discussed on the users' list in 2012 was about centring figures
+ in floats.
+ This led to a discussion about the rights and wrongs of environments versus
+ commands, and various lines of LaTeX code to put in the preamble to ensure
+ centred figures.
+ Alternatively one might use a 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset to do the job.
+ 
+\end_layout
+
+\begin_layout Standard
+In Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Centering-a-picture."
+
+\end_inset
+
+, the LyX banner is initially hard-left in the float.
+ Before the float a 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset is inserted followed by an 
+\family sans
+.[argument]
+\family default
+ inset with the LyX format code shown.
+ This was copied from the 
+\family sans
+View Source
+\family default
+ window and 
+\begin_inset Quotes els
+\end_inset
+
+paste-specialed
+\begin_inset Quotes ers
+\end_inset
+
+ into the inset.
+ The replacement code is shown in a second 
+\family sans
+.[argument]
+\family default
+ inset; this too was copied from the 
+\family sans
+View Source
+\family default
+ window 
+\emph on
+after
+\emph default
+ centring the picture by means of the 
+\family sans
+Paragraph Settings
+\family default
+ dialogue and 
+\begin_inset Quotes els
+\end_inset
+
+paste-specialed
+\begin_inset Quotes ers
+\end_inset
+
+ into the inset.
+ Obviously, for one picture it makes absolutely no sense whatever to then
+ restore the original left alignment in order to use this find-&-replace
+ mechanism to once more centre the picture.
+ The problem is when there is a multiplicity of pictures aligned to the
+ left which one wants centred.
+ 
+\emph on
+Then
+\emph default
+ using the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset is one way to do so.
+ It certainly avoids all issues about the correct LaTeX -- that is left
+ to LyX.
+\begin_inset Formula $x$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Having filled the argument insets, now click on the three pLyX activating
+ buttons in sequence.
+ The LyX banner moves to the centre of the float.
+\end_layout
+
+\begin_layout Subsubsection
+Inset mode: changing the width of figure floats
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-i
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+width "50col%"
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+width "40col%"
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap figure
+lines 0
+placement o
+overhang 0in
+width "50col%"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Program Files (x86)/LyX 2.0.6/Resources/images/banner.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Changing the width with a sufficiently long caption to see just how wide
+ the figure float is.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+There was a request on the users' list late in 2012 about changing the width
+ of all figures in a document.
+ Assuming that these are in (figure) floats, then the process lends itself
+ to a find-&-replace.
+ The figure float associated with the current paragraph, for instance, containin
+g a scaled-down version of the LyX banner,
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This is 
+\family typewriter
+banner.png
+\family default
+ in the 
+\family typewriter
+Resources/images
+\family default
+ folder of your LyX distribution.
+\end_layout
+
+\end_inset
+
+ is by default set at 50% column width.
+ To see what to change, look in the 
+\family sans
+View Source
+\family default
+ window.
+ Obviously 
+\family sans
+width "50col%"
+\family default
+ is the relevant element.
+ With the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ and argument insets at the start of this section clicking on the three
+ pLyX activating buttons will change it to 40% column width.
+\end_layout
+
+\begin_layout Standard
+If you had not entered 
+\family typewriter
+-i
+\family default
+ in the find-&-replace inset, you would in addition have had the
+\family typewriter
+ 
+\family sans
+width "50col%"
+\family default
+ of the previous paragraph changed to 
+\family sans
+width "40col%".
+\family default
+The solution is simple: restrict the search to insets only with the 
+\family typewriter
+-i
+\family default
+ or 
+\family typewriter
+--inset
+\family default
+ option, as at the start of this section.
+\end_layout
+
+\begin_layout Subsubsection
+Math mode: converting a chemical formula to 
+\backslash
+mathrm
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-m
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+Ca
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+mathrm{Ca}
+\end_layout
+
+\end_inset
+
+Another enquiry on the users list in 2012 was about converting the chemical
+ species 
+\begin_inset Formula $Ca^{2+}$
+\end_inset
+
+, in which a math inset has been used to write the formula, from the default
+ math-italic to math-roman.
+ Again looking in the 
+\family sans
+View Source
+\family default
+ window, it is clear what to do, and a find-&-replace inset with the 
+\family typewriter
+-m
+\family default
+ option, maths only, and two argument insets at the start of this paragraph
+ have been filled accordingly.
+ 
+\end_layout
+
+\begin_layout Standard
+Obviously, doing things this way makes sense only if there are a number
+ of such math insets containing the same chemical species, 
+\begin_inset Formula $Ca^{2+}$
+\end_inset
+
+, scattered through the document.
+ The problem is if there are a number of different chemical species that
+ have been entered in math insets in the document.
+ Doing a separate search for each species will soon pall.
+ This is where regular expression searches come into their own (see Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Regular-expressions"
+
+\end_inset
+
+ below).
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+ (Note here the use of a find-&-replace inset, without argument insets,
+ to stop the current search.)
+\end_layout
+
+\begin_layout Subsubsection
+Math modes: changing a symbol throughout a document
+\end_layout
+
+\begin_layout Standard
+Suppose we wished to change a mathematical symbol throughout part of a document,
+ perhaps because of a clash with another usage in a later part of the document.
+ LyX's advanced find-&-replace provides a 
+\emph on
+partial
+\emph default
+ solution to this problem.
+ For example, in the following paragraphs I might wish to change the symbol
+ 
+\begin_inset Formula $T$
+\end_inset
+
+ used to denote kinetic energy to 
+\begin_inset Formula $K$
+\end_inset
+
+, perhaps because of a need to use 
+\begin_inset Formula $T$
+\end_inset
+
+ later for other purposes (time or temperature perhaps).
+ If one enters 
+\begin_inset Formula $T$
+\end_inset
+
+ in LyX's advanced find-&-replace in an inline math inset and clears the
+ 
+\family sans
+Ignore format
+\family default
+ box on the 
+\family sans
+Settings
+\family default
+ tab, all occurrences of 
+\begin_inset Quotes els
+\end_inset
+
+T
+\begin_inset Quotes ers
+\end_inset
+
+ in 
+\emph on
+inline
+\emph default
+ math equations are changed.
+ Regrettably, occurrences in display-style equations are ignored, or in
+ equation arrays or AMS environments.
+ If the 
+\family sans
+Ignore format
+\family default
+ box is checked so as to include these, 
+\emph on
+everything
+\emph default
+, even occurrences of T in the text, are changed -- oops.
+ 
+\end_layout
+
+\begin_layout Standard
+The present pLyX find-&-replace script provides a solution.
+ Enter 
+\family typewriter
+-m
+\family default
+ for a math mode search in the find-&-replace inset; enter 
+\family typewriter
+T
+\family default
+ and 
+\family typewriter
+K
+\family default
+ in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument insets respectively.
+ Clicking the pLyX activating buttons, all relevant occurrences of 
+\begin_inset Formula $T$
+\end_inset
+
+ are changed to 
+\begin_inset Formula $K$
+\end_inset
+
+ -- and the process is fast.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-m
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+T
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+K
+\end_layout
+
+\end_inset
+
+The law of energy conservation tells us that the sum of potential energy
+ (
+\begin_inset Formula $V$
+\end_inset
+
+) and kinetic energy (
+\begin_inset Formula $T$
+\end_inset
+
+) is constant: 
+\begin_inset Formula 
+\begin{equation}
+T+V=E,\,\mathrm{const.}\label{eq:one}
+\end{equation}
+
+\end_inset
+
+From Einstein's special relativity we learn that energy is proportional
+ to mass: 
+\begin_inset Formula 
+\begin{equation}
+E=mc^{2}\label{eq:two}
+\end{equation}
+
+\end_inset
+
+ Hidden in the interplay of these two laws lies a profound truth.
+ 
+\end_layout
+
+\begin_layout Standard
+Imagine, if you will, a rounded boulder perched precariously on a hillside.
+ A slight trembling of the earth, a gust of wind, rain-softened soil --
+ who knows? -- but 
+\emph on
+something
+\emph default
+ set it in motion.
+ At first a gentle rolling, then more urgency as it gathered speed, finally
+ a 
+\emph on
+hurtling
+\emph default
+ as it careered down the hillside.
+\end_layout
+
+\begin_layout Standard
+But all the time, at every moment of its motion, 
+\begin_inset Formula $T+V=E,\,\mathrm{const.}$
+\end_inset
+
+ (see 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:one"
+
+\end_inset
+
+).
+ And all the time, again at every moment of its motion, 
+\begin_inset Formula $E=mc^{2}$
+\end_inset
+
+ (see 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:two"
+
+\end_inset
+
+).
+ There is, there can be, no escape from the conclusion: since 
+\begin_inset Formula 
+\begin{eqnarray}
+m & = & \frac{E}{c^{2}}\label{eq:three}\\
+ & = & \frac{T+V}{c^{2}}\nonumber \\
+ & = & \mathrm{const.',}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+it follows that 
+\emph on
+a rolling stone gathers no mass
+\emph default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-m 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+c
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+q
+\end_layout
+
+\end_inset
+
+But suppose, idiosyncratically, that we want to use some other symbol than
+ 
+\begin_inset Formula $c$
+\end_inset
+
+ for the speed of light -- say 
+\begin_inset Formula $q$
+\end_inset
+
+, perhaps from 
+\emph on
+quick
+\emph default
+.
+ Looking at equation
+\begin_inset space ~
+\end_inset
+
+(
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:three"
+
+\end_inset
+
+) in the 
+\family sans
+View Source
+\family default
+ window will show the use of the LaTeX command 
+\series bold
+
+\backslash
+frac
+\series default
+.
+ Repeating that equation with the find-&-replace values at the start of
+ this paragraph, 
+\begin_inset Formula 
+\begin{eqnarray*}
+m & = & \frac{E}{c^{2}}\\
+ & = & \frac{T+V}{c^{2}}\\
+ & = & \mathrm{const.'}
+\end{eqnarray*}
+
+\end_inset
+
+ produces an undesired result.
+ The 
+\series bold
+c
+\series default
+ of 
+\series bold
+
+\backslash
+frac
+\series default
+ is being replaced by 
+\series bold
+q
+\series default
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-m -x
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+c
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+q
+\end_layout
+
+\end_inset
+
+To avoid having control sequences like 
+\series bold
+
+\backslash
+frac 
+\series default
+searched, add the 
+\family typewriter
+-x
+\family default
+, for exclude, in this case exclude control sequences (and labels), option
+ to the math mode search, as in the find-&-replace inset at the start of
+ 
+\emph on
+this
+\emph default
+ paragraph:
+\begin_inset Formula 
+\begin{eqnarray*}
+m & = & \frac{E}{c^{2}}\\
+ & = & \frac{T+V}{c^{2}}\\
+ & = & \mathrm{const.'}
+\end{eqnarray*}
+
+\end_inset
+
+This time all is as intended -- or perhaps not quite, given that 
+\begin_inset Quotes els
+\end_inset
+
+const.
+\begin_inset Quotes ers
+\end_inset
+
+ has been rendered 
+\begin_inset Quotes els
+\end_inset
+
+qonst.
+\begin_inset Quotes ers
+\end_inset
+
+ It's hard to see how one could guard against this kind of occurrence in
+ a document-wide replacement.
+\end_layout
+
+\begin_layout Subsubsection
+Default mode: changing styling 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+family typewriter
+\end_layout
+
+\begin_layout Plain Layout
+View Source
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+family default
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+family sans
+\end_layout
+
+\begin_layout Plain Layout
+View Source
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+family default
+\end_layout
+
+\end_inset
+
+Suppose you wish to change some element of character styling document-wide,
+ say from the use of typewriter font to sans serif.
+ Again the 
+\family typewriter
+View Source
+\family default
+ window allows us to see the exact requirements and the argument insets
+ at the head of this paragraph have been filled accordingly.
+ It is customary in LyX's manuals to use a sans serif font for elements
+ of the LyX GUI whereas I have (deliberately) used a typewriter font.
+ The find-&-replace brings my false usage into line with LyX practice.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\family typewriter
+View Source
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\family sans
+View Source
+\end_layout
+
+\end_inset
+
+Since version 1.2 of the 
+\family typewriter
+findrepl.py
+\family default
+ script, it has been possible to use LyX constructs and formatting directly
+ in the argument insets in default mode searches, and default or text mode
+ replacements.
+ I've repeated the previous paragraph to show this (and the more elegant
+ message that results too):
+\end_layout
+
+\begin_layout Standard
+Suppose you wish to change some element of character styling document-wide,
+ say from the use of typewriter font to sans serif.
+ Again the 
+\family typewriter
+View Source
+\family default
+ window allows us to see the exact requirements and the argument insets
+ at the head of this paragraph have been filled accordingly.
+ It is customary in LyX's manuals to use a sans serif font for elements
+ of the LyX GUI whereas I have (deliberately) used a typewriter font.
+ The find-&-replace brings my false usage into line with LyX practice.
+\end_layout
+
+\begin_layout Subsubsection
+Text mode: changing styling of a word or phrase
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-t
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+slow
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+emph on
+\end_layout
+
+\begin_layout Plain Layout
+slow
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+emph default
+\end_layout
+
+\end_inset
+
+If we want to change the styling of an unstyled word in ordinary text, text-only
+ mode is appropriate.
+ The 
+\begin_inset Quotes els
+\end_inset
+
+text-only
+\begin_inset Quotes ers
+\end_inset
+
+ applies to the search, the 
+\emph on
+find
+\emph default
+ part of the undertaking.
+ The 
+\emph on
+replace
+\emph default
+ part may well have lines of LyX format code.
+ It is possible to do this using LyX's advanced find-&-replace, but it is
+ slow.
+ For even quite modest documents, using the built-in advanced find-&-replace
+ interrupts work flow.
+ The present method may provide an alternative.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-t
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+slow
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+slow
+\end_layout
+
+\end_inset
+
+LyX formatting can be used directly in the replacement text as here.
+ However, unless we explicitly turn the emphasis off, it 
+\begin_inset Quotes els
+\end_inset
+
+infects
+\begin_inset Quotes ers
+\end_inset
+
+ the rest of the paragraph:
+\end_layout
+
+\begin_layout Standard
+If we want to change the styling of an unstyled word in ordinary text, text-only
+ mode is appropriate.
+ The 
+\begin_inset Quotes els
+\end_inset
+
+text-only
+\begin_inset Quotes ers
+\end_inset
+
+ applies to the search, the 
+\emph on
+find
+\emph default
+ part of the undertaking.
+ The 
+\emph on
+replace
+\emph default
+ part may well have lines of LyX format code.
+ It is possible to do this using LyX's advanced find-&-replace, but it is
+ slow.
+ For even quite modest documents, using the built-in advanced find-&-replace
+ interrupts work flow.
+ The present method may provide an alternative.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-t
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+slow
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+slow
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+emph default
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this case the emphasis is turned off after the replacement and all is
+ well:
+\end_layout
+
+\begin_layout Standard
+If we want to change the styling of an unstyled word in ordinary text, text-only
+ mode is appropriate.
+ The 
+\begin_inset Quotes els
+\end_inset
+
+text-only
+\begin_inset Quotes ers
+\end_inset
+
+ applies to the search, the 
+\emph on
+find
+\emph default
+ part of the undertaking.
+ The 
+\emph on
+replace
+\emph default
+ part may well have lines of LyX format code.
+ It is possible to do this using LyX's advanced find-&-replace, but it is
+ slow.
+ For even quite modest documents, using the built-in advanced find-&-replace
+ interrupts work flow.
+ The present method may provide an alternative.
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Use of Python's newline sequence 
+\family typewriter
+
+\backslash
+n
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-t
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+slow
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\emph on
+slow
+\emph default
+
+\backslash
+n
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Or, more elegantly, one can use Python's newline sequence 
+\family typewriter
+
+\backslash
+n
+\family default
+ to turn off the emphasis, ensuring that it is entered 
+\emph on
+un
+\emph default
+emphasized.
+ New lines do 
+\emph on
+not
+\emph default
+ affect LyX paragraphing, which is determined by 
+\family typewriter
+
+\backslash
+begin_layout
+\family default
+ (and 
+\family typewriter
+
+\backslash
+end_layout
+\family default
+)
+\family typewriter
+ 
+\family default
+commands:
+\end_layout
+
+\begin_layout Standard
+If we want to change the styling of an unstyled word in ordinary text, text-only
+ mode is appropriate.
+ The 
+\begin_inset Quotes els
+\end_inset
+
+text-only
+\begin_inset Quotes ers
+\end_inset
+
+ applies to the search, the 
+\emph on
+find
+\emph default
+ part of the undertaking.
+ The 
+\emph on
+replace
+\emph default
+ part may well have lines of LyX format code.
+ It is possible to do this using LyX's advanced find-&-replace, but it is
+ slow.
+ For even quite modest documents, using the built-in advanced find-&-replace
+ interrupts work flow.
+ The present method may provide an alternative.
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Regular expressions
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Regular-expressions"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The preceding examples search for a definite string and replace it with
+ another equally definite string.
+ That is not always what is wanted.
+ Sometimes we want to search for a number of different strings falling within
+ a certain 
+\emph on
+pattern
+\emph default
+ rather than a specific string.
+ For instance, we searched only for calcium ions in one of the examples.
+ What if there were a number of chemial species involved? Obviously one
+ could do a series of replacements of the kind described, but it would be
+ much better if only the 
+\emph on
+one
+\emph default
+ find & replace sufficed.
+ And it is possible, using python's regular expression module.
+ Regular expressions allow one to make more general searches and replacements
+ than the previous fixed-string method.
+\end_layout
+
+\begin_layout Paragraph
+Note: 
+\end_layout
+
+\begin_layout Standard
+the regular expression syntax in the ensuing sections follows that of the
+ 
+\family typewriter
+re
+\family default
+ module of python 2.7 (with a small exception in the treatment of flags)
+\end_layout
+
+\begin_layout Subsection
+Global vs local setting
+\end_layout
+
+\begin_layout Standard
+One can specify that 
+\emph on
+all 
+\emph default
+find-&-replace operations be conducted in regular expression mode by entering
+ the 
+\family typewriter
+-r
+\family default
+ or 
+\family typewriter
+--regexp
+\family default
+ option in the global 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset (nestling in the 
+\family sans
+.Run script(s)
+\family default
+ inset near the start of the document).
+ Alternatively, by entering 
+\family typewriter
+-r
+\family default
+ (or 
+\family typewriter
+--regexp
+\family default
+) in an individual, or local, 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset, the finding and replacing associated with that particular inset
+ is conducted in regular expression mode.
+ Other find-&-replace operations in the document without this option are
+ conducted in 
+\begin_inset Quotes els
+\end_inset
+
+normal
+\begin_inset Quotes ers
+\end_inset
+
+ mode.
+\end_layout
+
+\begin_layout Subsection
+WARNING
+\end_layout
+
+\begin_layout Standard
+It is very easy with regular expressions for a find-&-replace to produce
+ results quite different from those anticipated -- indeed, to crash LyX.
+ It is strongly recommended that such operations be carried out in a 
+\emph on
+copy
+\emph default
+ of the original document, e.g., by using the 
+\family sans
+View other formats
+\family default
+ button and selecting 
+\family sans
+View pLyX
+\family default
+.
+\end_layout
+
+\begin_layout Subsubsection
+(Double) backslashery
+\end_layout
+
+\begin_layout Standard
+In python's 
+\emph on
+Regular Expression: HOWTO
+\emph default
+, in a section entitled 
+\begin_inset Quotes els
+\end_inset
+
+The Backslash Plague
+\begin_inset Quotes ers
+\end_inset
+
+, A.M.
+ Kuchling writes, 
+\begin_inset Quotes eld
+\end_inset
+
+\SpecialChar \ldots{}
+ regular expressions use the backslash character (
+\begin_inset Quotes els
+\end_inset
+
+
+\backslash
+
+\begin_inset Quotes ers
+\end_inset
+
+) to indicate special forms or to allow special characters to be used without
+ invoking their special meaning.
+ This conflicts with Python’s usage of the same character for the same purpose
+ in string literals.
+\begin_inset Quotes erd
+\end_inset
+
+ In LyX there is the added complication of its own special treatment of
+ the backslash, evident as soon as one copies a piece of LyX code (with
+ backslash) from the 
+\family sans
+View Source
+\family default
+ window and pastes it into an argument inset and looks at 
+\emph on
+that
+\emph default
+ in the 
+\family sans
+View Source
+\family default
+ window.
+ 
+\end_layout
+
+\begin_layout Standard
+I've tried to hide both complications from the user.
+ Since version 1.2 of the find-&-replace script, it should be possible to
+ do all except searches involving control sequences in mathematics or LaTeX
+ code in ERT insets without tripping on the need for double backslashing.
+ But for math mode searches, and default mode searches involving ERT insets,
+ there needs to be 
+\emph on
+some
+\emph default
+ method of distinguishing python's special sequences like 
+\family typewriter
+
+\backslash
+s
+\family default
+, 
+\family typewriter
+
+\backslash
+w
+\family default
+, 
+\family typewriter
+
+\backslash
+n
+\family default
+ \SpecialChar \ldots{}
+, from the initial segments of LaTeX commands like 
+\series bold
+
+\backslash
+sin
+\series default
+,
+\series bold
+ 
+\backslash
+wedge
+\series default
+, 
+\series bold
+
+\backslash
+noindent
+\series default
+ \SpecialChar \ldots{}
+.
+ Double backslashing of the latter is required in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument; it is often unnecessary in the 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument unless the command begins with 
+\series bold
+
+\backslash
+b
+\series default
+ which python will try to interpret as a backspace character, causing LyX
+ to crash, unless double backslashed.
+ Examples follow.
+\end_layout
+
+\begin_layout Subsection
+Examples
+\end_layout
+
+\begin_layout Subsubsection
+Text mode: anonymizing text
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -t
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+w
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+o
+\end_layout
+
+\end_inset
+
+A request was made on the developers' list in 2013 for an anonymizing LFUN,
+ so that if a problem emerged with a LyX document, it could be brought to
+ the LyX community's attention without any sensitive information being displayed.
+ The idea was to replace each letter in the document with a single character
+ like 
+\begin_inset Quotes els
+\end_inset
+
+x
+\begin_inset Quotes ers
+\end_inset
+
+.
+ The document's structure would be maintained.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Although line breaks and page breaks would in general change.
+\end_layout
+
+\end_inset
+
+ The find-&-replace inset at the head of this section along with its accompanyin
+g two argument insets have been filled so as to achieve this effect, but
+ with the letter 
+\begin_inset Quotes els
+\end_inset
+
+o
+\begin_inset Quotes ers
+\end_inset
+
+ rather than 
+\begin_inset Quotes els
+\end_inset
+
+x
+\begin_inset Quotes ers
+\end_inset
+
+ since the latter creates disturbing optical effects likely to cause a headache
+ if gazed at too long.
+ 
+\end_layout
+
+\begin_layout Standard
+It is a regular expression replacement, hence the 
+\family typewriter
+-r
+\family default
+ in the find-&-replace inset.
+ It is also a text-only replacement, hence the 
+\family typewriter
+-t
+\family default
+ -- we don't want to replace LyX's various formatting and structural commands
+ in this way.
+ We replace any alphanumeric or underline character (that is what 
+\family typewriter
+
+\backslash
+w
+\family default
+ denotes) with the letter 
+\begin_inset Quotes els
+\end_inset
+
+o
+\begin_inset Quotes ers
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Math mode: converting chemical formulae to 
+\backslash
+mathrm
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -m
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+(.*)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+mathrm{
+\backslash
+1}
+\end_layout
+
+\end_inset
+
+As noted earlier, one way of writing chemical formulae is by means of math
+ insets: 
+\begin_inset Formula $Ca^{2+}$
+\end_inset
+
+, 
+\begin_inset Formula $K_{2}SO_{4}$
+\end_inset
+
+, 
+\begin_inset Formula $MnO_{4}^{-}$
+\end_inset
+
+.
+ This allows the superscripts and subscripts to be written easily, but math-ital
+ic for the formulae is wrong.
+ 
+\end_layout
+
+\begin_layout Standard
+At the start of this section a find-&-replace inset and two argument insets
+ have been filled, but rather differently from before.
+ The argument insets are filled with regular expressions and the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset contains the 
+\family typewriter
+-r
+\family default
+ option.
+ Now, clicking on the three pLyX activating buttons will produce a document
+ in which the math-italic of the three chemical species instanced is changed
+ to math-roman.
+ 
+\end_layout
+
+\begin_layout Standard
+Of course, any inline mathematical formula 
+\emph on
+whatever 
+\emph default
+in the document following this find-&-replace inset will also be converted
+ to math-roman (until a new find-&-replace inset is met).
+ That is almost certainly going to be wrong and it is worth trying to be
+ more specific in what exactly is searched for.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -m
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+A(([A-Z][a-z]?[-+{}_^1-9]*)+)
+\backslash
+Z
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+mathrm{
+\backslash
+1}
+\end_layout
+
+\end_inset
+
+The first argument inset in this find-&-replace is considerably more complicated
+ than the simple 
+\family typewriter
+(.*)
+\family default
+ used before.
+ However, it does mean that our three chemical species 
+\begin_inset Formula $Ca^{2+}$
+\end_inset
+
+, 
+\begin_inset Formula $K_{2}SO_{4}$
+\end_inset
+
+, 
+\begin_inset Formula $MnO_{4}^{-}$
+\end_inset
+
+, can be distinguished from various simple mathematical expressions like
+ 
+\begin_inset Formula $E=Mc^{2}$
+\end_inset
+
+, 
+\begin_inset Formula $V=\tfrac{4}{3}\pi r^{3}$
+\end_inset
+
+, or 
+\begin_inset Formula $F=Ma$
+\end_inset
+
+.
+ But ambiguous cases are impossible to avoid: 
+\begin_inset Formula $Mg$
+\end_inset
+
+ could mean magnesium (in which case romanise) or it could mean mass 
+\begin_inset Formula $\times$
+\end_inset
+
+ acceleration due to gravity (don't romanise).
+ A discussion of elementary algebra might easily involve a reference to
+ 
+\begin_inset Formula $A^{2}+2AB+B^{2}$
+\end_inset
+
+ which will be converted to math-roman by our regular expression.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -m
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+
+\backslash
+mathrm{(.*)}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+1
+\end_layout
+
+\end_inset
+
+Suppose, in fact, that 
+\begin_inset Formula $\mathrm{Mg}$
+\end_inset
+
+ 
+\emph on
+did
+\emph default
+ mean mass 
+\begin_inset Formula $\times$
+\end_inset
+
+ acceleration due to gravity and we want to reverse the change, from math-roman
+ to math-italic, as also with 
+\begin_inset Formula $\mathrm{A^{2}+2AB+B^{2}}$
+\end_inset
+
+.
+ Then the regular expression at the start of this paragraph will effect
+ the changes.
+ 
+\end_layout
+
+\begin_layout Standard
+The point to note is the 
+\emph on
+double 
+\emph default
+backslash required when 
+\begin_inset Quotes els
+\end_inset
+
+
+\backslash
+mathrm
+\begin_inset Quotes ers
+\end_inset
+
+ -- a LaTeX command, not a python command like 
+\begin_inset Quotes els
+\end_inset
+
+
+\backslash
+A
+\begin_inset Quotes ers
+\end_inset
+
+ or 
+\begin_inset Quotes els
+\end_inset
+
+
+\backslash
+Z
+\begin_inset Quotes ers
+\end_inset
+
+ -- is being used as part of the 
+\emph on
+search
+\emph default
+ expression.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Text mode: semi(-demi)-automatic indexing
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -t
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+(automatic)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+1
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+automatic indexing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+A request on the users' list in 2013 was for a 
+\begin_inset Quotes els
+\end_inset
+
+semi-automatic
+\begin_inset Quotes ers
+\end_inset
+
+ way of indexing.
+ Given a list of terms, could an index inset be attached to the occurrences
+ of those terms throughout the document? The find-&-replace script allows
+ this, but because it involves 
+\emph on
+looping
+\emph default
+ and adding a 
+\emph on
+third
+\emph default
+ argument inset to the two already used in a standard find-&-replace operation,
+ I have discussed this separately in Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Looping:-semi-automatic-indexing"
+
+\end_inset
+
+.
+
+\emph on
+ 
+\end_layout
+
+\begin_layout Standard
+For the moment we can easily index one term at a time -- semi-
+\emph on
+demi
+\emph default
+-automatically I suppose.
+ In the example at the head of this section, the word to be indexed -- 
+\begin_inset Quotes els
+\end_inset
+
+automatic
+\begin_inset Quotes ers
+\end_inset
+
+ -- is entered in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument inset between parentheses.
+ The parentheses mean the word can be referred to as 
+\family typewriter
+
+\backslash
+1
+\family default
+ in the 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument inset into which we have inserted an index inset.
+ We could look for 
+\begin_inset Quotes els
+\end_inset
+
+automatic indexing
+\begin_inset Quotes ers
+\end_inset
+
+ but that would not catch phrases like 
+\begin_inset Quotes els
+\end_inset
+
+semi-automatic way of indexing
+\begin_inset Quotes ers
+\end_inset
+
+ or 
+\begin_inset Quotes els
+\end_inset
+
+indexing automatically
+\begin_inset Quotes ers
+\end_inset
+
+.
+ This way, we will catch more entries than we want, but can delete the bogus
+ entries on a later editing of the document before compiling to pdf.
+ 
+\end_layout
+
+\begin_layout Standard
+Now activating the pLyX buttons shows an index inset attached to 
+\begin_inset Quotes els
+\end_inset
+
+automatic
+\begin_inset Quotes ers
+\end_inset
+
+ -- and also in the middle of 
+\begin_inset Quotes els
+\end_inset
+
+automatically
+\begin_inset Quotes ers
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -t 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+(automatic
+\backslash
+b)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+1
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+automatic indexing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Perhaps we don't want that.
+ We can modify the search expression by adding 
+\family typewriter
+
+\backslash
+b
+\family default
+ to 
+\begin_inset Quotes els
+\end_inset
+
+automatic
+\begin_inset Quotes ers
+\end_inset
+
+.
+ This is the python word boundary marker and means that 
+\begin_inset Quotes els
+\end_inset
+
+automatically
+\begin_inset Quotes ers
+\end_inset
+
+ is not indexed.
+ Nor is 
+\begin_inset Quotes els
+\end_inset
+
+automatics
+\begin_inset Quotes ers
+\end_inset
+
+ (as in cars with manual transmission versus automatics).
+ But what happens if the word sought starts a sentence and is capitalised?
+ 
+\begin_inset Quotes els
+\end_inset
+
+Automatic
+\begin_inset Quotes ers
+\end_inset
+
+ -- is that found?
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -t I
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+(automatic
+\backslash
+b)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+1
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+automatic indexing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ No, but there is an easy remedy.
+ In Section
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Flags"
+
+\end_inset
+
+, the subject of regular expression flags is discussed.
+ Pre-empting that discussion, we can catch upper-cased variants by inserting
+ the 
+\family typewriter
+I
+\family default
+ (for 
+\emph on
+ignore
+\emph default
+ case) flag into the find-&-replace inset, as in the example at the start
+ of this paragraph.
+ 
+\begin_inset Quotes els
+\end_inset
+
+Automatic
+\begin_inset Quotes ers
+\end_inset
+
+ at the start of a sentence is now found.
+\end_layout
+
+\begin_layout Standard
+There are plenty of other complications that can arise and the regular expressio
+n to be searched for can be elaborated accordingly, but indexing can never
+ be 
+\emph on
+fully
+\emph default
+ automatic.
+ Editorial scrutiny of the results of (semi-(demi-))automatic indexing is
+ essential before compiling to a pdf.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Default mode: clearing ERT 
+\begin_inset Quotes els
+\end_inset
+
+debris
+\begin_inset Quotes ers
+\end_inset
+
+ after document import
+\end_layout
+
+\begin_layout Standard
+Importing documents from the world of MS Word and its open-source relatives
+ like LibreOffice/OpenOffice, or Abiword, is a continuing issue for many
+ LyX users.
+ One way of doing this is to export the document from one of these programs
+ as LaTeX.
+ The resulting 
+\family typewriter
+.tex
+\family default
+ file is then imported into LyX.
+ A common feature of a document in LyX that has arrived this way is a large
+ number of ERT insets containing left or right braces, { and }, or pairs
+ of these, and sometimes other 
+\begin_inset Quotes els
+\end_inset
+
+debris
+\begin_inset Quotes ers
+\end_inset
+
+.
+ These are easily handled by with a regular expression find-&-replace.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+begin_inset ERT
+\end_layout
+
+\begin_layout Plain Layout
+status (open|collapsed)
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout Plain Layout
+[{}]+
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_inset
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+In the present paragraph I have scattered ERT insets through the paragraph
+ with various assorted braces; the insets are variously open or collapsed.
+ A look in the 
+\family sans
+View Source
+\family default
+ window will show that an ERT inset containing a left or right brace, or
+ pair of braces, consists of six non-empty lines (the empty lines are of
+ no consequence).
+ I have copied them from the 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+
+\family sans
+View Source
+\family default
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+ window and pasted them into the 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes els
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+find
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes ers
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ argument inset at the start of this paragraph and also entered the regular
+ expression 
+\family typewriter
+[{}]+
+\family default
+.
+ To take care of both open and collapsed insets, the second line has the
+ regular expression 
+\family typewriter
+(open|collapsed)
+\family default
+, meaning search for 
+\family typewriter
+open
+\family default
+ or 
+\family typewriter
+collapsed
+\family default
+.
+
+\family typewriter
+ 
+\family default
+The 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes els
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+find
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes ers
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ inset is followed by an empty 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes els
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+replace
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes ers
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ argument inset.
+ Clicking on the pLyX buttons shows the regular expression captures all
+ the insets scattered through the paragraph, and they are all deleted at
+ a stroke.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+[{}]+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+The previous example could also have been tackled with an ERT inset inserted
+ in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument and the regular expression 
+\family typewriter
+[{}]+
+\family default
+ inserted in it, as at the head of this paragraph.
+
+\family typewriter
+ 
+\family default
+This is more elegant,
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+ but it does also
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ require going
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{}{}
+\end_layout
+
+\end_inset
+
+ to the 
+\family sans
+View
+\family default
+ menu and selecting either 
+\family sans
+Open All Insets
+\family default
+ or 
+\family sans
+Close All Insets
+\family default
+ otherwise only some of the debris will be found.
+ 
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Flags
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Flags"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As well as these brace-containing ERT insets, there may also be other LaTeX
+ statements like (for instance) 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+oddsidemargin}{3cm-1in}
+\end_layout
+
+\end_inset
+
+.
+ In the 
+\family sans
+View Source
+\family default
+ window, each backslash sits on a line of its own, so this occupies 9 nonempty
+ lines (as ever, the empty lines can be ignored).
+ We anticipate that the simplest way of searching for this might be with
+ a regular expression like
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+begin_inset ERT
+\end_layout
+
+\begin_layout LyX-Code
+status (open|collapsed)
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout LyX-Code
+.*
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+end_inset
+\end_layout
+
+\begin_layout Standard
+in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ inset (being careful to use double backslashes in the search pattern).
+ 
+\end_layout
+
+\begin_layout Standard
+There are two problems with this.
+ First, unless we explicitly tell python otherwise, the dot character will
+ not match a newline character (
+\family typewriter
+
+\backslash
+n
+\family default
+).
+ As it stands, our proposed search pattern is good only for ERT insets with
+ content on one line.
+ As we have seen, the presence of even one backslash in an expression destroys
+ that possibility.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+begin_inset ERT
+\end_layout
+
+\begin_layout Plain Layout
+status (open|collapsed)
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout Plain Layout
+.*
+\end_layout
+
+\begin_layout Plain Layout
+.*
+\end_layout
+
+\begin_layout Plain Layout
+.*
+\end_layout
+
+\begin_layout Plain Layout
+.*
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_inset
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+One way of dealing with this possibility is to add further 
+\family typewriter
+.*
+\family default
+ lines.
+ The 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ inset at the start of this paragraph certainly finds 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+oddsidemargin}{3cm-1in}
+\end_layout
+
+\end_inset
+
+, but it misses 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+ and (one more line because of the backslash) 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+{
+\end_layout
+
+\end_inset
+
+.
+ Of course we could do a series of searches, starting with a single 
+\family typewriter
+.*
+\family default
+, then two lines with 
+\family typewriter
+.*
+\family default
+ on each, then three lines with 
+\family typewriter
+.*
+\family default
+ on each, and finally the four lines with 
+\family typewriter
+.*
+\family default
+ on each that we have used, but there is a certain lack of elegance to the
+ procedure and once more we are back doing multiple searches, rather than
+ condensing them into a single regular expression search.
+\end_layout
+
+\begin_layout Standard
+A better way suggests itself via python's regular expression flags.
+ There are six of these, of which three seem of particular relevance:
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+I
+\family default
+: Perform case-insensitive matching; 
+\family typewriter
+[A-Z]
+\family default
+ will also match lowercase letters; (corresponds to python's 
+\family typewriter
+re.I
+\family default
+ or 
+\family typewriter
+re.IGNORECASE
+\family default
+ flag).
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+D
+\family default
+: Make the 
+\begin_inset Quotes els
+\end_inset
+
+dot
+\begin_inset Quotes ers
+\end_inset
+
+ character, 
+\family typewriter
+.
+\family default
+, match any character at all, 
+\emph on
+including
+\emph default
+ a newline; without this flag, 
+\family typewriter
+.
+
+\family default
+ matches anything 
+\emph on
+except
+\emph default
+ a newline; (corresponds to python's 
+\family typewriter
+re.S
+\family default
+ or 
+\family typewriter
+re.DOTALL
+\family default
+ flag -- the 
+\family typewriter
+re.S
+\family default
+ is a relic from Perl).
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+M
+\family default
+: When specified, 
+\family typewriter
+^
+\family default
+ matches at the beginning of the string 
+\emph on
+and
+\emph default
+ at the beginning of each line (immediately following each newline), and
+ 
+\family typewriter
+$
+\family default
+ matches at the end of the string 
+\emph on
+and
+\emph default
+ at the end of each line (immediately preceding each newline).
+ By default, 
+\family typewriter
+^
+\family default
+ matches only at the beginning of the string, and 
+\family typewriter
+$
+\family default
+ matches only at the end of the string (immediately before the newline,
+ if any, at the end of the string); (corresponds to python's 
+\family typewriter
+re.M
+\family default
+ or 
+\family typewriter
+re.MULTILINE
+\family default
+ flag).
+ 
+\end_layout
+
+\begin_layout Itemize
+Two other flags are:
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+I confess I haven't tested the LOCALE and UNICODE flags.
+ This is what comes of living in a very monolingual part of the Anglophone
+ world.
+ For better or worse, things like 
+\begin_inset Quotes els
+\end_inset
+
+locale
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+unicode
+\begin_inset Quotes ers
+\end_inset
+
+ barely impinge on my consciousness and are still largely a mystery.
+ 
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\family typewriter
+L
+\family default
+: Make 
+\family typewriter
+
+\backslash
+w
+\family default
+, 
+\family typewriter
+
+\backslash
+W
+\family default
+, 
+\family typewriter
+
+\backslash
+b
+\family default
+, 
+\family typewriter
+
+\backslash
+B
+\family default
+, 
+\family typewriter
+
+\backslash
+s
+\family default
+ and 
+\family typewriter
+
+\backslash
+S
+\family default
+ dependent on the current locale; (corresponds to python's 
+\family typewriter
+re.L
+\family default
+ or 
+\family typewriter
+re.LOCALE
+\family default
+ flag).
+ 
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+U
+\family default
+: Make 
+\family typewriter
+
+\backslash
+w
+\family default
+, 
+\family typewriter
+
+\backslash
+W
+\family default
+, 
+\family typewriter
+
+\backslash
+b
+\family default
+, 
+\family typewriter
+
+\backslash
+B
+\family default
+, 
+\family typewriter
+
+\backslash
+d
+\family default
+, 
+\family typewriter
+
+\backslash
+D
+\family default
+, 
+\family typewriter
+
+\backslash
+s
+\family default
+ and 
+\family typewriter
+
+\backslash
+S
+\family default
+ dependent on the Unicode character properties database; (corresponds to
+ python's 
+\family typewriter
+re.U
+\family default
+ or 
+\family typewriter
+re.UNICODE
+\family default
+ flag).
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+(Although the flags have been presented in upper-case, they are also recognised
+ in lower-case.
+ Also the 
+\family typewriter
+S
+\family default
+ form of the DOTALL flag is recognised.
+ Python's regular expression module has one further flag, 
+\family typewriter
+re.VERBOSE
+\family default
+ allowing a 
+\begin_inset Quotes els
+\end_inset
+
+verbose
+\begin_inset Quotes ers
+\end_inset
+
+ way of writing regular expressions.
+ This has not been implemented.)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r D
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+begin_inset ERT
+\end_layout
+
+\begin_layout Plain Layout
+status (open|collapsed)
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout Plain Layout
+.*
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_inset
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+For our purposes, the relevant flag is 
+\family typewriter
+D
+\family default
+.
+ We need a 
+\begin_inset Quotes els
+\end_inset
+
+dot
+\begin_inset Quotes ers
+\end_inset
+
+ to match 
+\emph on
+all
+\emph default
+ characters, including newlines.
+ Hence we try the pattern in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ inset at the start of this paragraph.
+ Although this appears correct, it fails to find 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+oddsidemargin}{3cm-1in}
+\end_layout
+
+\end_inset
+
+, although it does find 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+{}
+\end_layout
+
+\end_inset
+
+.
+ This isn't a regular expression issue.
+ The problem lies in the way 
+\family typewriter
+findrepl.py
+\family default
+ scans through a file.
+ 
+\end_layout
+
+\begin_layout Subsection
+Search block size
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r D 9
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+begin_inset ERT
+\end_layout
+
+\begin_layout Plain Layout
+status (open|collapsed)
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+begin_layout Plain Layout
+\end_layout
+
+\begin_layout Plain Layout
+.*
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout Plain Layout
+
+\backslash
+end_inset
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+The 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ inset consists of 6 lines.
+ Unless we tell 
+\family typewriter
+findrepl.py
+\family default
+ explicitly otherwise, it will scan the file in a moving block of 6 lines
+ at a time, continually dropping a line from the back and taking a new one
+ in at the front.
+ But we need to consider 9-line blocks to be able to catch 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+setlength{
+\backslash
+oddsidemargin}{3cm-1in}
+\end_layout
+
+\end_inset
+
+.
+ To do this we add the maximum block size as another element in the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset, as has been done at the start of this paragraph.
+ Now not only do we catch (and delete)  as well as  but also intermediate
+ ERT expressions like 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+{
+\end_layout
+
+\end_inset
+
+.
+ If there are even longer ERT insets, then the maximum block size can obviously
+ be increased further.
+ 
+\end_layout
+
+\begin_layout Standard
+Again, it is possible to write the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument more elegantly, 
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+.*
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, provided we open (or close) all insets via the 
+\family sans
+View
+\family default
+ menu before searching.
+\end_layout
+
+\begin_layout Section
+Looping: semi-automatic indexing
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Looping:-semi-automatic-indexing"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex .find-&-replace (LyX format)|findrepl
+status open
+
+\begin_layout Plain Layout
+-r -t -x I
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+(#)
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+
+\backslash
+1
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+#
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status open
+
+\begin_layout Plain Layout
+pLyX#pLyX system
+\end_layout
+
+\begin_layout Plain Layout
+button#activating buttons
+\end_layout
+
+\begin_layout Plain Layout
+example
+\end_layout
+
+\begin_layout Plain Layout
+module#pLyX module
+\end_layout
+
+\begin_layout Plain Layout
+automatic#automatic indexing
+\end_layout
+
+\end_inset
+
+The pLyX system allows a sequence of scripts to be run 
+\begin_inset Quotes els
+\end_inset
+
+at one go
+\begin_inset Quotes ers
+\end_inset
+
+ -- with one click of the activating buttons.
+ It also allows a single script to be run repeatedly with its 
+\family sans
+.loop
+\family default
+ custom inset.
+ Not all scripts can make use of this facility, but the find-&-replace script
+ is one that can.
+ A look at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+ will show the 
+\family sans
+.loop
+\family default
+ inset.
+ Inserting this in the 
+\family sans
+.Run script(s)
+\family default
+ inset
+\family sans
+ 
+\family default
+(at the start of the document) immediately followed by the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset allows the find-&-replace script to be applied repeatedly -- looped.
+ Of course it needs something to feed on as it loops, and this is provided
+ by a list of words in a 
+\emph on
+third
+\emph default
+ argument inset following a local use of a find-&-replace inset.
+ This process allows us to advance from the semi
+\emph on
+-demi-
+\emph default
+automatic indexing discussed earlier to semi-automatic indexing.
+\end_layout
+
+\begin_layout Standard
+For the present example to run, it needs the 
+\family sans
+.loop
+\family default
+ custom inset inserted before the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset in the
+\family sans
+ .Run scripts
+\family default
+ inset at the start of the document.
+ I suggest that rather than using 
+\emph on
+this
+\emph default
+ document to experiment on, with its multiplicity of examples, start a new
+ document.
+ Add the pLyX module to it.
+ At the beginning of the document insert the 
+\family sans
+.Run scripts
+\family default
+ inset and into that insert, first, a 
+\family sans
+.loop
+\family default
+ custom inset and then a 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ custom inset.
+ Now copy this section of the present document, including the find-&-replace
+ inset with its 
+\emph on
+three
+\emph default
+ argument insets at the start of the section, and paste it into your new
+ document.
+\end_layout
+
+\begin_layout Subsubsection
+Structure of the insets
+\end_layout
+
+\begin_layout Standard
+The obvious novelty is the third argument inset which contains a small list
+ of items, mainly in the form
+\end_layout
+
+\begin_layout LyX-Code
+term-searched-for#term-replaced-by
+\end_layout
+
+\begin_layout Standard
+although one item, 
+\begin_inset Quotes els
+\end_inset
+
+example
+\begin_inset Quotes ers
+\end_inset
+
+, lacks the second part.
+ In that case, the find-&-replace script assumes the 
+\family typewriter
+term-replaced-by
+\family default
+ is identical with the 
+\family typewriter
+term-searched-for
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The other novelty is the use of the hash symbol, #, as a placeholder in
+ the regular expression in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument, and in the 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument.
+ As the find-&-replace script works through the list in the third argument
+ inset, item by item, it replaces the # in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument with the 
+\family typewriter
+term-searched-for
+\family default
+ of the item and the # in the 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument with the 
+\family typewriter
+term-replaced-by
+\family default
+.
+ It does this successively for each item.
+ 
+\end_layout
+
+\begin_layout Standard
+The 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset itself contains the recipe 
+\end_layout
+
+\begin_layout LyX-Code
+
+\family typewriter
+-r -t -x I
+\family default
+ 
+\end_layout
+
+\begin_layout Standard
+This is a regular expression search (
+\family typewriter
+-r
+\family default
+); it is a text-mode search (
+\family typewriter
+-t
+\family default
+) that excludes text in insets (
+\family typewriter
+-x
+\family default
+) such as captions to figures, entries in table cells, or LyX notes; and
+ it is insensitive to case (
+\family typewriter
+I
+\family default
+) so that terms upper-cased at the beginning of sentences will be captured
+ as well as those in the middle of sentences.
+ 
+\end_layout
+
+\begin_layout Standard
+The # is placed in parentheses in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ argument so that it can be recalled as 
+\family typewriter
+
+\backslash
+1
+\family default
+ in the 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ argument; 
+\family typewriter
+
+\backslash
+1
+\family default
+ will be upper- or lower-cased depending on the case of each instance found.
+ The search regexp, 
+\family typewriter
+(#)
+\family default
+, can be elaborated to exclude or allow various possibilities, but for a
+ list of items, perhaps the simple form shown here is best.
+ Editorial scrutiny of the results is always necessary.
+\end_layout
+
+\begin_layout Subsubsection
+Number of repetitions
+\end_layout
+
+\begin_layout Standard
+Without any argument in the 
+\family sans
+.loop
+\family default
+ inset, a list of up to 
+\begin_inset Formula $50+1$
+\end_inset
+
+ items will be searched -- 
+\begin_inset Formula $50$
+\end_inset
+
+ for the loop inset and 
+\begin_inset Formula $1$
+\end_inset
+
+ for the find-&-replace inset.
+ Inserting 0 into the 
+\family sans
+.loop
+\family default
+ inset is equivalent to not having inserted it at all -- exactly one find-&-repl
+ace search is performed.
+ Any other number 
+\begin_inset Formula $n$
+\end_inset
+
+ in the 
+\family sans
+.loop
+\family default
+ inset induces up to 
+\begin_inset Formula $n+1$
+\end_inset
+
+ repetitions of the following script, in this case the find-&-replace script.
+ The actual number performed may be smaller, depending on the initial data
+ as in the example where there are only five items.
+ 
+\end_layout
+
+\begin_layout Standard
+If the list of items is longer than 
+\begin_inset Formula $51$
+\end_inset
+
+ items, enter a larger number in the 
+\family sans
+.loop
+\family default
+ inset.
+ Alternatively, do two find-&-replacements.
+ The first will reduce the list by 
+\begin_inset Formula $51$
+\end_inset
+
+ items; the second will effect up to 
+\begin_inset Formula $51$
+\end_inset
+
+ searches and replacements on the items that remain.
+ Similarly, if a small number is entered in the 
+\family sans
+.loop
+\family default
+ inset, 
+\begin_inset Quotes els
+\end_inset
+
+just to see how things go
+\begin_inset Quotes ers
+\end_inset
+
+, the list is depleted by that number of items plus one.
+\end_layout
+
+\begin_layout Standard
+A complete find-&-replacement will leave an empty list.
+ You may wish to copy the list before doing any replacements and put it
+ in a (yellow) note before the find-&-replace inset so that you can see
+ at a glance which terms were searched for.
+\end_layout
+
+\begin_layout Subsubsection
+Suppression of messages
+\end_layout
+
+\begin_layout Standard
+Each item searched for will generate a yellow note message, generally at
+ the end of the document, detailing (at least) how many replacements were
+ made (for text searches the number is almost always an 
+\emph on
+under
+\emph default
+-estimate).
+ For a list of even quite modest size, this can add up to a lot of notes,
+ a lot of yellow.
+ Entering 
+\family typewriter
+-s
+\family default
+ or 
+\family typewriter
+--suppress
+\family default
+ in the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset will suppress them (so that the full recipe in the inset would then
+ be 
+\family typewriter
+-r -t -x -s I
+\family default
+).
+\end_layout
+
+\begin_layout Subsubsection
+Changing the placeholder #
+\end_layout
+
+\begin_layout Standard
+It's possible that you may wish to use the # symbol in an index entry.
+ Then it's find-&-replace use may get in the way.
+ It can easily be changed.
+ Just enter 
+\family typewriter
+--placeholder
+\family default
+ followed by the new symbol in the 
+\emph on
+global
+\emph default
+ find-&-replace inset (the one in the 
+\family sans
+.Run script(s)
+\family default
+ inset at the start of the document), and use the new symbol in place of
+ # in the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ arguments, and the word list in the third argument.
+ The new symbol doesn't need to be a single character.
+ For example, you could use 
+\begin_inset Quotes els
+\end_inset
+
+QQ
+\begin_inset Quotes ers
+\end_inset
+
+ as the placeholder if you wished by entering 
+\end_layout
+
+\begin_layout LyX-Code
+--placeholder QQ
+\end_layout
+
+\begin_layout Standard
+in the global 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset.
+ The only symbol you should 
+\emph on
+not
+\emph default
+ use is the backslash, which will cause an error.
+\end_layout
+
+\begin_layout Subsubsection
+Need for editorial scrutiny
+\end_layout
+
+\begin_layout Standard
+When discussing semi-demi-automatic indexing earlier, I pointed out some
+ of the complications that can arise.
+ All of those considerations apply here.
+ No indexing system can ever truly be automatic.
+ The results always need editorial scrutiny after the indexing and before
+ compiling to pdf.
+ However, it is much easier to scan through a document checking the appropriaten
+ess of index insets that are already there, and deleting some as necessary,
+ than having to stop and insert and fill insets by hand at a seemingly endless
+ sequence of places.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Andrew Parsloe
+\end_layout
+
+\begin_layout Standard
+3 December 2013
+\end_layout
+
+\end_body
+\end_document

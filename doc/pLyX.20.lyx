@@ -1,0 +1,3372 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\date{}
+\end_preamble
+\use_default_options true
+\begin_modules
+pLyX
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman lmodern
+\font_sans lmss
+\font_typewriter lmtt
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mathdots 1
+\use_mhchem 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 2
+\tocdepth 2
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+The pLyX system
+\end_layout
+
+\begin_layout Author
+Andrew Parsloe
+\begin_inset Newline newline
+\end_inset
+
+
+\size small
+aparsloe@clear.net.nz
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+The pLyX system
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The pLyX system is a scripting system for LyX.
+ Or rather, LyX has a built-in scripting system, but it seems to have been
+ created by accident, few know of it, and it has certainly received no developme
+nt to make its use convenient for the user.
+ The pLyX system is an attempt to create a workable interface for this system
+ out of the tools that LyX provides -- modules, custom insets, toolbar buttons
+ -- and also to provide some initial scripts.
+\end_layout
+
+\begin_layout Standard
+Section
+\begin_inset space ~
+\end_inset
+
+6.10.1 (on TeX code) of the 
+\emph on
+User's Guide
+\emph default
+ says:
+\end_layout
+
+\begin_layout Quote
+\SpecialChar \ldots{}
+ LyX \SpecialChar \ldots{}
+ supports many LaTeX commands and constructs, but not all.
+ LaTeX contains hundreds of packages
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Actually it contains thousands: as of 1 December 2012, 
+\family typewriter
+MiKTeX 2.9
+\family default
+ lists 2417 of them, and that is only a subset of what is on CTAN.
+\end_layout
+
+\end_inset
+
+ that provide different commands.
+ \SpecialChar \ldots{}
+ you can typeset nearly everything as there is for every problem a LaTeX-packag
+e.
+ But LyX can[not] \SpecialChar \ldots{}
+ support all packages and their commands.
+\end_layout
+
+\begin_layout Standard
+But LyX 
+\emph on
+does
+\emph default
+ make provision for these gaps in its capabilities with a special TeX code
+ inset (known also as an ERT -- evil red text -- inset).
+ Even allowing for ERT, there are still gaps in LyX's functionality, or
+ at least things that are hard to do: sorting is one; anything more than
+ simple find-&-replace is another.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Although LyX does have an advanced find-&-replace facility, as anyone who
+ has tried to use it on a largish document discovers, it is slow.
+\end_layout
+
+\end_inset
+
+ Scripts provide a way of bridging such gaps and extending LyX's capabilities.
+\end_layout
+
+\begin_layout Standard
+The pLyX system draws on the fact that a LyX file (when saved in 
+\emph on
+un
+\emph default
+compressed format) is a text file and therefore lends itself to being manipulate
+d in 
+\begin_inset Quotes els
+\end_inset
+
+straightforward
+\begin_inset Quotes ers
+\end_inset
+
+ ways by a program (a script).
+ LyX already has a built-in method of launching scripts: its converter mechanism
+, for converting files from one format to another, and associated GUIs (
+\family sans
+Tools
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+File Handling
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+File Formats
+\family default
+ and 
+\family sans
+Tools
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+File Handling
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Converters
+\family default
+).
+ 
+\end_layout
+
+\begin_layout Standard
+Presumably the creators of the converter mechanism had in mind the conversion
+ of files from one format to a 
+\emph on
+different
+\emph default
+ format, from (say) 
+\family sans
+DVI
+\family default
+ to 
+\family sans
+Postscript
+\family default
+, the converson involving a change in file extension from 
+\family typewriter
+.dvi
+\family default
+ to 
+\family sans
+.ps
+\family default
+.
+ But the file formats do not need to be different or have different extensions.
+ It is perfectly possible to 
+\begin_inset Quotes els
+\end_inset
+
+convert
+\begin_inset Quotes ers
+\end_inset
+
+ a file in 
+\family sans
+LyX
+\family default
+ format with extension 
+\family typewriter
+.lyx
+\family default
+ to a file with the same name and extension and format.
+ All we need to do to achieve this is make LyX 
+\begin_inset Quotes els
+\end_inset
+
+think
+\begin_inset Quotes ers
+\end_inset
+
+ the second format is different, and to achieve 
+\emph on
+that
+\emph default
+ all we need to do is give the second format a 
+\begin_inset Quotes els
+\end_inset
+
+false name
+\begin_inset Quotes ers
+\end_inset
+
+, a pseudonym.
+ If we call the second format 
+\family sans
+pLyX
+\family default
+ (
+\emph on
+pseudonymous
+\emph default
+ LyX), even though it is really 
+\family sans
+LyX
+\family default
+ format and uses the 
+\family typewriter
+.lyx
+\family default
+ extension, the converter mechanism will function, the appropriate script
+ or program converting from 
+\family sans
+LyX
+\family default
+ to 
+\family sans
+pLyX
+\family default
+ will launch.
+ (I suspect the reason we can get away with this trick is because LyX uses
+ a temporary directory when it exports -- converts -- a document.)
+\end_layout
+
+\begin_layout Standard
+The point of doing so is that the converter script can manipulate the LyX
+ file in some desired way during 
+\begin_inset Quotes els
+\end_inset
+
+conversion
+\begin_inset Quotes ers
+\end_inset
+
+ achieving effects that might be difficult to achive, or are currently unimpleme
+nted, in LyX proper.
+ Since the converted file is really a 
+\family sans
+LyX
+\family default
+ file using the 
+\family typewriter
+.lyx
+\family default
+ extension, a 
+\family typewriter
+buffer-reload
+\family default
+ command replaces the document currently displaying with the converted version
+ of it.
+ With suitable toolbar buttons, the speed of modern computers means the
+ whole process -- export and reload -- takes place without any essential
+ delay to work flow, even for substantial documents.
+ It has the feel of something built-in.
+\end_layout
+
+\begin_layout Standard
+Experience soon shows that defining a new pseudonymous LyX file format and
+ an associated converter for each script clutters both the 
+\family sans
+File Formats
+\family default
+ and 
+\family sans
+Converters
+\family default
+ lists; also, providing a separate shortcut or toolbar button for each script
+ soon becomes impracticable.
+ A better way is to create a single master script which exports to a single
+ pseudonymous LyX file format.
+ Depending on a 
+\begin_inset Quotes els
+\end_inset
+
+signal
+\begin_inset Quotes ers
+\end_inset
+
+ in the document, the master script loads and runs a sub-script which does
+ the desired manipulating.
+ This is the present pLyX system.
+ It means that only one set of toolbar buttons need be added, and the file
+ format and converter lists are relieved of clutter.
+ It uses custom insets defined in a LyX module to do the 
+\begin_inset Quotes els
+\end_inset
+
+signalling
+\begin_inset Quotes ers
+\end_inset
+
+ and to provide arguments to the scripts.
+\end_layout
+
+\begin_layout Section
+Components
+\end_layout
+
+\begin_layout Standard
+The pLyX system consists of a LyX module, 
+\family typewriter
+pLyX.module
+\family default
+, containing definitions of the necessary custom insets (including the names
+ of their associated python scripts), the 
+\begin_inset Quotes els
+\end_inset
+
+master
+\begin_inset Quotes ers
+\end_inset
+
+ script 
+\family typewriter
+pLyX.py
+\family default
+, which ostensibly does the exporting from LyX to pLyX format but really
+ is there to find which sub-script (python module) is required, and to launch
+ it to do the actual processing, its help script (another python module)
+ 
+\family typewriter
+pLyX_help.py
+\family default
+, an 
+\begin_inset Quotes els
+\end_inset
+
+undo
+\begin_inset Quotes ers
+\end_inset
+
+ script 
+\family typewriter
+qLyX.py
+\family default
+ which overwrites the current document with the backup document (prompted
+ by comments by 
+\noun on
+Liviu Andronic
+\noun default
+ about document integrity, and an 
+\begin_inset Quotes els
+\end_inset
+
+accident
+\begin_inset Quotes ers
+\end_inset
+
+ or two on the author's part), and a number of subscripts and their help
+ files.
+ 
+\end_layout
+
+\begin_layout Standard
+Currently there are sub-scripts for
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Initially there was also a script for expanding text macros.
+ I've since come to think that this script, although interesting as a technical
+ exercise, was a misguided application of the pLyX system and have withdrawn
+ it.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+calculating formulas 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+includes 
+\begin_inset Quotes els
+\end_inset
+
+scientific calculator
+\begin_inset Quotes ers
+\end_inset
+
+ functions and complex numbers
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+sorting tables
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+allows primary, secondary, tertiary \SpecialChar \ldots{}
+ sorts of the rows of a table according
+ to the values in specified columns, ascending or descending, alphabetical
+ or numerical, case sensitive or insensitive.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+sorting lists
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+to all six levels of nesting if wanted, including random sorts (shuffles)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+(finding and) replacing material in LyX's native format
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+allows such things as changing a mathematical symbol throughout a document,
+ anonymizing the text while preserving the structure of a document, semi-automat
+ic indexing, clearing ERT debris after importing a LaTeX document, &c.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+counting word frequency in a document
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+gathers the raw data for subsequent statistical analysis
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Under development (a very loose term this) is a script for
+\end_layout
+
+\begin_layout Itemize
+heuristically structuring text pasted (
+\family sans
+Paste Special
+\family default
+) as plain text from a pdf
+\end_layout
+
+\begin_layout Standard
+With each script and its help file there is an associated LyX document detailing
+ its use.
+\end_layout
+
+\begin_layout Chapter
+Putting the pieces in their places
+\end_layout
+
+\begin_layout Standard
+For the pLyX system to work as intended, the various pieces need to be put
+ in their appropriate places, two file formats and their associated converters
+ created, and a default LyX setting changed.
+ Once done, new scripts can be added to the system without going near the
+ converter or file format dialogs again.
+ 
+\end_layout
+
+\begin_layout Standard
+The system comes in a zipped archive which should be unzipped in some convenient
+ directory of your choice ready for the contents to be distributed to various
+ folders of your personal 
+\family typewriter
+LyX2.0
+\family default
+ (or 
+\family typewriter
+LyX2.1
+\family default
+) directory.
+ On a Windows system this will be located at something like 
+\end_layout
+
+\begin_layout LyX-Code
+C:/Users/<your name>AppData/Roaming/LyX2.0
+\end_layout
+
+\begin_layout Standard
+The contents of each of the pLyX distribution folders should be copied into
+ the corresponding folder of your personal LyX2.0 directory.
+\end_layout
+
+\begin_layout Enumerate
+Specifically: 
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+The custom insets used by the pLyX system, at least one per python script
+ or module, are defined in the LyX module 
+\family sans
+pLyX.module
+\family default
+ in the 
+\family typewriter
+layouts
+\family default
+ folder.
+ The module should be added to your personal LyX2.0 
+\family typewriter
+layouts
+\family default
+ folder.
+\end_layout
+
+\begin_layout Enumerate
+The pLyX scripts are in the 
+\family typewriter
+scripts
+\family default
+ folder (and the included 
+\family typewriter
+subscripts
+\family default
+ folder).
+ The contents of the 
+\family typewriter
+scripts
+\family default
+ folder, including the subfolder, should be copied into your personal LyX2.0
+ 
+\family typewriter
+scripts
+\family default
+ folder.
+ (If your 
+\family typewriter
+scripts
+\family default
+ folder is empty, simply replace it with the pLyX one.)
+\end_layout
+
+\begin_layout Enumerate
+An icon is in the 
+\family typewriter
+images
+\family default
+ folder.
+ The (the only contents of the 
+\family typewriter
+images
+\family default
+ folder) should be copied into your personal LyX2.0 
+\family typewriter
+images
+\family default
+ folder.
+\end_layout
+
+\begin_layout Enumerate
+The pLyX activating buttons are defined in a modified version of LyX's 
+\family typewriter
+stdtoolbars.inc
+\family default
+.
+ This is in the 
+\family typewriter
+ui
+\family default
+ folder of the pLyX distribution and should be copied into your personal
+ 
+\family typewriter
+ui
+\family default
+ folder.
+
+\family typewriter
+ 
+\family default
+(If a copy of 
+\family typewriter
+stdtoolbars.inc
+\family default
+ is already there then you will need to edit it in a text editor to compatibilit
+y with the pLyX version.)
+\end_layout
+
+\begin_layout Enumerate
+LyX documents explaining the use of the different scripts are in the 
+\family typewriter
+doc
+\family default
+ folder of the pLyX distribution.
+ Copy the contents of this folder to your personal LyX2.0 
+\family typewriter
+doc
+\family default
+ folder.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+File formats
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Under 
+\family sans
+Tools
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+File Handling
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+File Formats
+\family default
+, click the 
+\family sans
+New
+\family default
+ button and enter 
+\family typewriter
+pLyX
+\family default
+ in the 
+\family sans
+Format
+\family default
+ box, set the 
+\family sans
+Document format
+\family default
+ check box, enter 
+\family typewriter
+plyx
+\family default
+ in the 
+\family sans
+Short Name
+\family default
+ box, enter 
+\family typewriter
+lyx
+\family default
+ in the 
+\family sans
+Extension
+\family default
+ box, under 
+\family sans
+Viewer
+\family default
+ choose 
+\family sans
+Custom
+\family default
+ and enter 
+\family typewriter
+LyX
+\family default
+ in the box on the right.
+ Click the 
+\family sans
+Apply
+\family default
+ button.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Similarly create a new file format 
+\family typewriter
+qLyX
+\family default
+, short name 
+\family typewriter
+qlyx
+\family default
+, extension 
+\family typewriter
+lyx
+\family default
+; none of the other check boxes or slots need to be filled.
+ Click 
+\family sans
+Apply
+\family default
+.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Converters
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Under 
+\family sans
+Tools
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+File Handling
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Converters
+\family default
+, create a converter from 
+\family sans
+LyX
+\family default
+ to 
+\family sans
+pLyX
+\family default
+ by scrolling down the list in the 
+\family sans
+From format
+\family default
+ box to 
+\family sans
+LyX
+\family default
+, and in the 
+\family sans
+To format
+\family default
+ box scrolling down to 
+\family sans
+pLyX 
+\family default
+(likely to be at or near the bottom of the list of formats because of the
+ initial lower-case letter) then entering in the 
+\family sans
+Converter
+\family default
+ box
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\family typewriter
+\size small
+python <path to>/scripts/pLyX.py $$i $$o
+\family default
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+Click 
+\family sans
+Add
+\family default
+ then 
+\family sans
+Apply
+\family default
+.
+\end_layout
+
+\begin_layout Enumerate
+For the undo feature of the pLyX system to work, there must be backup files
+ of LyX documents available.
+ That means that under 
+\family sans
+Tools \SpecialChar \menuseparator
+ Preferences \SpecialChar \menuseparator
+ Look & Feel
+\family default
+, the 
+\family sans
+Backup original documents when saving
+\family default
+ check box 
+\emph on
+must be set
+\emph default
+.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+If no explicit destination for back-up documents is specified then they
+ will appear in the same folders as their originals, but with a 
+\family typewriter
+lyx~
+\family default
+ extension.
+
+\family typewriter
+ 
+\family default
+Not only does this lead to cluttered directories but it removes the added
+ element of safety that comes from placing back-ups in at least a different
+ folder and better still on another drive.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+If no explicit destination for back-up documents is specified (so that they
+ appear in the same folders as their originals) create a converter from
+ 
+\family sans
+LyX
+\family default
+ to 
+\family sans
+qLyX
+\family default
+ by 
+\family sans
+Add
+\family default
+ing and 
+\family sans
+Apply
+\family default
+ing the following entry in the 
+\family sans
+Converter
+\family default
+ box:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\family typewriter
+\size small
+python <path to>/scripts/qLyX.py $$r $$f $$o
+\family default
+\size default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+If a backup directory 
+\emph on
+is
+\emph default
+ specified (
+\family sans
+Tools
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Paths
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Backup directory
+\family default
+), then the 
+\family typewriter
+-b
+\family default
+ option with the backup directory (including path), needs to be added to
+ the converter entry.
+ E.g.
+ if the backup directory is 
+\family typewriter
+E:/Lymbo
+\family default
+ then the revised converter entry is
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+It would be so nice if there were a token (say, 
+\family typewriter
+$$b
+\family default
+) for the backup directory, as there are for the other paths and filenames:
+ 
+\family typewriter
+$$f
+\family default
+ is the filename (with extension) of the current document (e.g.
+ 
+\family typewriter
+myfile.lyx
+\family default
+); 
+\family typewriter
+$$r
+\family default
+ is the path to the current document (e.g.
+ 
+\family typewriter
+D:/Documents/
+\family default
+).
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\family typewriter
+\size small
+python <path to>/scripts/qLyX.py -b E:/Lymbo $$r $$f $$o
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\end_deeper
+\begin_layout Enumerate
+Overwrite setting: change the 
+\family sans
+Overwrite on export
+\family default
+ setting ( 
+\family sans
+Tools
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Preferences
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Output
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+General
+\family default
+) from the default 
+\family sans
+Ask permission
+\family default
+ to one of the alternatives.
+
+\family sans
+ Main file only
+\family default
+ has sufficed for me.
+ Changing this setting prevents 
+\begin_inset Quotes els
+\end_inset
+
+nag
+\begin_inset Quotes ers
+\end_inset
+
+ messages and gives a built-in feel to the use of the system.
+\end_layout
+
+\begin_layout Enumerate
+Reconfigure (this makes the 
+\family typewriter
+pLyX.module
+\family default
+ visible to LyX).
+\end_layout
+
+\begin_layout Enumerate
+(Optional): save an empty document with the 
+\family typewriter
+pLyX.module
+\family default
+ added as a template (i.e.
+ save the document to your personal LyX2.0 
+\family typewriter
+templates
+\family default
+ folder), perhaps with the name 
+\family typewriter
+pLyXdoc.lyx
+\family default
+ .
+ For the template you might also insert a 
+\family sans
+.Run script(s)
+\family default
+ custom inset (from the list that should now be visible at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+ after reconfiguring) at the start of the document.
+ (Ensure that it is in a 
+\family sans
+Standard
+\family default
+ paragraph.
+ There is the possibility that it might get mixed up with the document title.)
+ Then save the document to your personal templates folder.
+\end_layout
+
+\begin_layout Subsubsection
+Comments of a faintly technical nature
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Three
+\emph default
+ toolbar buttons are needed to launch a pLyX script: a save button, an export
+ button and a reload button.
+ Ideally only one button should suffice, but with LyX 2.0.0 came threaded
+ (or background) export.
+ Unfortunately the command-sequence LyX function has not been upgraded to
+ cope with the asynchronous processing involved.
+ Hence joining the three button actions into a single command sequence which
+ could then be associated with a single button, does not work.
+ Similarly 
+\emph on
+two
+\emph default
+ buttons are required for the undo function (saving is not required).
+ Since the buffer-reload button suffices for both cases, do and undo, four
+ buttons in all are added to the 
+\family sans
+View/Update
+\family default
+ toolbar.
+\end_layout
+
+\begin_layout Itemize
+To launch 
+\family typewriter
+pLyX.py
+\family default
+ the three activating buttons need to be clicked 
+\emph on
+in sequence
+\emph default
+: save
+\begin_inset Formula $\to$
+\end_inset
+
+export
+\begin_inset Formula $\to$
+\end_inset
+
+reload.
+ The long 
+\begin_inset Quotes els
+\end_inset
+
+save
+\begin_inset Quotes ers
+\end_inset
+
+ command sequence 
+\begin_inset Quotes els
+\end_inset
+
+dirties
+\begin_inset Quotes ers
+\end_inset
+
+ the document twice (inserts and deletes a space), saving after each.
+ The reason for doing this twice is because the document is going to be
+ overwritten.
+ The first save writes the current document to disk; the second save pushes
+ that saved document to backup.
+ The reload button will remain greyed out until the export is complete,
+ when it becomes enabled.
+ 
+\end_layout
+
+\begin_layout Itemize
+Icons are automatically chosen for the export and reload buttons (in fact
+ the 
+\family typewriter
+buffer-export.png
+\family default
+ and 
+\family typewriter
+buffer-reload.png
+\family default
+ icons that can be found in the 
+\family sans
+LyX \SpecialChar \menuseparator
+ Resources \SpecialChar \menuseparator
+ images
+\family default
+ folder).
+ Unfortunately the undo button's icon is also automatically chosen and is
+ the same as the export button.
+ To avoid confusion, I've chosen instead to use the icon of the 
+\family sans
+undo
+\family default
+ button displayed on the standard toolbar.
+ I've copied this icon (
+\family typewriter
+undo.png
+\family default
+ in the 
+\family typewriter
+LyX/Resources/images
+\family default
+ folder) to the 
+\family typewriter
+images
+\family default
+ folder in the pLyX distribution and renamed it 
+\family typewriter
+buffer-export_qLyX.png
+\family default
+.
+\end_layout
+
+\begin_layout Chapter
+Using the pLyX system
+\end_layout
+
+\begin_layout Standard
+Create a new document and add the 
+\family typewriter
+pLyX
+\family default
+ module to it or, better, create it with the new template.
+ 
+\end_layout
+
+\begin_layout Section
+Custom insets
+\end_layout
+
+\begin_layout Standard
+Now when you look at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+, a list of insets should show.
+ These should be headed by 
+\family sans
+.Run script(s)
+\family default
+ followed by 
+\family sans
+.[argument]
+\family default
+, and then 
+\family sans
+.calculate formula
+\family default
+, etc.
+ The full stop preceding the inset names is there so that if other custom
+ insets are present, these ones will be listed (alphabetically) in a block.
+ Only the 
+\family sans
+.Run script(s)
+\family default
+ inset begins (after the full stop) with a capital letter: that is so that
+ it will sit at the head of the list.
+ The brackets around the name in the 
+\family sans
+.[argument]
+\family default
+ inset are to ensure it immediately follows 
+\family sans
+.Run script(s)
+\family default
+ in the list and to distinguish it from those insets associated with 
+\begin_inset Quotes els
+\end_inset
+
+proper
+\begin_inset Quotes ers
+\end_inset
+
+ child scripts.
+ It has a technical purpose (a receptacle for receiving arguments).
+\end_layout
+
+\begin_layout Standard
+When inserted in a document, the insets themselves have no effect on the
+ 
+\family typewriter
+pdf
+\family default
+ output;
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+They all use the same LaTeX command, 
+\series bold
+
+\backslash
+pLyXgobble
+\series default
+, defined by 
+\series bold
+
+\backslash
+newcommand{
+\backslash
+pLyXgobble}[1]{}
+\series default
+.
+\end_layout
+
+\end_inset
+
+ only the effects they create show up.
+\end_layout
+
+\begin_layout Standard
+If 
+\family typewriter
+pLyX.module
+\family default
+ is viewed in a text editor, the name of each 
+\begin_inset Quotes els
+\end_inset
+
+sub-script
+\begin_inset Quotes ers
+\end_inset
+
+ inset will be seen to be in two parts, a part before a vertical bar that
+ contains the name as displayed in the 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+ list in LyX, and a part after the vertical bar that doesn't display and
+ contains the name of the corresponding python script (e.g.
+ 
+\family sans
+.calculate formula|calcul8
+\family default
+).
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+I stumbled on the 
+\begin_inset Quotes els
+\end_inset
+
+invisibility effect
+\begin_inset Quotes ers
+\end_inset
+
+ of the | symbol in inset names by accident.
+ I've since learnt that it is intended to indicate menu shortcut keys.
+ After considerable experience with this 
+\begin_inset Quotes els
+\end_inset
+
+misuse
+\begin_inset Quotes ers
+\end_inset
+
+ of the symbol, as far as I can tell it does not produce deleterious side
+ effects.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+First trials
+\end_layout
+
+\begin_layout Standard
+Okay, you have a new document with the 
+\family typewriter
+pLyX
+\family default
+ module added.
+ Save it and give it a name.
+ Now click the first three pLyX buttons in sequence (
+\family sans
+save
+\family default
+, 
+\family sans
+export
+\family default
+, 
+\family sans
+reload
+\family default
+).
+ There may be a tiny delay after clicking the 
+\family sans
+export
+\family default
+ button before the 
+\family sans
+reload
+\family default
+ button becomes enabled.
+ (This will be more noticeable for a substantial document.
+ The 
+\family sans
+reload
+\family default
+ button remains greyed out until export is complete.
+ Only then does it become enabled.) As a result of your clicking, a yellow
+ note should appear with a message beginning 
+\begin_inset Quotes els
+\end_inset
+
+Unknown script (or no script) specified!
+\begin_inset Quotes ers
+\end_inset
+
+ and continuing with some simple suggestions of what to do next -- like
+ insert the 
+\family sans
+.Run script(s)
+\family default
+ inset.
+\end_layout
+
+\begin_layout Standard
+So delete the yellow-note message and insert in its place the 
+\family sans
+.Run script(s)
+\family default
+ inset at the start of the document.
+ Clicking the three keys in sequence again produces the same message --
+ after all, no sub-script has been specified.
+ Again delete the message and this time enter 
+\family typewriter
+-h
+\family default
+ (or 
+\family typewriter
+--help
+\family default
+) in the 
+\family sans
+.Run script(s)
+\family default
+ inset.
+ Clicking the three keys should now produce a different and more extensive
+ yellow-note message with various suggestions.
+\end_layout
+
+\begin_layout Subsection
+Restoring the status quo: 
+\family typewriter
+undo pLyX
+\end_layout
+
+\begin_layout Standard
+This time, instead of deleting the message, click the 
+\family sans
+undo pLyX
+\family default
+ button followed by the 
+\family sans
+reload
+\family default
+ button.
+ The prior message-less state of the document should be recovered.
+ Now instead of the 
+\family typewriter
+-h
+\family default
+ option, enter the 
+\family typewriter
+-v
+\family default
+ option and click the three activating buttons in sequence to obtain a brief
+ message with version information.
+ Recover the original document by again clicking the 
+\family sans
+undo pLyX
+\family default
+ and 
+\family sans
+reload
+\family default
+ buttons in sequence.
+\end_layout
+
+\begin_layout Standard
+Note that when the pLyX system is used in this way -- by clicking the three
+ activating buttons -- it overwrites the current buffer (document) and in
+ doing so destroys the associated undo list.
+ The effect of the 
+\family typewriter
+undo pLyX
+\family default
+, 
+\family typewriter
+reload
+\family default
+ sequence is like a one-item undo list, restoring the document to its state
+ just before activating the pLyX buttons, but the newly restored document
+ will have a zero-length undo list.
+ If document integrity is a serious concern then using LyX's 
+\family sans
+View other formats
+\family default
+ button is the preferred way to go (see below).
+\end_layout
+
+\begin_layout Section
+A calculator
+\end_layout
+
+\begin_layout Standard
+The pLyX system includes a calculator inset, 
+\family sans
+.calculate formula
+\family default
+, and associated python script, 
+\family typewriter
+calcul8.py
+\family default
+, not because LyX is in desperate need of a calculator but rather because
+ it provides a convenient means of illustrating the functioning of the system.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+And (the 
+\size normal
+\emph on
+real
+\emph default
+ reason), I was delighted to see that all that was really needed to write
+ the thing was to call python's 
+\begin_inset Flex .expand macro|txtmacs
+status collapsed
+
+\begin_layout Plain Layout
+
+\size normal
+pp
+\end_layout
+
+\end_inset
+
+
+\begin_inset Flex .[argument]
+status collapsed
+
+\begin_layout Plain Layout
+
+\size normal
+eval
+\end_layout
+
+\end_inset
+
+ function, and I couldn't resist doing so.
+ Long ago, in line-numbered BASIC days, I had written a 
+\emph on
+much
+\emph default
+ larger program to create a calculator that did much less.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Subsection
+Global and local uses of insets
+\end_layout
+
+\begin_layout Standard
+Into the 
+\family sans
+.Run script(s)
+\family default
+ inset insert the 
+\family sans
+.calculate formula
+\family default
+ inset and 
+\emph on
+in that
+\emph default
+ enter 
+\family typewriter
+-h
+\family default
+.
+ Click the three activating buttons in sequence.
+ A substantial help note will be revealed.
+ Delete the 
+\family typewriter
+-h
+\family default
+ but leave the 
+\family sans
+.calculate formula
+\family default
+ inset there.
+ Its presence tells 
+\family typewriter
+pLyX.py
+\family default
+ to import 
+\family typewriter
+calcul8.py
+\family default
+ and call its 
+\family typewriter
+main
+\family default
+ function.
+ 
+\end_layout
+
+\begin_layout Standard
+To make it easier to talk about these things, I shall call a child inset
+ placed in the 
+\family sans
+.Run script(s)
+\family default
+ inset, as 
+\family sans
+.calculate formula
+\family default
+ is here, a 
+\emph on
+global 
+\emph default
+use or instance of the inset.
+ Most of the insets also have a 
+\emph on
+local
+\emph default
+ use.
+ For instance, below the help note, in the document proper, enter another
+ 
+\family sans
+.calculate formula
+\family default
+ inset (a local use).
+ Enter a formula in it: 
+\family typewriter
+1+1
+\family default
+ perhaps.
+ Now click the three activating buttons in sequence.
+ In place of the inset should appear the result: 2.0.
+ Undo the calculation with the 
+\family sans
+undo pLyX
+\family default
+ and 
+\family sans
+reload
+\family default
+ buttons and enter a number of 
+\family sans
+.calculate formula
+\family default
+ insets with a different formula in each.
+ Clicking the activating buttons, should see all insets replaced by the
+ results from evaluating their contained formulas.
+ 
+\end_layout
+
+\begin_layout Standard
+Now in the global calculator inset enter the 
+\family typewriter
+-r
+\family default
+ option (
+\begin_inset Quotes els
+\end_inset
+
+r
+\begin_inset Quotes ers
+\end_inset
+
+ for 
+\emph on
+r
+\emph default
+etain).
+ Once again insert a number of (local) 
+\family sans
+.calculate formula
+\family default
+ insets and enter formulas in them.
+ Clicking the activating buttons, the insets will this time be replaced
+ not just by the answers but also the originating formulas (with an equals
+ sign between).
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+The formulas are 
+\emph on
+not
+\emph default
+ inserted in maths insets.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Complex numbers
+\end_layout
+
+\begin_layout Standard
+The calculator can handle 
+\emph on
+rational
+\emph default
+ expressions involving complex numbers, without needing to make any special
+ provision.
+ (A rational expression is one using the four basic arithmetic operations:
+ +, -, *, /.) The square root of 
+\begin_inset Formula $-1$
+\end_inset
+
+ in python is denoted by 
+\family typewriter
+j
+\family default
+, but it is
+\emph on
+ 
+\emph default
+never 
+\begin_inset Quotes els
+\end_inset
+
+naked
+\begin_inset Quotes ers
+\end_inset
+
+.
+ It should alway be immediately preceded by a number: 
+\family typewriter
+1j
+\family default
+, 
+\family typewriter
+3.7+6.2j
+\family default
+, 
+\family typewriter
+2*pi*1j
+\family default
+ (for 
+\begin_inset Formula $2\pi\sqrt{-1}$
+\end_inset
+
+) and so on.
+ Thus, entering, say, 
+\family typewriter
+(1+2j)*(4-7j)/(.5+4.3j)
+\family default
+, into a 
+\family sans
+.calculate formula
+\family default
+ inset and clicking the activating buttons should see it evaluate to (0.709711846
+318-4.10352187834j).
+ 
+\end_layout
+
+\begin_layout Subsection
+Error messages
+\end_layout
+
+\begin_layout Standard
+But entering 
+\family typewriter
+sqrt(-1)
+\family default
+ into a 
+\family sans
+.calculate formula
+\family default
+ inset will produce an unenlightening error message on screen in LyX.
+ More enlightenment will be found on going to 
+\family sans
+View \SpecialChar \menuseparator
+ View Messages
+\family default
+ where, among much else, will be seen the statement 
+\begin_inset Quotes els
+\end_inset
+
+ValueError: math domain error
+\begin_inset Quotes ers
+\end_inset
+
+.
+ The square root function is not one of the four basic arithmetic operations
+ and its use for evaluating negative numbers calls for python's 
+\family typewriter
+cmath
+\family default
+ module.
+ This is loaded with the 
+\family typewriter
+-j
+\family default
+ option in the 
+\emph on
+global
+\emph default
+ 
+\family sans
+.calculate formula
+\family default
+ inset.
+ Entering that (you can leave the 
+\family typewriter
+-r
+\family default
+ there provided there is a space between them) will avoid the error message
+ and, on evaluation, the inset containing the formula 
+\family typewriter
+sqrt(-1)
+\family default
+ will be replaced by: sqrt(-1) = 1j.
+\end_layout
+
+\begin_layout Standard
+And why not see what the square root of that is, 
+\family typewriter
+sqrt(1j)
+\family default
+, perhaps also calculating 
+\family typewriter
+sqrt(2)/2
+\family default
+?
+\end_layout
+
+\begin_layout Section
+View/Update buttons
+\end_layout
+
+\begin_layout Standard
+All the activating of scripts in the previous section has been effected
+ by clicking on the extra buttons added to the 
+\family sans
+View/Update
+\family default
+ toolbar.
+ Although the screen redrawing appears to be an updating of the original
+ document, it isn't -- the original document is overwritten.
+ With the tiny trial document of the previous section, that is a matter
+ of no concern, but if one has a large document, maintaining the integrity
+ of which is paramount, then overwriting is not a good idea, even with the
+ availability of the 
+\family sans
+undo pLyX
+\family default
+ button.
+ The way to proceed in this case is with LyX's 
+\family sans
+View other formats
+\family default
+ and 
+\family sans
+Update other formats
+\family default
+ buttons on the 
+\family sans
+View/Update
+\family default
+ toolbar.
+\end_layout
+
+\begin_layout Standard
+So this time, having inserted a number of 
+\family sans
+.calculate formula
+\family default
+ insets and entered formulas in them, instead of clicking the three activating
+ buttons, click on the 
+\family sans
+View other formats
+\family default
+ button and select from the list (probably near or at the bottom) 
+\family sans
+View pLyX
+\family default
+.
+ In setting up the pLyX system, LyX itself was chosen as the viewer for
+ the 
+\family typewriter
+pLyX
+\family default
+ format.
+ There will be a noticeable pause as a 
+\emph on
+second
+\emph default
+ copy of LyX is launched and the document, with its now calculated formulas,
+ is displayed there.
+ It is possible that the second copy of LyX -- the viewer LyX -- is placed
+ 
+\emph on
+exactly
+\emph default
+ over the first LyX.
+ This can be confusing for a large document in which the actual change is
+ minor -- apparently nothing has happened -- but a glance at the title line
+ will show that LyX is now displaying a document located in a temporary
+ directory and, indeed, on scrutiny, the changes will be seen to have been
+ made.
+ In the present case, for a small document with a few 
+\family sans
+.calculate formula
+\family default
+ insets, they will very obviously have been calculated, but it is usually
+ a good idea to move the viewer LyX to a different position on screen from
+ the original LyX.
+\end_layout
+
+\begin_layout Subsection
+Update button
+\end_layout
+
+\begin_layout Standard
+There are various ways of proceeding from here.
+ For instance the document in the viewer LyX could now be compiled to 
+\family typewriter
+pdf
+\family default
+, or, you could start editing it, making changes, inserting further insets
+ and calculating them -- perhaps launching a third copy of LyX, a second
+ viewer LyX.
+ But the sensible place to do the editing is in the original document.
+ Make your changes there, and then click LyX's 
+\family sans
+Update other formats
+\family default
+ button, selecting 
+\family sans
+Update pLyX
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Standard
+Nothing will seem to happen.
+ Moving the focus back to the viewer LyX will show no change, but if you
+ are observant and click in the main work-area window
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Clicking elsewhere has no effect.
+\end_layout
+
+\end_inset
+
+ you will see the 
+\family sans
+reload
+\family default
+ button change from a greyed-out state to its enabled state.
+ Click on it.
+ The document in the viewer LyX will be updated with the changes in the
+ original document.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+For the wish list (LyX developers?): that this updating happen automatically.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Running multiple scripts
+\end_layout
+
+\begin_layout Standard
+More than one script can be run 
+\begin_inset Quotes els
+\end_inset
+
+at a time
+\begin_inset Quotes ers
+\end_inset
+
+, i.e., more than one 
+\begin_inset Quotes els
+\end_inset
+
+child
+\begin_inset Quotes ers
+\end_inset
+
+ inset can be entered in the 
+\family sans
+.Run script(s)
+\family default
+ inset and the associated scripts will be run in sequence.
+ The insets may be entered on separate lines or on the same line within
+ the 
+\family sans
+.Run script(s)
+\family default
+ inset -- it makes no difference.
+ The three activating buttons, or the 
+\family sans
+View pLyX
+\family default
+ button, need be clicked only once to activate the sequence of scripts.
+\end_layout
+
+\begin_layout Standard
+Note that if an inset in the sequence has its 
+\family typewriter
+-h
+\family default
+ or 
+\family typewriter
+-v
+\family default
+ option (help or version) chosen, activation of the scripts in the sequence
+ will stop at that point.
+ This can be useful, so much so that there is a script specifically for
+ this purpose, 
+\family typewriter
+break.py
+\family default
+, and an associated custom inset, 
+\family sans
+.stop
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+The 
+\family sans
+.stop
+\family default
+ inset
+\end_layout
+
+\begin_layout Standard
+The sole function of the 
+\family sans
+.stop
+\family default
+ inset when inserted into the 
+\family sans
+.Run script(s)
+\family default
+ inset, is to stop any further scripts in the sequence being activated.
+ This may seem a perverse thing to do -- why include scripts in the list
+ if you don't want them activated? -- but experience suggests that inserting
+ the 
+\family sans
+.stop
+\family default
+ inset as the 
+\emph on
+first
+\emph default
+ inset in 
+\family sans
+.Run script(s)
+\family default
+, is an excellent way of saving oneself from the 
+\begin_inset Quotes els
+\end_inset
+
+fall out
+\begin_inset Quotes ers
+\end_inset
+
+ of impulsive key strokes.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+This is the voice of experience speaking.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+It is easy while constructing a document to want to see what things look
+ like when a script is let loose on it and therefore to click the three
+ activating buttons and then, indeed, to see what the document looks like,
+ happily anticipating that by clicking the 
+\family sans
+undo pLyX
+\family default
+ and 
+\family sans
+reload
+\family default
+ buttons one will be able to get things back to their original state, only
+ to be sidetracked into starting to edit again, saving the changes, and
+ realising too late that this means the 
+\family sans
+undo pLyX
+\family default
+ button will no longer have the desired effect.
+ Inserting the 
+\family sans
+.stop
+\family default
+ inset as the 
+\emph on
+first
+\emph default
+ inset in 
+\family sans
+.Run script(s)
+\family default
+ prevents any such impulsive misadventures.
+\end_layout
+
+\begin_layout Standard
+It still allows one to use the 
+\family sans
+View other formats \SpecialChar \menuseparator
+ View pLyX
+\family default
+ button.
+ A second copy of LyX is launched, the viewer LyX, in which the document
+ is displayed, although no scripts will have been activated because of the
+ 
+\family sans
+.stop
+\family default
+.
+ In this viewer document, one can now delete the 
+\family sans
+.stop
+\family default
+ inset from inside 
+\family sans
+.Run script(s)
+\family default
+, click the activating buttons, and play with (edit) the resulting document
+ to one's heart content, without fear of altering the original document
+ in any way whatever.
+\end_layout
+
+\begin_layout Subsubsection
+The 
+\family typewriter
+-x
+\family default
+ option
+\end_layout
+
+\begin_layout Standard
+Indeed, there is an option for the 
+\family typewriter
+.stop
+\family default
+ inset to facilitate exactly this practice: the 
+\family typewriter
+-x
+\family default
+ option (x for e
+\emph on
+x
+\emph default
+cise).
+ The 
+\family typewriter
+.stop
+\family default
+ inset
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Of course it is 
+\family typewriter
+break.py
+\family default
+ doing this.
+\end_layout
+
+\end_inset
+
+ still works to prevent any further scripts in the sequence being activated,
+ but it 
+\emph on
+deletes itself
+\emph default
+ in the process.
+ This means that if you click on the 
+\family sans
+View other formats \SpecialChar \menuseparator
+ View pLyX
+\family default
+ button in the original document, a viewer LyX will be launched displaying
+ the document, no later scripts in the script sequence will be activated,
+ but the 
+\family typewriter
+.stop
+\family default
+ inset itself will have been deleted from the sequence of scripts.
+ Clicking on the activating buttons in the viewer LyX will now result in
+ all (following) scripts in the sequence being activated without first having
+ to remove the 
+\family typewriter
+.stop
+\family default
+ inset from the 
+\family typewriter
+.Run script(s)
+\family default
+ inset.
+ (Should there be later 
+\family typewriter
+.stop
+\family default
+ insets in the sequence, the 
+\family typewriter
+-x
+\family default
+ option ensures only its own inset is excised.)
+\end_layout
+
+\begin_layout Subsection
+Looping
+\end_layout
+
+\begin_layout Standard
+There are occasions where it may not be a sequence of scripts that we wish
+ to run but just the one script repeatedly.
+ A look at 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+ will show a 
+\family sans
+.loop
+\family default
+ inset.
+ Inserting this in the 
+\family sans
+.Run script(s)
+\family default
+ inset
+\family sans
+ 
+\family default
+immediately followed by the relevant other inset will allow the associated
+ script to be looped -- applied repeatedly.
+ Not all scripts can be looped.
+ At present the only script for which this can be done is the find-&-replace
+ script, where it is possible to take a list of words, say, and work through
+ them, finding each word in turn in the sequence and replacing it according
+ to some 
+\begin_inset Quotes els
+\end_inset
+
+recipe
+\begin_inset Quotes ers
+\end_inset
+
+.
+ The process allows semi-automatic indexing for instance.
+\end_layout
+
+\begin_layout Standard
+Inserting the 
+\family sans
+.loop
+\family default
+ inset without any argument will allow up to 
+\begin_inset Formula $50+1$
+\end_inset
+
+ repetitions.
+ Inserting 0 into the 
+\family sans
+.loop
+\family default
+ inset is equivalent to not having inserted it at all -- only the single
+ find-&-replace (for instance) instigated by the 
+\family sans
+.find-&-replace (LyX format)
+\family default
+ inset is acted on.
+ Any other number 
+\begin_inset Formula $n$
+\end_inset
+
+ in the 
+\family sans
+.loop
+\family default
+ inset induces up to 
+\begin_inset Formula $n+1$
+\end_inset
+
+ repetitions of the relevant script.
+ (The actual number performed may be smaller, depending on the initial data
+ -- for example the length of the word list for a succession of find-&-replaceme
+nts.
+\end_layout
+
+\begin_layout Chapter
+Writing 
+\begin_inset Quotes els
+\end_inset
+
+child
+\begin_inset Quotes ers
+\end_inset
+
+ scripts
+\end_layout
+
+\begin_layout Standard
+As currently implemented (17 November 2013), when the 
+\family typewriter
+pLyX.py
+\family default
+ script is activated, it searches line by line from the start of the document
+ for the 
+\family sans
+.Run script(s)
+\family default
+ inset, storing all lines scanned in the string 
+\family typewriter
+prelims
+\family default
+.
+ Although it isn't necessary, it makes sense to place the 
+\family sans
+.Run script(s)
+\family default
+ inset at or near the start of the document (as soon as possible after the
+ 
+\family typewriter
+
+\backslash
+begin_body
+\family default
+ statement) to reduce the size of 
+\family typewriter
+prelims
+\family default
+ which will contain all the LyX header material, the 
+\family typewriter
+
+\backslash
+begin_body
+\family default
+ statement, and all lines down to the 
+\family typewriter
+
+\backslash
+end_inset
+\family default
+ statement that closes the 
+\family sans
+.Run script(s)
+\family default
+ inset.
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+pLyX.py
+\family default
+ parses the contents of the 
+\family sans
+.Run script(s)
+\family default
+ inset and forms a list of 
+\family typewriter
+(child script, option list)
+\family default
+ pairs.
+ The option list here is the list of 
+\begin_inset Quotes els
+\end_inset
+
+global
+\begin_inset Quotes ers
+\end_inset
+
+ options chosen for the particular child script, e.g., 
+\family typewriter
+('calcul8', ['-j', '-r'])
+\family default
+ might be the pair for the calculator.
+\end_layout
+
+\begin_layout Subsection
+
+\family typewriter
+main
+\end_layout
+
+\begin_layout Standard
+A child script must have a function called 
+\family typewriter
+main
+\family default
+ with four slots, like so:
+\end_layout
+
+\begin_layout LyX-Code
+def main(infile, outfile, options, guff):
+\end_layout
+
+\begin_layout Standard
+This is the function that is called by 
+\family typewriter
+pLyX.py
+\family default
+; 
+\family typewriter
+pLyX.py
+\family default
+ fills the 
+\family typewriter
+options
+\family default
+ slot with the list of (global) options for that script -- in our calculator
+ example, with 
+\family typewriter
+['-j', '-r']
+\family default
+ -- and the 
+\family typewriter
+guff
+\family default
+ slot with 
+\family typewriter
+prelims
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Return code
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+main
+\family default
+ routine must return a number.
+ For 
+\family typewriter
+break.py
+\family default
+ (for the 
+\family sans
+.stop
+\family default
+ inset), the returned value is 0; for most other child scripts, the returned
+ value is 1 (nothing is done with it -- it's simply different from 0).
+ However, the find-&-replace script 
+\family typewriter
+findrepl.py
+\family default
+ can also return a value 2.
+ This value, along with the 
+\family sans
+.loop
+\family default
+ custom inset, allows repeated activation of the same script.
+ Obviously there is scope here for other returned values, but only 0 and
+ 2 (at present) elicit special response.
+ Other values requiring particular responses would require additions to
+ the code for 
+\family typewriter
+pLyX.py
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+
+\family typewriter
+prelims
+\end_layout
+
+\begin_layout Standard
+Most child scripts simply write the preliminary lines to the output file
+ unaltered, early in their 
+\family typewriter
+main
+\family default
+ routine before any other output is made:
+\end_layout
+
+\begin_layout LyX-Code
+outfile.write(guff)
+\end_layout
+
+\begin_layout Standard
+However, it is possible that a script will want to add something to the
+ LaTeX preamble or add a LyX module or make some other change to the LyX
+ header material.
+ That is why the master script 
+\family typewriter
+pLyX.py
+\family default
+ doesn't write 
+\family typewriter
+prelims
+\family default
+ to file but passes it to the child script.
+ Suppose the child script wanted the (say) 
+\family typewriter
+Hanging
+\family default
+ module to be added.
+ This would require something like:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+guff = guff.replace('begin_modules','begin_modules
+\backslash
+nhanging')
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+outfile.write(guff)
+\end_layout
+
+\begin_layout Standard
+When adding modules, use the 
+\family sans
+View Source
+\family default
+ window to ensure correct names are used -- module names (what gets inserted
+ in the LyX header material) often differ from what appears in the list
+ at 
+\family sans
+Document
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Settings
+\family default
+ 
+\family sans
+\SpecialChar \menuseparator
+
+\family default
+ 
+\family sans
+Modules
+\family default
+.
+\end_layout
+
+\begin_layout Standard
+The 
+\family typewriter
+break.py
+\family default
+ script contains an example of a more extensive change to 
+\family typewriter
+guff
+\family default
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+
+\family typewriter
+options
+\end_layout
+
+\begin_layout Standard
+How the options are processed is up to you, but I have found it convenient
+ to use python's 
+\family typewriter
+argparse
+\family default
+ module (which therefore needs to be imported).
+ For our calculator example: 
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+parser = argparse.ArgumentParser(description='Calculate formula', 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+    version='1.0')
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+parser.add_argument('-j', action='store_true', dest = 'complex', 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+    default = False, help='Import cmath python module')
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+parser.add_argument('-r', action='store_true', dest = 'retain', 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+    default = False, help='Retain expression in document')
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+args = parser.parse_args(options)
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+if arg.complex:
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+    import cmath
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout Standard
+(The 
+\family typewriter
+help
+\family default
+ strings have a self-documenting utility but are otherwise functionless
+ here.)
+\end_layout
+
+\begin_layout Subsubsection
+Looping
+\end_layout
+
+\begin_layout Standard
+If the 
+\family sans
+.Loop
+\family default
+ custom inset has been inserted in the 
+\family sans
+.Run script(s)
+\family default
+ inset, then 
+\family typewriter
+pLyX.py
+\family default
+ appends the option 
+\family typewriter
+--loop
+\family default
+ to the option list of the child script to be looped.
+ The child script will need to have a line like 
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+parser.add_argument('--loop', action='store_true', default = False, 
+\backslash
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\size small
+    help='Loop boolean')
+\end_layout
+
+\begin_layout Standard
+among the options to be parsed.
+ For the 
+\family typewriter
+findrepl.py
+\family default
+ script, 
+\family typewriter
+args.loop
+\family default
+ then provides a boolean value which, when 
+\family typewriter
+True
+\family default
+, means: search for a 
+\emph on
+third
+\emph default
+ argument following the 
+\begin_inset Quotes els
+\end_inset
+
+find
+\begin_inset Quotes ers
+\end_inset
+
+ and 
+\begin_inset Quotes els
+\end_inset
+
+replace
+\begin_inset Quotes ers
+\end_inset
+
+ arguments (one containing a list of words to be looped over).
+\end_layout
+
+\begin_layout Subsection
+File operations
+\end_layout
+
+\begin_layout Standard
+Having written the 
+\family typewriter
+prelims
+\family default
+ (in the form of 
+\family typewriter
+guff
+\family default
+) to 
+\family typewriter
+outfile
+\family default
+ (see above), a child script must then work its way through the entire 
+\family typewriter
+infile
+\family default
+ (the LyX document), down to and including the 
+\family typewriter
+
+\backslash
+end_document
+\family default
+ statement and write those, after whatever processing the script does, to
+ 
+\family typewriter
+outfile
+\family default
+.
+ But the child script does not do any opening or closing of 
+\family typewriter
+infile
+\family default
+ and 
+\family typewriter
+outfile
+\family default
+ -- this is all handled by 
+\family typewriter
+pLyX.py
+\family default
+.
+ Of course the child script may use its own temporary files, or invoke other
+ files, during its processing.
+ 
+\end_layout
+
+\begin_layout Section
+Help files
+\end_layout
+
+\begin_layout Standard
+Every child script 
+\emph on
+must
+\emph default
+ have an associated help file -- an error will occur otherwise.
+ The help file is named according to the scheme 
+\family typewriter
+<child script name>_help.py
+\family default
+.
+ E.g., the calculator script 
+\family typewriter
+calcul8.py
+\family default
+ has a help file called 
+\family typewriter
+calcul8_help.py
+\family default
+.
+ While working on a script, it suffices to create an empty file with such
+ a name and to place it in the 
+\family typewriter
+subscripts
+\family default
+ directory in your personal 
+\family typewriter
+scripts
+\family default
+ directory.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+In version 1.0 of 
+\family typewriter
+\size normal
+pLyX.py
+\family default
+ the help scripts were placed in a separate folder, 
+\family typewriter
+help
+\family default
+.
+ 
+\end_layout
+
+\end_inset
+
+ Later, it will need 
+\begin_inset Quotes els
+\end_inset
+
+filling in
+\begin_inset Quotes ers
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A help file consists of an initial routine, and three strings.
+ The routine is the same for all help files:
+\end_layout
+
+\begin_layout LyX-Code
+def helpnote(hv):
+\end_layout
+
+\begin_layout LyX-Code
+    if hv > 1:
+\end_layout
+
+\begin_layout LyX-Code
+        return header + version
+\end_layout
+
+\begin_layout LyX-Code
+    else: 
+\end_layout
+
+\begin_layout LyX-Code
+       return header + tail
+\end_layout
+
+\begin_layout Standard
+The first two strings, 
+\family typewriter
+header
+\family default
+ and 
+\family typewriter
+version
+\family default
+ are fairly straightforward and will differ only slightly from one help
+ file to another.
+ For 
+\family typewriter
+calcul8_help.py
+\family default
+ the definitions are:
+\end_layout
+
+\begin_layout LyX-Code
+header = r'''
+\backslash
+begin_layout LyX-Code
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+family roman
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+series bold
+\end_layout
+
+\begin_layout LyX-Code
+.calculate formula
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout LyX-Code
+'''
+\end_layout
+
+\begin_layout LyX-Code
+version = r'''
+\backslash
+begin_layout LyX-Code
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+family roman
+\end_layout
+
+\begin_layout LyX-Code
+Version 1.0 (19 November 2012)
+\end_layout
+
+\begin_layout LyX-Code
+
+\backslash
+end_layout
+\end_layout
+
+\begin_layout LyX-Code
+'''
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes els
+\end_inset
+
+meat
+\begin_inset Quotes ers
+\end_inset
+
+ of the help file is in the string 
+\family typewriter
+tail
+\family default
+, which contains the actual help -- the instructions, information, hints.
+ I've found the simplest way to construct this is to build the help document
+ in LyX, get the formatting right there, then copy the native LyX format
+ from 
+\family sans
+View \SpecialChar \menuseparator
+ View Source
+\family default
+, and paste into the text editor in which the python file is being built.
+ I have found 
+\family sans
+LyX-Code
+\family default
+ useful for help files, largely because it allows multiple spaces.
+ Again, looking at 
+\family typewriter
+tail
+\family default
+ for 
+\family typewriter
+calcul8_help.py
+\family default
+ and the other sub-script help files (but not 
+\family typewriter
+pLyX_help.py
+\family default
+ which is built differently) will show what to do.
+\end_layout
+
+\begin_layout Section
+Updating 
+\family typewriter
+pLyX.module
+\end_layout
+
+\begin_layout Standard
+The final (and essential) thing to do is to define a custom inset to be
+ included in 
+\family typewriter
+pLyX.module
+\family default
+, something which can be copied and pasted into the user's version of the
+ module.
+ This may well be no more than a few lines.
+ At present, all the sub-script insets copy the 
+\family typewriter
+.Run script(s)
+\family default
+ inset style, varying from it only in the 
+\family typewriter
+ContentAsLabel
+\family default
+, 
+\family typewriter
+MultiPar
+\family default
+ and (of course) 
+\family typewriter
+LabelString
+\family default
+ tags:
+\end_layout
+
+\begin_layout LyX-Code
+InsetLayout "Flex:.expand macro|txtmacs"
+\end_layout
+
+\begin_layout LyX-Code
+  CopyStyle        "Flex:.Run script(s)"
+\end_layout
+
+\begin_layout LyX-Code
+  ContentAsLabel   1
+\end_layout
+
+\begin_layout LyX-Code
+  LabelString      Macro
+\end_layout
+
+\begin_layout LyX-Code
+End
+\end_layout
+
+\begin_layout Standard
+and 
+\end_layout
+
+\begin_layout LyX-Code
+InsetLayout "Flex:.sort table|sortable"
+\end_layout
+
+\begin_layout LyX-Code
+  CopyStyle        "Flex:.Run script(s)"
+\end_layout
+
+\begin_layout LyX-Code
+  ContentAsLabel   1
+\end_layout
+
+\begin_layout LyX-Code
+  LabelString      "Sort table"
+\end_layout
+
+\begin_layout LyX-Code
+  MultiPar         0
+\end_layout
+
+\begin_layout LyX-Code
+End
+\end_layout
+
+\begin_layout Subsection
+Inset naming
+\end_layout
+
+\begin_layout Standard
+For the inset to do its job, the name must be in a particular form, like
+\end_layout
+
+\begin_layout LyX-Code
+Flex:.stop|break
+\end_layout
+
+\begin_layout Standard
+or, when the name contains a space, 
+\end_layout
+
+\begin_layout LyX-Code
+"Flex:.calculate formula|calcul8"
+\end_layout
+
+\begin_layout Standard
+The part between the colon : and the vertical bar | is what is displayed
+ in the 
+\family sans
+Insert \SpecialChar \menuseparator
+ Custom Insets
+\family default
+ list; the part after the vertical bar is the name of the associated python
+ script (without the 
+\family typewriter
+.py
+\family default
+ extension).
+ The master script 
+\family typewriter
+pLyX.py
+\family default
+ reads the inset name and, from the part after the vertical bar, imports
+ the indicated python module.
+\end_layout
+
+\begin_layout Subsubsection
+Use of the | symbol
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes els
+\end_inset
+
+In the normal course of events
+\begin_inset Quotes ers
+\end_inset
+
+ the | symbol is used to indicate menu shortcut keys.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+My thanks to 
+\noun on
+Richard Heck
+\noun default
+ for enlightening me on this.
+\end_layout
+
+\end_inset
+
+ The way I have used it is clearly inconsistent with that intention.
+ After much use, however, I have yet to see a deleterious side effect.
+ It appears to be the case that when LyX (or rather, Qt4) sees a 
+\emph on
+string
+\emph default
+ of symbols after | that is, firstly, longer than a single character and,
+ secondly, not an initial segment of the name to the left of |, it \SpecialChar \ldots{}
+ does
+ nothing, at least of any consequence for the functioning of the pLyX system.
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace bigskip
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+The launching of document-modifying scripts is already possible in LyX without
+ any of the pLyX additions, but it is highly inconvenient to use.
+ In the absence of a built-in script-launching GUI, the pLyX system is designed
+ to make access to this facility more convenient.
+ For all its virtues -- and LyX is far and away the most satisfying piece
+ of software I have used -- there are some things you can't (at present)
+ do in it.
+ The use of ERT provides one means of bridging gaps in LyX's functionality;
+ the pLyX system provides another.
+ But as LyX has developed, the need for ERT has reduced; one imagines the
+ same will happen with pLyX scripts.
+ In the meantime \SpecialChar \ldots{}
+ 
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Andrew Parsloe, 10 December 2012
+\end_layout
+
+\begin_layout Plain Layout
+Revised, 17 November 2013
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
