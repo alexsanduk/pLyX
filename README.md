@@ -65,7 +65,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 ### Setup LyX
 This step you will have to do once to configure LyX properly.
 * open LyX.
-* define File format for `pLyX` in `Tools -> Preferences -> File Handling -> File Formats`:
+* define File format for `pLyX` in `Tools (LyX on Mac) -> Preferences -> File Handling -> File Formats`:
   * click `New` button and enter `pLyX` in the Format box;
   * set the `Document format` check box;
   * enter `plyx` in the `Short Name` box;
@@ -75,7 +75,7 @@ This step you will have to do once to configure LyX properly.
 
 ![](screens/pLyX_fileformat.png)
 
-* define File format for `qLyX` in `Tools -> Preferences -> File Handling -> File Formats`:
+* define File format for `qLyX` in `Tools (LyX on Mac) -> Preferences -> File Handling -> File Formats`:
   * click `New` button and enter `qLyX` in the Format box;
   * enter `qlyx` in the `Short Name` box;
   * None of the other check boxes or slots should be filled;
@@ -83,7 +83,7 @@ This step you will have to do once to configure LyX properly.
 
 ![](screens/qLyX_fileformat.png)
 
-* define converter from LyX to pLyX in `Tools -> Preferences -> File Handling -> Converters`:
+* define converter from LyX to pLyX in `Tools (LyX on Mac) -> Preferences -> File Handling -> Converters`:
   * by scrolling in the list `From format` select `LyX`;
   * by scrolling in the list `To format` select `pLyX`;
   * enter in `Converter` box:
@@ -94,7 +94,7 @@ This step you will have to do once to configure LyX properly.
 
 ![](screens/pLyX_converter.png)
 
-* define converter from LyX to qLyX in `Tools -> Preferences -> File Handling -> Converters`:
+* define converter from LyX to qLyX in `Tools (LyX on Mac) -> Preferences -> File Handling -> Converters`:
   * by scrolling in the list `From format` select `LyX`;
   * by scrolling in the list `To format` select `qLyX`;
   * enter in `Converter` box:
