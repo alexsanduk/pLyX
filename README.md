@@ -131,6 +131,7 @@ In each file you are working with add module `pLyX` in `Document -> Settings -> 
 * [run script](#run-script).
 
 ### Invoke child script
+This is an example of invoking the script that performs simple calculations:
 * insert custom inset `.Run script(s)[]`;
 * inside `.Run scripts[]` insert custom inset `.calculate formula` with additional flags if needed;
 * insert custom inset `.calculate formula` anywhere inside document;
@@ -140,10 +141,11 @@ In each file you are working with add module `pLyX` in `Document -> Settings -> 
 * [run script](#run-script).
 
 ### Invoke child script with argument
+This is an example of invoking the script that updates citations according to excel file provided:
 * insert custom inset `.Run script(s)[]`;
 * inside `.Run scripts[]` insert custom inset `.update citations` with additional flags if needed;
 * insert custom inset `.update citations` anywhere inside document;
-* insert custom inset `.[argument]` right after with pass specified;
+* insert custom inset `.[argument]` right after with path specified;
 
 ![](screens/update_citations.png)
 
@@ -152,14 +154,15 @@ In each file you are working with add module `pLyX` in `Document -> Settings -> 
 ### Run script
 In the following it is assumed that you have toolbar ![](screens/toolbar.png)
 
-Several buttons needs to be pressed for script to run:
+Several buttons needs to be pressed for script(s) to run:
 * First press button `Save`. This will backup your current document;
-* Press ![](screens/buffer-export.png) to run the scripts over the document;
+* Press ![](screens/buffer-export.png) to run the script(s) over the document;
 * Press ![](screens/buffer-reload.png) to load document back into LyX.
 
 ### Revert changes
 In the following it is assumed that you have toolbar ![](screens/toolbar.png)
 
-You can't user regular undo command. You can revert changes made with the following steps:
+You can't undo changes made by pLyX with regular undo command.
+To revert changes do the following steps:
 * Press ![](images/buffer-export_qlyx.png) to load document from backup;
 * Press ![](screens/buffer-reload.png) to load document back into LyX.
