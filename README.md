@@ -50,6 +50,7 @@ manipulate
 * You ready to [setup LyX](#setup-lyx).
 
 ### Setup LyX
+This step you will have to do once to configure LyX properly.
 * open LyX.
 * define File format for `pLyX` in `Tools -> Preferences -> File Handling -> File Formats`:
   * click `New` button and enter `pLyX` in the Format box;
@@ -93,6 +94,25 @@ manipulate
 
 ![](screens/qLyX_converter.png)
 
-## Using pLyX scripts
-To be here
+## Using pLyX
+### Add module
+In each file you are working with add module `pLyX` in `Document -> Settings -> Modules`:
+* choose `pLyX` in list `Available` and click `Add`;
+* click `Apply`;
+* verify that in the menu `Insert -> Custom Insets` you have new insets starting with `.` (i.e. `.Run script(s)[]`).
+### Invoke help for pLyX
+* insert custom inset `.Run script(s)[]` with `-h` at the begging of file;
 
+![](screens/pLyX_help.png)
+
+* [run script](#run-script).
+### Invoke help for child script (i.e. calc)
+* insert custom inset `.Run script(s)[]`;
+* inside `.Run scripts[]` insert custom inset `.calculcate formula` with `-h` flag;
+
+![](screens/calculate_help.png)
+
+* [run script](#run-script).
+### Run script
+To be here
+### Revert changes
