@@ -21,8 +21,7 @@ manipulate
   * copy contents of `images` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\images`
   * copy contents of `scripts` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\scripts`
   * copy contents of `ui` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\ui`
-
-Now [setup LyX](#setup-lyx).
+* You ready to [setup LyX](#setup-lyx).
 
 ### Mac OS X
 * Python:
@@ -35,8 +34,7 @@ Now [setup LyX](#setup-lyx).
   * copy contents of `images` folder to `/Applications/LyX.app/Contents/Resources/images`
   * copy contents of `scripts` folder to `/Applications/LyX.app/Contents/Resources/scripts`
   * copy contents of `ui` folder to `/Applications/LyX.app/Contents/Resources/ui`
-
-Now [setup LyX](#setup-lyx).
+* You ready to [setup LyX](#setup-lyx).
 
 ### Linux
 * Python
@@ -44,13 +42,12 @@ Now [setup LyX](#setup-lyx).
   * Check that you have pip installed by running in terminal `pip freeze`. If not install with `sudo apt-get install python-pip`.
   * Installed required packages for Python by running `sudo pip install -r requirements.txt`.
 * Copy files:
-  * copy contents of `doc` folder to `/home/<YourUserName/.lyx/doc`
-  * copy contents of `layouts` folder to `/home/<YourUserName/.lyx/layouts`
-  * copy contents of `images` folder to `/home/<YourUserName/.lyx/images`
-  * copy contents of `scripts` folder to `/home/<YourUserName/.lyx/scripts`
-  * copy contents of `ui` folder to `/home/<YourUserName/.lyx/ui`
-
-Now [setup LyX](#setup-lyx).
+  * copy contents of `doc` folder to `/home/<YourUserName>/.lyx/doc`
+  * copy contents of `layouts` folder to `/home/<YourUserName>/.lyx/layouts`
+  * copy contents of `images` folder to `/home/<YourUserName>/.lyx/images`
+  * copy contents of `scripts` folder to `/home/<YourUserName>/.lyx/scripts`
+  * copy contents of `ui` folder to `/home/<YourUserName>/.lyx/ui`
+* You ready to [setup LyX](#setup-lyx).
 
 ### Setup LyX
 * open LyX.
@@ -71,3 +68,31 @@ Now [setup LyX](#setup-lyx).
   * Click `Apply`.
 
 ![](screens/qLyX_fileformat.png)
+
+* define converter from LyX to pLyX in `Tools -> Preferences -> File Handling -> Converters`:
+  * by scrolling in the list `From format` select `LyX`;
+  * by scrolling in the list `To format` select `pLyX`;
+  * enter in `Converter` box:
+    * for Windows: `python C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\scripts\pLyX.py $$i $$o`;
+    * for Mac OS X: `python /Applications/LyX.app/Contents/Resources/scripts/pLyX.py $$i $$o`;
+    * for Linux: `python /home/<YourUserName>/.lyx/scripts/pLyX.py $$i $$o`;
+  * click `Add` and `Apply`.
+
+![](screens/pLyX_converter.png)
+
+* define converter from LyX to qLyX in `Tools -> Preferences -> File Handling -> Converters`:
+  * by scrolling in the list `From format` select `LyX`;
+  * by scrolling in the list `To format` select `qLyX`;
+  * enter in `Converter` box:
+    * for Windows: `python C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\scripts\qLyX.py $$i $$o`;
+    * for Mac OS X: `python /Applications/LyX.app/Contents/Resources/scripts/qLyX.py $$i $$o`;
+    * for Linux: `python /home/<YourUserName>/.lyx/scripts/qLyX.py $$i $$o`;
+  * click `Add` and `Apply`.
+
+* Choose in menu `Tools -> Reconfigure`
+
+![](screens/qLyX_converter.png)
+
+## Using pLyX scripts
+To be here
+
