@@ -1,6 +1,5 @@
 # pLyX System
 The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scripting system, but it seems to have been created by accident, few know of it, and it has certainly received no development to make its use convenient for the user. The pLyX system is an attempt to create a workable interface for this system out of the tools that LyX provides -- modules, custom insets, toolbar buttons -- and also to provide some initial scripts.
-manipulate
 # Docs
 ## Installation
 ### Windows
@@ -109,15 +108,43 @@ In each file you are working with add module `pLyX` in `Document -> Settings -> 
 
 * [run script](#run-script).
 
-### Invoke help for child script (i.e. calc)
+### Invoke help for child script
 * insert custom inset `.Run script(s)[]`;
-* inside `.Run scripts[]` insert custom inset `.calculcate formula` with `-h` flag;
+* inside `.Run scripts[]` insert custom inset `.calculate formula` with `-h` flag;
 
 ![](screens/calculate_help.png)
 
 * [run script](#run-script).
 
+### Invoke child script
+* insert custom inset `.Run script(s)[]`;
+* inside `.Run scripts[]` insert custom inset `.calculate formula` with additional flags if needed;
+* insert custom inset `.calculate formula` anywhere inside document;
+
+![](screens/calculate.png)
+
+* [run script](#run-script).
+
+### Invoke child script with argument
+* insert custom inset `.Run script(s)[]`;
+* inside `.Run scripts[]` insert custom inset `.update citations` with additional flags if needed;
+* insert custom inset `.update citations` anywhere inside document;
+* insert custom inset `.[argument]` right after with pass specified;
+
+![](screens/update_citations.png)
+
+* [run script](#run-script).
+
 ### Run script
-To be here
+In the following it is assumed that you have toolbar ![](screens/toolbar.png)
+Several buttons needs to be pressed for inset to make changes on your document:
+* First press button `Save`. This will backup your current document;
+* Press ![](screens/buffer-export.png) to run the scripts over the document;
+* Press ![](screens/buffer-reload.png) to load document back into lyx.
 
 ### Revert changes
+In the following it is assumed that you have toolbar ![](screens/toolbar.png)
+You can revert changes made with the following steps:
+* In the toolbar you should have ![](screens/toolbar.png);
+* Press ![](images/buffer-export_qlyx.png) to load document from backup;
+* Press ![](screens/buffer-reload.png) to load document back into lyx.
