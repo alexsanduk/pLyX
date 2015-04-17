@@ -14,6 +14,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
     - [Invoke child script with argument](#invoke-child-script-with-argument)
     - [Run script](#run-script)
     - [Revert changes](#revert-changes)
+
 ## Installation
 ### Windows
 * Python:
@@ -154,12 +155,11 @@ In the following it is assumed that you have toolbar ![](screens/toolbar.png)
 Several buttons needs to be pressed for script to run:
 * First press button `Save`. This will backup your current document;
 * Press ![](screens/buffer-export.png) to run the scripts over the document;
-* Press ![](screens/buffer-reload.png) to load document back into lyx.
+* Press ![](screens/buffer-reload.png) to load document back into LyX.
 
 ### Revert changes
 In the following it is assumed that you have toolbar ![](screens/toolbar.png)
 
 You can't user regular undo command. You can revert changes made with the following steps:
-* In the toolbar you should have ![](screens/toolbar.png);
 * Press ![](images/buffer-export_qlyx.png) to load document from backup;
-* Press ![](screens/buffer-reload.png) to load document back into lyx.
+* Press ![](screens/buffer-reload.png) to load document back into LyX.
