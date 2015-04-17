@@ -16,11 +16,11 @@ manipulate
   * Install `pip` by opening command prompt and entering `easy_install pip`.
   * Installed required packages for Python by running `pip install -r requirements.txt`.
 * Copy files:
-  * copy contents of `doc` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\doc`
-  * copy contents of `layouts` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\layouts`
-  * copy contents of `images` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\images`
-  * copy contents of `scripts` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\scripts`
-  * copy contents of `ui` folder to `C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\ui`
+  * copy contents of `doc` folder to `C:\Users\<UserName>\AppData\Roaming\LyX2.1\doc`
+  * copy contents of `layouts` folder to `C:\Users\<UserName>\AppData\Roaming\LyX2.1\layouts`
+  * copy contents of `images` folder to `C:\Users\<UserName>\AppData\Roaming\LyX2.1\images`
+  * copy contents of `scripts` folder to `C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts`
+  * copy contents of `ui` folder to `C:\Users\<UserName>\AppData\Roaming\LyX2.1\ui`
 * You ready to [setup LyX](#setup-lyx).
 
 ### Mac OS X
@@ -42,11 +42,11 @@ manipulate
   * Check that you have pip installed by running in terminal `pip freeze`. If not install with `sudo apt-get install python-pip`.
   * Installed required packages for Python by running `sudo pip install -r requirements.txt`.
 * Copy files:
-  * copy contents of `doc` folder to `/home/<YourUserName>/.lyx/doc`
-  * copy contents of `layouts` folder to `/home/<YourUserName>/.lyx/layouts`
-  * copy contents of `images` folder to `/home/<YourUserName>/.lyx/images`
-  * copy contents of `scripts` folder to `/home/<YourUserName>/.lyx/scripts`
-  * copy contents of `ui` folder to `/home/<YourUserName>/.lyx/ui`
+  * copy contents of `doc` folder to `/home/<UserName>/.lyx/doc`
+  * copy contents of `layouts` folder to `/home/<UserName>/.lyx/layouts`
+  * copy contents of `images` folder to `/home/<UserName>/.lyx/images`
+  * copy contents of `scripts` folder to `/home/<UserName>/.lyx/scripts`
+  * copy contents of `ui` folder to `/home/<UserName>/.lyx/ui`
 * You ready to [setup LyX](#setup-lyx).
 
 ### Setup LyX
@@ -73,9 +73,9 @@ manipulate
   * by scrolling in the list `From format` select `LyX`;
   * by scrolling in the list `To format` select `pLyX`;
   * enter in `Converter` box:
-    * for Windows: `python C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\scripts\pLyX.py $$i $$o`;
+    * for Windows: `python C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts\pLyX.py $$i $$o`;
     * for Mac OS X: `python /Applications/LyX.app/Contents/Resources/scripts/pLyX.py $$i $$o`;
-    * for Linux: `python /home/<YourUserName>/.lyx/scripts/pLyX.py $$i $$o`;
+    * for Linux: `python /home/<UserName>/.lyx/scripts/pLyX.py $$i $$o`;
   * click `Add` and `Apply`.
 
 ![](screens/pLyX_converter.png)
@@ -84,9 +84,9 @@ manipulate
   * by scrolling in the list `From format` select `LyX`;
   * by scrolling in the list `To format` select `qLyX`;
   * enter in `Converter` box:
-    * for Windows: `python C:\Users\<YourUserName>\AppData\Roaming\LyX2.1\scripts\qLyX.py $$i $$o`;
+    * for Windows: `python C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts\qLyX.py $$i $$o`;
     * for Mac OS X: `python /Applications/LyX.app/Contents/Resources/scripts/qLyX.py $$i $$o`;
-    * for Linux: `python /home/<YourUserName>/.lyx/scripts/qLyX.py $$i $$o`;
+    * for Linux: `python /home/<UserName>/.lyx/scripts/qLyX.py $$i $$o`;
   * click `Add` and `Apply`.
 
 * Choose in menu `Tools -> Reconfigure`
