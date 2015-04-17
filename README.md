@@ -1,6 +1,19 @@
 # pLyX System
 The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scripting system, but it seems to have been created by accident, few know of it, and it has certainly received no development to make its use convenient for the user. The pLyX system is an attempt to create a workable interface for this system out of the tools that LyX provides -- modules, custom insets, toolbar buttons -- and also to provide some initial scripts.
 # Docs
+- [Installation](#installation)
+    - [Windows](#windows)
+    - [Mac OS X](#mac-os-x)
+    - [Linux](#linux)
+    - [Setup LyX](#setup-lyx)
+- [Using pLyX](#using-plyx)
+    - [Add module](#add-module)
+    - [Invoke help for pLyX](#invoke-help-for-plyx)
+    - [Invoke help for child script](#invoke-help-for-child-script)
+    - [Invoke child script](#invoke-child-script)
+    - [Invoke child script with argument](#invoke-child-script-with-argument)
+    - [Run script](#run-script)
+    - [Revert changes](#revert-changes)
 ## Installation
 ### Windows
 * Python:
@@ -137,14 +150,16 @@ In each file you are working with add module `pLyX` in `Document -> Settings -> 
 
 ### Run script
 In the following it is assumed that you have toolbar ![](screens/toolbar.png)
-Several buttons needs to be pressed for inset to make changes on your document:
+
+Several buttons needs to be pressed for script to run:
 * First press button `Save`. This will backup your current document;
 * Press ![](screens/buffer-export.png) to run the scripts over the document;
 * Press ![](screens/buffer-reload.png) to load document back into lyx.
 
 ### Revert changes
 In the following it is assumed that you have toolbar ![](screens/toolbar.png)
-You can revert changes made with the following steps:
+
+You can't user regular undo command. You can revert changes made with the following steps:
 * In the toolbar you should have ![](screens/toolbar.png);
 * Press ![](images/buffer-export_qlyx.png) to load document from backup;
 * Press ![](screens/buffer-reload.png) to load document back into lyx.
