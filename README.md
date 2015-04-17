@@ -152,7 +152,7 @@ This is an example of invoking the script that updates citations according to ex
 * [run script](#run-script).
 
 ### Run script
-In the following it is assumed that you have toolbar ![](screens/toolbar.png)
+In the following it is assumed that in toolbar you have following buttons ![](screens/toolbar.png)
 
 Several buttons needs to be pressed for script(s) to run:
 * First press button `Save`. This will backup your current document;
@@ -160,7 +160,7 @@ Several buttons needs to be pressed for script(s) to run:
 * Press ![](screens/buffer-reload.png) to load document back into LyX.
 
 ### Revert changes
-In the following it is assumed that you have toolbar ![](screens/toolbar.png)
+In the following it is assumed that in toolbar you have following buttons ![](screens/toolbar.png)
 
 You can't undo changes made by pLyX with regular undo command.
 To revert changes do the following steps:
