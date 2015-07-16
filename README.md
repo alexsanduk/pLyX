@@ -87,7 +87,7 @@ This step you will have to do once to configure LyX properly.
   * by scrolling in the list `From format` select `LyX`;
   * by scrolling in the list `To format` select `pLyX`;
   * enter in `Converter` box:
-    * for Windows: `"python C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts\pLyX.py" $$i $$o`;
+    * for Windows: `python "C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts\pLyX.py" $$i $$o`;
     * for Mac OS X: `python /Applications/LyX.app/Contents/Resources/scripts/pLyX.py $$i $$o`;
     * for Linux: `python /home/<UserName>/.lyx/scripts/pLyX.py $$i $$o`;
   * click `Add` and `Apply`.
@@ -98,7 +98,7 @@ This step you will have to do once to configure LyX properly.
   * by scrolling in the list `From format` select `LyX`;
   * by scrolling in the list `To format` select `qLyX`;
   * enter in `Converter` box:
-    * for Windows: `"python C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts\qLyX.py" $$i $$o`;
+    * for Windows: `python "C:\Users\<UserName>\AppData\Roaming\LyX2.1\scripts\qLyX.py" $$i $$o`;
     * for Mac OS X: `python /Applications/LyX.app/Contents/Resources/scripts/qLyX.py $$i $$o`;
     * for Linux: `python /home/<UserName>/.lyx/scripts/qLyX.py $$i $$o`;
   * click `Add` and `Apply`.
