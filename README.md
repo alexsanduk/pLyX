@@ -145,7 +145,7 @@ This is an example of invoking the script that updates citations according to ex
 * insert custom inset `.Run script(s)[]`;
 * inside `.Run scripts[]` insert custom inset `.update citations` with additional flags if needed;
 * insert custom inset `.update citations` anywhere inside document;
-* insert custom inset `.[argument]` right after with absolute path specified (On Windows, path should look something like: C:/Users/reevek/Desktop/ED/NewBibtexKeys.xls);
+* insert custom inset `.[argument]` right after with absolute path specified (on Windows, path should be with slash rather than backslash, for example: `C:/Users/reevek/Documents/ED/NewBibtexKeys.xls`);
 
 ![](screens/update_citations.png)
 
