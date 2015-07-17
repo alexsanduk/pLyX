@@ -19,7 +19,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 ### Windows
 * Get package:
   * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
-  * unzip the archive to a convenient location.
+  * unzip the archive to a convenient location (for example `My Documents`)
   * Launch command prompt and go to the root of the unzipped folder (should contain file `requirements.txt`).
 * Python:
   * Download and run the Python 2.7 installer (either the "Windows x86 MSI Installer" or "Windows x86-64 MSI installer").
@@ -43,7 +43,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 ### Mac OS X
 * Get package:
   * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
-  * unzip the archive to a convenient location.
+  * unzip the archive to a convenient location (for example `Documents`).
   * Launch terminal and go to the root of the unzipped folder (should contain file `requirements.txt`).
 * Python:
   * Check that you have Python installed by running `python` in terminal. Normally Mac OS X comes with Python preinstalled.
@@ -60,7 +60,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 ### Linux
 * Get package:
   * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
-  * unzip the archive to a convenient location.
+  * unzip the archive to a convenient location (for example `Documents`).
   * Launch terminal and go to the root of the unzipped folder (should contain file `requirements.txt`).
 * Python
   * Check that you have Python installed by running `python` in terminal. Normally Linux comes with Python preinstalled.
