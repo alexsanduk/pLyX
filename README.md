@@ -17,6 +17,10 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 
 ## Installation
 ### Windows
+* Get package:
+  * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
+  * unzip the archive to a convenient location.
+  * Launch command prompt and go to the root of the unzipped folder (should contain file `requirements.txt`).
 * Python:
   * Download and run the Python 2.7 installer (either the "Windows x86 MSI Installer" or "Windows x86-64 MSI installer").
   * Open the Windows Start menu.
@@ -37,6 +41,10 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 * You ready to [setup LyX](#setup-lyx).
 
 ### Mac OS X
+* Get package:
+  * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
+  * unzip the archive to a convenient location.
+  * Launch terminal and go to the root of the unzipped folder (should contain file `requirements.txt`).
 * Python:
   * Check that you have Python installed by running `python` in terminal. Normally Mac OS X comes with Python preinstalled.
   * Check that you have pip installed by running in terminal `pip freeze`. If not install with `sudo easy_install pip`.
@@ -50,6 +58,10 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 * You ready to [setup LyX](#setup-lyx).
 
 ### Linux
+* Get package:
+  * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
+  * unzip the archive to a convenient location.
+  * Launch terminal and go to the root of the unzipped folder (should contain file `requirements.txt`).
 * Python
   * Check that you have Python installed by running `python` in terminal. Normally Linux comes with Python preinstalled.
   * Check that you have pip installed by running in terminal `pip freeze`. If not install with `sudo apt-get install python-pip`.
