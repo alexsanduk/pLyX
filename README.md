@@ -90,6 +90,7 @@ This step you will have to do once to configure LyX properly.
 * define File format for `qLyX` in `Tools (LyX on Mac) -> Preferences -> File Handling -> File Formats`:
   * click `New` button and enter `qLyX` in the Format box;
   * enter `qlyx` in the `Short Name` box;
+  * enter `lyx` in the `Extension` box;
   * None of the other check boxes or slots should be filled;
   * Click `Apply`.
 
