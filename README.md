@@ -133,7 +133,7 @@ This is an example of invoking the script that updates citations according to ex
 * return down to next line;
 * insert custom inset `.update citations`;
 * right after `.update citations` (not inside it) insert custom inset `.[argument]` 
-* specify absolute path of excel file with old and new key information (on Windows, path should be with slash rather than backslash, for example: `C:/Users/reevek/Documents/ED/NewBibtexKeys.xls`);
+* specify absolute path of excel file with old and new key information (on Windows, path should be with slash rather than backslash, for example: `C:/Users/reevek/Documents/ED/NewBibtexKeys.xls`, if copied directly from file explorer it path will contain `\` and be wrong) (For external drives through Mac, the address may look like: `/Volumes/Untitled/Dropbox (Daniel Chen)/Lyx_Conversion/bib/ReplacementBibtexKeyNotes_02July2014.xls`);
 
 ![](screens/update_citations.png)
 
