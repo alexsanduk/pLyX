@@ -8,10 +8,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
     - [Setup LyX](#setup-lyx)
 - [Using pLyX](#using-plyx)
     - [Add module](#add-module)
-    - [Invoke help for pLyX](#invoke-help-for-plyx)
-    - [Invoke help for child script](#invoke-help-for-child-script)
-    - [Invoke child script](#invoke-child-script)
-    - [Invoke child script with argument](#invoke-child-script-with-argument)
+    - [Invoke script](#invoke_script)
     - [Run script](#run-script)
     - [Revert changes](#revert-changes)
 
@@ -20,7 +17,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 * Get package:
   * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
   * unzip the archive to a convenient location (for example `My Documents`)
-  * Launch command prompt and go to the root of the unzipped folder (should contain file `requirements.txt`).
+  * Open unzipped folder to top level (should contain file `requirements.txt`).
 * Python:
   * Download and run the Python 2.7 installer (either the "Windows x86 MSI Installer" or "Windows x86-64 MSI installer").
   * Open the Windows Start menu.
@@ -44,7 +41,7 @@ The pLyX system is a scripting system for LyX. Or rather, LyX has a built-in scr
 * Get package:
   * download zipped version of this package [here](https://github.com/alexsanduk/pLyX/archive/master.zip).
   * unzip the archive to a convenient location (for example `Documents`).
-  * Launch terminal and go to the root of the unzipped folder (should contain file `requirements.txt`).
+  * Open unzipped folder to top level (should contain file `requirements.txt`).
 * Python:
   * Check that you have Python installed by running `python` in terminal. Normally Mac OS X comes with Python preinstalled.
   * Check that you have pip installed by running in terminal `pip freeze`. If not install with `sudo easy_install pip`.
@@ -128,37 +125,15 @@ In each file you are working with add module `pLyX` in `Document -> Settings -> 
 * click `Apply`;
 * verify that in the menu `Insert -> Custom Insets` you have new insets starting with `.` (i.e. `.Run script(s)[]`).
 
-### Invoke help for pLyX
-* insert custom inset `.Run script(s)[]` with `-h` at the begging of file;
 
-![](screens/pLyX_help.png)
-
-* [run script](#run-script).
-
-### Invoke help for child script
-* insert custom inset `.Run script(s)[]`;
-* inside `.Run scripts[]` insert custom inset `.calculate formula` with `-h` flag;
-
-![](screens/calculate_help.png)
-
-* [run script](#run-script).
-
-### Invoke child script
-This is an example of invoking the script that performs simple calculations:
-* insert custom inset `.Run script(s)[]`;
-* inside `.Run scripts[]` insert custom inset `.calculate formula` with additional flags if needed;
-* insert custom inset `.calculate formula` anywhere inside document;
-
-![](screens/calculate.png)
-
-* [run script](#run-script).
-
-### Invoke child script with argument
+### Invoke script
 This is an example of invoking the script that updates citations according to excel file provided:
 * insert custom inset `.Run script(s)[]`;
 * inside `.Run scripts[]` insert custom inset `.update citations` with additional flags if needed;
-* insert custom inset `.update citations` anywhere inside document;
-* insert custom inset `.[argument]` right after with absolute path specified (on Windows, path should be with slash rather than backslash, for example: `C:/Users/reevek/Documents/ED/NewBibtexKeys.xls`);
+* return down to next line;
+* insert custom inset `.update citations`;
+* right after `.update citations` (not inside it) insert custom inset `.[argument]` 
+* specify absolute path of excel file with old and new key information (on Windows, path should be with slash rather than backslash, for example: `C:/Users/reevek/Documents/ED/NewBibtexKeys.xls`);
 
 ![](screens/update_citations.png)
 
